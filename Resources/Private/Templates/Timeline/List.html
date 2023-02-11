@@ -1,0 +1,35 @@
+<html
+  xmlns:timelinevis="http://typo3.org/ns/AK/TimelineVis/ViewHelpers"
+  data-namespace-typo3-fluid="true">
+
+<f:layout name="default" />
+<f:section name="content">
+<h1><f:translate key="timeline.headline.list" /></h1>
+
+<f:form action="list" additionalAttributes="{role: 'form'}">
+    <div class="input-group mb-3">
+        <f:form.textfield name="search" value="{search}" class="form-control" />
+        <div class="input-group-append">
+            <f:form.submit value="{f:translate(key: 'label.search')}" class="btn btn-outline-secondary" />
+        </div>
+    </div>
+</f:form>
+
+<div class="card w-100" style="background-color: aliceblue;">
+    <h4>Just to debug timeline</h4>
+    <p>Max number: {settings.timeline.max}</p>
+    <div class="list">
+		<f:for each="{timelines}" as="v">
+			<f:render partial="Timeline/Entry" arguments="{timeline: v}" />
+		</f:for>
+	</div>
+</div>
+
+<p><small><f:translate key="timeline.list.max-timelines-shown" arguments="{1: settings.timeline.max}" /></small></p>
+<f:link.action action="addForm" class="btn btn-primary">
+    <i class="fas fa-plus-circle"></i>
+    <f:translate key="timeline.list.button.add-timelines" />
+</f:link.action>
+</f:section>
+
+</html>

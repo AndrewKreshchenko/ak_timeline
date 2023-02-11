@@ -1,0 +1,72 @@
+<T3DataStructure>
+  <sheets>
+    <sDEF>
+      <ROOT>
+        <TCEforms>
+          <sheetTitle>Timeline Configuration</sheetTitle>
+        </TCEforms>
+        <type>array</type>
+        <el>
+          <settings.timeline.max>
+            <TCEforms>
+              <label>Max number of Timelines</label>
+              <config>
+                <type>input</type>
+                <size>2</size>
+                <eval>int</eval>
+                <default>10</default>
+              </config>
+            </TCEforms>
+          </settings.timeline.max>
+
+          <switchableControllerActions>
+						<TCEforms>
+							<label>Plugin Mode</label>
+							<exclude>1</exclude>
+							<config>
+								<type>select</type>
+								<renderType>selectSingle</renderType>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0">Timelines list</numIndex>
+										<numIndex index="1">Timeline->list</numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">Show the timeline</numIndex>
+										<numIndex index="1">Timeline->show</numIndex>
+									</numIndex>
+								</items>
+								<maxitems>1</maxitems>
+								<size>1</size>
+							</config>
+						</TCEforms>
+					</switchableControllerActions>
+
+					<settings.enablePagination>
+						<TCEforms>
+							<exclude>1</exclude>
+							<label>LLL:EXT:ak_timeline/Resources/Private/Language/locallang.xlf:tx_timelinevis_domain_model_timeline.enablepagination</label>
+							<config>
+								<type>check</type>
+							</config>
+						</TCEforms>
+					</settings.enablePagination>
+
+          <settings.pagesCount>
+            <TCEforms>
+              <exclude>1</exclude>
+              <label>LLL:EXT:ak_timeline/Resources/Private/Language/locallang.xlf:tx_timelinevis_domain_model_timeline.pagescount</label>
+              <config>
+                  <type>input</type>
+                  <eval>int</eval>
+                  <size>5</size>
+                  <default>0</default>
+                  <checkbox>0</checkbox>
+              </config>
+            </TCEforms>
+          </settings.pagesCount>
+        </el>
+      </ROOT>
+    </sDEF>
+  </sheets>
+</T3DataStructure>

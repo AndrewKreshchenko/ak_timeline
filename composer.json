@@ -1,0 +1,29 @@
+{
+    "name": "ak/ak-timelinevis",
+    "type": "typo3-cms-extension",
+    "description": "This TYPO3 extension provides tools to manage timeline and widgets, that provide visual representation of detailed historic data and allow to revise timeline in arbirtary intervals.",
+    "license": [],
+    "authors": [
+        {
+            "name": "Andrii Kreshchenko",
+            "role": "Developer"
+        }
+    ],
+    "version": "1.0.0",
+    "require": {
+        "typo3/cms-core": "^11.0.0"
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "ak_timeline"
+        },
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "AK\\TimelineVis\\": "Classes"
+        }
+    }
+}

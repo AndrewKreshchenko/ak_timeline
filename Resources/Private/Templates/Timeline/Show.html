@@ -1,0 +1,28 @@
+<f:layout name="default" />
+<f:section name="content">
+<h1><f:translate key="timeline.headline.show" /></h1>
+<div class="card">
+    <f:if condition="{timeline}">
+        <h5 class="card-header">{timeline.title}</h5>
+        <f:if condition="{timeline.rangeStart} && {timeline.rangeEnd}">
+			<p>(<f:format.date format="%d %B %Y">{timeline.rangeStart}</f:format.date> - <f:format.date format="%d %B %Y">{timeline.rangeEnd}</f:format.date>)</p>
+		</f:if>
+        <div class="card-body">
+            <div class="card-text"><f:format.html>{timeline.description}</f:format.html></div>
+
+            <f:if condition="{segments}">
+                <f:for each="{segments}" as="v">
+                    <div class="border border-info">
+                        <f:render partial="Timeline/Entry" arguments="{timeline: v}" />
+                    </div>
+                </f:for>
+            </f:if>
+        </div>
+    </f:if>
+</div>
+
+<!-- f: link.action controller="Post" action="addForm" arguments="timeline : timeline" class="btn btn-primary"
+    i class="fas fa-plus-circle"
+    f:translate key="timeline.show.button.add-post" 
+/f link.action -->
+</f:section>

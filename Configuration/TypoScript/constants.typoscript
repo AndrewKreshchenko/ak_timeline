@@ -1,0 +1,18 @@
+
+plugin.tx_timelinevis {
+    view {
+        # cat=plugin.tx_timelinevis/file; type=string; label=Path to template root (FE)
+        templateRootPath = EXT:ak_timeline/Resources/Private/Templates/
+        # cat=plugin.tx_timelinevis/file; type=string; label=Path to template partials (FE)
+        partialRootPath = EXT:ak_timeline/Resources/Private/Partials/
+        # cat=plugin.tx_timelinevis/file; type=string; label=Path to template layouts (FE)
+        layoutRootPath = EXT:ak_timeline/Resources/Private/Layouts/
+    }
+    persistence {
+        # cat=plugin.tx_timelinevis//a; type=string; label=Default storage PID
+        storagePid =
+    }
+    settings {
+        storagePid = 
+    }
+}

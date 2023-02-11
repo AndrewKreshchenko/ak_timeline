@@ -1,0 +1,96 @@
+
+#[{$plugin.tx_events2.settings.useExtForm} == "1"]
+#  plugin.tx_form.settings.yamlConfigurations.1661247670 = EXT:events2/Configuration/Form/OverrideFormSettings.yaml
+#  # This part will be moved back with "if.isTrue" until this patch was fixed: https://forge.typo3.org/issues/98200
+#  plugin.tx_events2.view.templateRootPaths.1 = EXT:events2/Resources/Private/FormFramework/Templates/
+#  plugin.tx_events2.view.partialRootPaths.1 = EXT:events2/Resources/Private/FormFramework/Partials/
+#[GLOBAL]
+
+plugin.tx_timelinevis {
+  view {
+    templateRootPaths.0 = EXT:ak_timeline/Resources/Private/Templates/
+    templateRootPaths.1 = {$plugin.tx_timelinevis.view.templateRootPath}
+    partialRootPaths.0 = EXT:ak_timeline/Resources/Private/Partials/
+    partialRootPaths.1 = {$plugin.tx_timelinevis.view.partialRootPath}
+    layoutRootPaths.0 = EXT:ak_timeline/Resources/Private/Layouts/
+    layoutRootPaths.1 = {$plugin.tx_timelinevis.view.layoutRootPath}
+  }
+  persistence {
+    storagePid = {$plugin.tx_timelinevis.persistence.storagePid}
+    recursive = 1
+    enableAutomaticCacheClearing = 1
+    # classes {
+      # AK\TimelineVis\Domain\Model\Timeline {
+        # newRecordStoragePid = 37
+      # }
+    # }
+  }
+  features {
+      #skipDefaultArguments = 1
+      # if set to 1, the enable fields are ignored in BE context
+      ignoreAllEnableFieldsInBe = 0
+      # Should be on by default, but can be disabled if all action in the plugin are uncached
+      requireCHashArgumentForActionArguments = 1
+  }
+  mvc {
+      #callDefaultActionIfActionCantBeResolved = 1
+  }
+  settings {
+    loginpage = 4
+    timeline {
+      max = 10
+    }
+  }
+}
+
+page {
+  includeJSFooter {
+    mailto = EXT:ak_timeline/Resources/Public/JavaScript/jquery.mailto.min.js
+    timelinevis = EXT:ak_timeline/Resources/Public/JavaScript/timeline.js
+  }
+  includeCSS {
+    timelinevis = EXT:ak_timeline/Resources/Public/Css/timeline.css
+  }
+}
+
+ajax = PAGE
+ajax {
+  typeNum = 1550786448
+  config {
+    disableAllHeaderCode = 1
+    additionalHeaders {
+      10.header = Content-type: application/json
+      20.header = Cache-control: Private
+    }
+    admPanel = 0
+    debug = 0
+  }
+  10 < tt_content.list.20.timelinevis_listing
+}
+
+config.tx_extbase {
+  persistence {
+    classes {
+      AK\TimelineVis\Domain\Model\FileReference {
+        mapping {
+          tableName = sys_file_reference
+          columns {
+            uid_local.mapOnProperty = originalFileIdentifier
+          }
+        }
+      }
+      AK\TimelineVis\Domain\Model\Timeline {
+        mapping.columns.crdate.mapOnProperty = crdate
+      }
+      AK\TimelineVis\Domain\Model\Point {
+        mapping.columns.crdate.mapOnProperty = crdate
+      }
+      // AK\TimelineVis\Domain\Model\Point {
+      //   newRecordStoragePid = 8
+      // }
+    }
+  }
+  objects {
+    TYPO3\CMS\Extbase\Domain\Model\FileReference.className = AK\TimelineVis\Domain\Model\FileReference
+  }
+}
