@@ -1,0 +1,50 @@
+<div class="tx-timeline timeline-vertical">
+  <h2>{timeline.title}</h2>
+  <f:if condition="{timeline.rangeStart} && {timeline.rangeEnd}">
+    <p>(<f:format.date format="%d %B %Y">{timeline.rangeStart}</f:format.date> - <f:format.date format="%d %B %Y">{timeline.rangeEnd}</f:format.date>)</p>
+  </f:if>
+  <div>
+    <p><f:format.html>{timeline.description}</f:format.html></p>
+  </div>
+
+  <f:if condition="{timeline.points}">
+    <f:then>
+      <f:if condition="{settings.enablePagination}">
+        <f:then>
+          <!-- Points -->
+          <f:for each="{pagination.paginator.paginatedItems}" as="point" iteration="iterator">
+            <div class="timeline-segment">
+              <div class="tl-content">
+                <h3>{point.title}</h3>
+                <p><f:format.html>{point.description}</f:format.html></p>
+              </div>
+              <div class="tl-offcut">
+                <div class="tl-offcut-line"></div>
+              </div>
+            </div>
+          </f:for>
+
+          <!-- Pagination -->
+          <f:render partial="Pagination" arguments="{pagination: pagination.pagination, paginator: pagination.paginator, actionName: 'show'}" />
+        </f:then>
+        <f:else>
+          <f:for each="{timeline.points}" as="point">
+            <!-- Points -->
+            <div class="timeline-segment">
+              <div class="tl-content">
+                <h3>{point.title}</h3>
+                <p><f:format.html>{point.description}</f:format.html></p>
+              </div>
+              <div class="tl-offcut">
+                <div class="tl-offcut-line"></div>
+              </div>
+            </div>
+          </f:for>
+        </f:else>
+      </f:if>
+    </f:then>
+    <f:else>
+      <p>No points for now.</p>
+    </f:else>
+  </f:if>
+</div>

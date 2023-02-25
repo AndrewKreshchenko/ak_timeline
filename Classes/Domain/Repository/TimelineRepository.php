@@ -16,11 +16,31 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use AK\TimelineVis\Domain\Model\Timeline;
 
+// use TYPO3\CMS\Core\Log\LogManager;
+// use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
+
 /**
  * Repository class: Blog
  */
 class TimelineRepository extends Repository
 {
+
+    /**
+     * Returns timeline points
+     *
+     * @param int uid - ID as value to get the timeline by a key
+     * @return QueryResult
+     */
+    public function findTimelinesByTimelineUid(int $uid = 7): ?QueryResult
+    {
+        $query = $this->createQuery();
+        $query->matching(
+            $query->equals('uid', 7)
+        );
+
+        return $query->execute();
+    }
+
     /**
      * Returns timelines with a specific search term in the title
      *
@@ -52,15 +72,21 @@ class TimelineRepository extends Repository
      * Returns timeline
      *
      * @param string type - key to get by from database
-     * @param int pid - ID as value to get the timeline by a key
+     * @param int id - ID as value to get the timeline by a key
      * @return Timeline|null
      */
-    public function findTimeline(string $type = 'pid', int $pid = 0): ?Timeline
+    public function findTimeline(string $type = 'pid', int $id = 0): ?Timeline
     {
         $query = $this->createQuery();
         $query->matching(
-            $query->equals($type, $pid)
+            $query->equals($type, $id)
         );
+
+        // $queryParser = $this->objectManager->get(Typo3DbQueryParser::class);
+        // $queryBuilder = $queryParser->convertQueryToDoctrineQueryBuilder($query);
+
+        // $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+        // $logger->warning('items result ' . $queryBuilder->getSQL());
 
         return $query->execute()->getFirst();
     }

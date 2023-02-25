@@ -9,6 +9,8 @@ use \TYPO3\CMS\Core\Database\ConnectionPool;
 use \TYPO3\CMS\Core\DataHandling\DataHandler;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
+// NOTE check if class is needed
+
 class Div
 {
 

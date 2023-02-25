@@ -17,19 +17,19 @@ use TYPO3\CMS\Extbase\Annotation\Validate;
 class Point extends AbstractEntity
 {
     /**
-     * Point
+     * Point title
      *
      * @var string
      * @Validate("NotEmpty")
      */
-    protected $point = '';
+    protected $title = '';
 
     /**
      * Point text content
      *
      * @var string
      */
-    protected $pointcontent = '';
+    protected $description = '';
 
     /**
      * pointdate
@@ -46,45 +46,45 @@ class Point extends AbstractEntity
     protected $crdate;
 
     /**
-     * Returns the point
+     * Returns the title
      *
-     * @return string $point
+     * @return string $title
      */
-    public function getPoint()
+    public function getTitle()
     {
-        return $this->point;
+        return $this->title;
     }
 
     /**
-     * Sets the point
+     * Sets the title
      *
-     * @param string $point
+     * @param string $title
      * @return void
      */
-    public function setPoint($point)
+    public function setTitle($title)
     {
-        $this->point = $point;
+        $this->title = $title;
     }
 
     /**
-     * Returns the pointcontent
+     * Returns the description
      *
-     * @return string $pointcontent
+     * @return string $description
      */
-    public function getPointcontent()
+    public function getDescription()
     {
-        return $this->pointcontent;
+        return $this->description;
     }
 
     /**
-     * Sets the pointcontent
+     * Sets the description
      *
-     * @param string $pointcontent
+     * @param string $description
      * @return void
      */
-    public function setPointcontent($pointcontent)
+    public function setDescription($description)
     {
-        $this->pointcontent = $pointcontent;
+        $this->description = $description;
     }
 
     /**

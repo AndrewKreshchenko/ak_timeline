@@ -1,7 +1,6 @@
 {namespace h5v=AK\TimelineVis\ViewHelpers}
 
-<!-- Begin VideoJS -->
-<div class="timeline-box ">
+<div class="tx-timeline">
 	
 	<ul>
 		<li>
@@ -15,10 +14,6 @@
 
 			<f:if condition="{settings.timeline.rangeStart}">
 				<f:comment>https://docs.typo3.org/other/typo3/view-helper-reference/11.5/en-us/typo3/fluid/latest/Format/Date.html</f:comment>
-				<div class="w-100">
-					Begin: <f:format.date format="%d %B %Y">{settings.timeline.rangeStart}</f:format.date><br>
-					End: <f:format.date format="%d %B %Y">{settings.timeline.rangeEnd}</f:format.date>
-				</div>
 				<f:if condition="{timeline.description}">
 					<div>
 						<i><f:format.html>{timeline.description}</f:format.html></i>
@@ -32,8 +27,7 @@
 		<f:for each="{timeline.points}" as="point">
 			<ul>
 				<li>
-					<f:debug>{point}</f:debug>
-					<span>Timeline point {point.title} <sup><f:format.date format="d.m.Y">{point.pointdate}</f:format.date></sup></span>
+					<span>{point.title} <sup><f:format.date format="d.m.Y">{point.pointdate}</f:format.date></sup></span>
 					<f:if condition="{point.source}">
 						<a href="{point.source}">Source</div>
 					</f:if>
@@ -43,4 +37,3 @@
 		</f:if>
 	</ul>
 </div>
-<!-- End VideoJS -->

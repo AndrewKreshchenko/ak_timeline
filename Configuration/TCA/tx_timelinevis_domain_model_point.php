@@ -24,9 +24,6 @@ return [
         'searchFields' => 'title',
         // 'iconfile' => 'EXT:ak_timeline/Resources/Public/Icons/tx_timelinevis_domain_model_point.gif',
     ],
-    'interface' => [
-        'showRecordFieldList' => 'hidden, title, description, source, pointdate',
-    ],
     'types' => [
         '1' => [
             'showitem' => 'hidden, title, description, source, pointdate, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime'
@@ -58,7 +55,7 @@ return [
 
         'title' => [
             'exclude' => false,
-            'label' => 'LLL:EXT:' . $languageFile . ':tx_timelinevis_domain_model_point.point',
+            'label' => 'LLL:EXT:' . $languageFile . ':tx_timelinevis_domain_model_point.title',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -67,15 +64,16 @@ return [
         ],
         'description' => [
           'exclude' => true,
-          'label' => 'Point content', // 'LLL:EXT:' . $languageFile . ':tx_timelinevis_domain_model_point.pointcontent',
-          'description' => 'Point text content',
+          'label' => 'LLL:EXT:' . $languageFile . ':tx_timelinevis_domain_model_point.description',
+          'description' => 'LLL:EXT:' . $languageFile . ':tx_timelinevis_domain_model_point.description.desc',
           'config' => [
               'type' => 'text',
-              'enableRichtext' => true
-          ]
+              'enableRichtext' => true,
+              'cols' => 20
+            ]
         ],
         'source' => [
-            'label' => 'Source',
+            'label' => 'LLL:EXT:' . $languageFile . ':tx_timelinevis_domain_model_point.source',
             'config' => [
                 'type' => 'input',
                 'size' => 59,
@@ -90,19 +88,7 @@ return [
                 'renderType' => 'inputDateTime',
                 'dbType' => 'date',
                 'eval' => 'date,required',
-                // 'default' => 0,
-                // 'range' => [
-                //     'upper' => mktime(0, 0, 0, 1, 1, 2038)
-                // ]
             ],
-
-            // 'type' => 'input',
-            // 'renderType' => 'inputDateTime',
-            // 'eval' => 'datetime,int',
-            // 'default' => 0,
-            // 'range' => [
-            //     'upper' => mktime(0, 0, 0, 1, 1, 2038)
-            // ]
         ],
     ],
 ];

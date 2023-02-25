@@ -16,9 +16,11 @@ use \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use \AK\TimelineVis\Domain\Model\Timeline;
 use \AK\TimelineVis\Domain\Repository\TimelineRepository;
 use \AK\TimelineVis\Domain\Repository\PointRepository;
+use \TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
+use \GeorgRinger\NumberedPagination\NumberedPagination;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Log\LogManager;
+// use TYPO3\CMS\Core\Utility\GeneralUtility;
+// use TYPO3\CMS\Core\Log\LogManager;
 
 /**
  * Timeline controller class
@@ -33,6 +35,13 @@ class TimelineController extends ActionController
     protected $timelineRepository;
 
     /**
+     * Timeline repository
+     *
+     * @var PointRepository
+     */
+    protected $pointRepository;
+
+    /**
      * Import Timeline repository by dependency injection
      *
      * @param TimelineRepository $timelineRepository
@@ -43,24 +52,14 @@ class TimelineController extends ActionController
     }
 
     /**
-     * Index action for this controller. Displays a list of blogs.
+     * Import Point repository by dependency injection
+     *
+     * @param PointRepository $pointRepository
      */
-    // public function indexAction(int $currentPage = 1): ResponseInterface
-    // {
-    //     $allAvailableTimelines = $this->timelineRepository->findAll();
-    //     $paginator = new QueryResultPaginator(
-    //         $allAvailableTimelines,
-    //         $currentPage,
-    //         3
-    //     );
-    //     $pagination = new SimplePagination($paginator);
-    //     $this->view
-    //         ->assign('timelines', $allAvailableTimelines)
-    //         ->assign('paginator', $paginator)
-    //         ->assign('pagination', $pagination)
-    //         ->assign('pages', range(1, $pagination->getLastPageNumber()));
-    //     return $this->htmlResponse();
-    // }
+    public function injectPointRepository(PointRepository $pointRepository): void
+    {
+        $this->PointRepository = $pointRepository;
+    }
 
     /**
      * List Timelines
@@ -74,16 +73,17 @@ class TimelineController extends ActionController
             $search = $this->request->getArgument('search');
         }
         $limit = ($this->settings['timeline']['max']) ?: null;
+
         $this->view->assign('timelines', $this->TimelineRepository->findSearchForm($search, $limit));
         $this->view->assign('search', $search);
     }
 
     /**
      * Show a single Timeline (detail view)
-     *
-     * @param Timeline $timeline
+     * 
+     * @param int $currentPage
      */
-    public function showAction(): void
+    public function showAction(int $currentPage = 1): void
     {
         $pageArguments = $this->request->getAttribute('routing');
         $result = $this->TimelineRepository->findTimeline('pid', $pageArguments['pageId']);
@@ -95,206 +95,32 @@ class TimelineController extends ActionController
             $segments = $this->TimelineRepository->findTimelinesSegments($result->getUid());
         }
 
+        if ($this->settings['enablePagination'] && !is_null($result)) {
+            $this->paginate((int)$result->getUid(), $currentPage > 1 ? $currentPage : 1);
+        }
+
         $this->view->assign('timeline', $result);
         $this->view->assign('segments', $segments);
     }
 
-    // NOTE comment everything below
-    // Check and clear unneded methods
-
     /**
-     * Show form to add a new Timeline
-     *
-     * @param Timeline $timeline
-     */
-    public function addFormAction(Timeline $timeline = null): void
-    {
-        $this->view->assign('timeline', $timeline);
-        $this->view->assign('points', $this->objectManager->get(PointRepository::class)->findAll());
-    }
-
-    /**
-     * Set TypeConverter option for image upload
-     *
-     * To prevent exception #1297759968 ("It is not allowed to map property 'tags'"),
-     * mapping of property "tags" is explicitly enabled by this method.
-     *
-     * Note: This is not documented in the TYPO3 Extbase Book, because we assume, reads
-     * have created tags via the backend already, so the exception is not triggered.
-     */
-    public function initializeAddAction(): void
-    {
-        /** @var PropertyMappingConfiguration $propertyMappingConfiguration */
-        $this->setTypeConverterConfigurationForImageUpload('timeline');
-        $propertyMappingConfiguration = $this->arguments['timeline']->getPropertyMappingConfiguration();
-        $propertyMappingConfiguration->allowProperties('points');
-    }
-
-    /**
-     * Add a new Timeline to the Timeline repository
-     *
-     * @param Timeline $timeline
-     */
-    public function addAction(Timeline $timeline): void
-    {
-        /*
-        // Option 1
-        $languageFile = 'LLL:EXT:simpleTimeline/Resources/Private/Language/locallang.xlf';
-        $flashMessageHeadline = LocalizationUtility::translate(
-            $languageFile . ':flashmessage.timeline.timeline-created.headline'
-        );
-        $flashMessageBody = LocalizationUtility::translate(
-            $languageFile . ':flashmessage.timeline.timeline-created.body'
-        );
-        */
-
-        // Option 2
-        $flashMessageHeadline = LocalizationUtility::translate(
-            'flashmessage.timeline.timeline-created.headline',
-            'ak_timeline'
-        );
-        $flashMessageBody = LocalizationUtility::translate(
-            'flashmessage.timeline.timeline-created.body',
-            'ak_timeline'
-        );
-
-        $this->TimelineRepository->add($timeline);
-        $this->addFlashMessage(
-            $flashMessageBody,
-            $flashMessageHeadline,
-            AbstractMessage::OK,
-            true
-        );
-        $this->redirect('list');
-    }
-
-    // @TYPO3\CMS\Extbase\Annotation\Validate(param="timeline", validator="AK\TimelineVis\Domain\Validator\TimelineValidator")
-
-    /**
-     * Show form to update an existing Timeline
-     *
-     * @param Timeline $timeline
+     * Pagination provider
      * 
-     */
-    public function updateFormAction(Timeline $timeline): void
-    {
-        $this->view->assign('timeline', $timeline);
-        $this->view->assign('points', $this->objectManager->get(PointRepository::class)->findAll());
-    }
-
-    /**
-     * Set TypeConverter option for image upload
-     */
-    // public function initializeUpdateAction(): void
-    // {
-    //     $this->setTypeConverterConfigurationForImageUpload('timeline');
-    //     $propertyMappingConfiguration = $this->arguments['timeline']->getPropertyMappingConfiguration();
-    //     $propertyMappingConfiguration->allowProperties('points');
-    // }
-
-    /**
-     * Update an existing Timeline in the Timeline repository
-     *
-     * @param Timeline $timeline
-     */
-    public function updateAction(Timeline $timeline): void
-    {
-        $this->TimelineRepository->update($timeline);
-        $this->redirect('list');
-    }
-
-    /**
-     * Show confirmation form before deleting a Timeline
-     *
-     * @param Timeline $timeline
-     */
-    public function deleteConfirmAction(Timeline $timeline)
-    {
-        $this->view->assign('timeline', $timeline);
-    }
-
-    /**
-     * Delete a Timeline from the Timeline repository
-     *
-     * @param Timeline $timeline
-     */
-    public function deleteAction(Timeline $timeline): void
-    {
-        $this->TimelineRepository->remove($timeline);
-        $this->redirect('list');
-    }
-
-    // /**
-    //  * Set TypeConverter configuration for image upload
-    //  *
-    //  * @param string
-    //  */
-    // protected function setTypeConverterConfigurationForImageUpload($argumentName): void
-    // {
-    //     $uploadConfiguration = [
-    //         UploadedFileReferenceConverter::CONFIGURATION_ALLOWED_FILE_EXTENSIONS =>
-    //             $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
-    //         UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER =>
-    //             '1:/simpleTimeline/',
-    //     ];
-    //     /** @var PropertyMappingConfiguration $propertyMappingConfiguration */
-    //     $propertyMappingConfiguration = $this->arguments[$argumentName]->getPropertyMappingConfiguration();
-    //     $propertyMappingConfiguration->forProperty('image')
-    //         ->setTypeConverterOptions(
-    //             UploadedFileReferenceConverter::class,
-    //             $uploadConfiguration
-    //         );
-    // }
-
-    // /**
-    //  * Helper method. Get timeline by specified relation
-    // */
-    // private function retrieveById(Timeline $timeline)
-    // {
-    //     return $timeline->getParentId();
-    // }
-
-    /**
-     * Helper method. Parse range values of Timeline
+     * Used examples / tutorials:
+     * https://t3planet.com/blog/typo3-tutorials/migrate-typo3-fluid-to-native-paginatorinterface
+     * https://www.in2code.de/aktuelles/pagebrowser-viewhelper-in-typo3-11/
+     * 
+     * @param int $timelineUid
+     * @param int $currentPage
     */
-    private function parseRange(Timeline $timeline)
-    {
-        return [
-            $timeline->getRangeStart()->getTimestamp(),
-            $timeline->getRangeEnd()->getTimestamp()
-        ];
-    }
+    private function paginate(int $timelineUid, int $currentPage) {
+        $items = $this->PointRepository->findPointsByTimelineUid($timelineUid);
+        $paginator = new QueryResultPaginator($items, $currentPage, ($this->settings['itemsPerPage']) ?: 49);
+        $pagination = new NumberedPagination($paginator, ($this->settings['pagesCount']) ?: 99);
 
-    /**
-     * Order timeline segments
-     *
-     * @param array $timelines - child timelines as segments
-     */
-    protected function orderSegments($timelines)
-    {
-        $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-
-        // foreach (($timelines ?? []) as $timeline) {
-        //     $range = $this->parseRange($timeline);
-        //     // $timelineStart = $timeline.getRangeStart(); // new \DateTime(
-        //     // $timelineEnd = $timeline.getRangeEnd();
-
-        //     $logger->warning('ranges: ' . implode(' - ', $range));
-
-        //     // if ($timelineStart > $timelineEnd) {
-                
-        //     // }
-        // }
-
-        // Or with usort method
-        // $result = usort($timelines, function ($prev, $next) {
-        //     $rangePrev = $this->parseRange($prev);
-        //     $rangeNext = $this->parseRange($next);
-        //     return $rangePrev <=> $rangeNext;
-        // });
-
-        // $logger->warning('ranges: ' . implode(' - ', $result));
-
-        return $timelines;
+        $this->view->assign('pagination', [
+            'paginator' => $paginator,
+            'pagination' => $pagination,
+        ]);
     }
 }

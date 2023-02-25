@@ -20,6 +20,25 @@ class TimelineItemsProcFunc {
   //   $this->TimelineRepository = $timelineRepository;
   // }
 
+  // NOTE Also provide options for user to create Timeline widget (backend module)
+
+  /**
+   * Set Timeline stlye
+   *
+   * @param array &$config configuration array
+   */
+  public function getTimelineStyles(array &$config, TcaSelectItems $fObj)
+  {
+    // NOTE Provide opportunity for user to handle Timeline styles (backend module)
+
+    $config['items'] = [
+      ['Vertical, right-side line', 'verticalRight1'],
+      ['Vertical, both-sides timestamps', 'verticalBothSides'],
+      ['Horisontal', 'horisontal'],
+      ['Pie', 'pie']
+    ];
+  }
+
   /**
   * Modifies the segments list options
   *
@@ -32,40 +51,38 @@ class TimelineItemsProcFunc {
   }
 
   /**
-     * Translate selector items array
-     *
-     * @param array $items: array of value/label pairs
-     * @param string $tableName: name of timelines table
-     *
-     * @return array array of value/translated label pairs
-     */
-    protected function translateSelectorItems($items, $tableName)
-    {
-      // $translatedItems = $items;
+   * Translate selector items array
+   *
+   * @param array $items: array of value/label pairs
+   * @param string $tableName: name of timelines table
+   *
+   * @return array array of value/translated label pairs
+   */
+  protected function translateSelectorItems($items, $tableName)
+  {
+    if (isset($items) && is_array($items)) {
+      $queryImage = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
+      $resultArray = $queryImage
+        ->select($tableName.'.uid','pid','title')
+        ->where(
+          $queryImage->expr()->in('hidden', 0)
+        )
+        ->from($tableName)
+        ->execute()->fetchAll();
+       
+      $result = [
+        ['None', 0]
+      ];
+      // NOTE use LocalizationUtility:
+      // $title = LocalizationUtility::translate(['uid' => $item[1]], $tableName);
 
-      if (isset($items) && is_array($items)) {
-        $queryImage = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
-        $resultArray = $queryImage
-          ->select($tableName . '.uid','pid', 'title')
-          ->where(
-            $queryImage->expr()->in('hidden', 0)
-          )
-          ->from($tableName)
-          ->execute()->fetchAll();
-         
-        $result = [];
-        // use LocalizationUtility:
-        // $title = LocalizationUtility::translate(['uid' => $item[1]], $tableName);
-
-        foreach (($resultArray  ?? []) as $item) {
-          $result[] = [
-            $item['title'], (int)$item['uid']
-          ];
-        }
-
-        $result[] = ['None', 0];
-        // $items = $translatedItems;
-        return $result;
+      foreach (($resultArray  ?? []) as $item) {
+        $result[] = [
+          $item['title'], (int)$item['uid']
+        ];
       }
+
+      return $result;
     }
+  }
 }

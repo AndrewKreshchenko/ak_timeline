@@ -1,16 +1,10 @@
 <?php
-/**
- * Gravatar ViewHelper
- *
- * @package EXT:simpleblog
- * @author Michael Schams <michael@example.com>
- * @link https://www.extbase-book.org
- */
-
 namespace AK\TimelineVis\ViewHelpers;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+
+// NOTE if class is needed
 
 /**
  * Gravatar ViewHelper class

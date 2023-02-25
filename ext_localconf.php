@@ -3,9 +3,17 @@
  * Extension local configuration
  */
 
-//  use AK\TimelineVis\Evaluation\TimelineValidator;
-
 defined('TYPO3_MODE') || die('Access denied.');
+
+// NOTE for Typo3 v.8 - configurePlugin will be a little bit another:
+// \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+//   'TimelineVis',
+//   'Listing',
+//   [
+//     'Timeline' => 'list, addForm, add, show, updateForm, update, deleteConfirm, delete',
+//   ],
+//   // non-cacheable actions ...
+// );
 
 call_user_func(
   function () {
@@ -57,11 +65,10 @@ call_user_func(
       \AK\TimelineVis\Property\TypeConverter\UploadedFileReferenceConverter::class
     );
 
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][\AK\TimelineVis\Evaluation\TimelineValidator::class] = '';
+
     // Draw content into content elements
     // NOTE Intended to be prepared later
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['ak_timeline_div'] = \AK\TimelineVis\Div::class;
-  
-    // NOTE check if AK\TimelineVis\Evaluation\TimelineValidator is needed
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][\AK\TimelineVis\Evaluation\TimelineValidator::class] = '';
   }
 );

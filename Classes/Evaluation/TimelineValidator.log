@@ -8,36 +8,27 @@ declare(strict_types=1);
 
 namespace AK\TimelineVis\Evaluation;
 
+// use AK\TimelineVis\Converter\TimeToStringConverter;
 use \AK\TimelineVis\Domain\Model\Timeline;
+
+// Another way of providing range validation - with repository
+// But had a deal with error (Typo3 doesn't recognise class or similar)
+// Fatal error: Uncaught ArgumentCountError: Too few arguments to function TYPO3\CMS\Core\Imaging\IconFactory::__construct()
+// use \AK\TimelineVis\Domain\Repository\TimelineRepository;
+
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 
+use TYPO3\CMS\Core\Log\LogManager;
+
 /*
  * This class checks, if given time entry like 08:34 is valid in TCA.
  */
 class TimelineValidator
 {
-    /**
-     * Helper method. Get timeline by specified relation
-     */
-    private function retrieveRangeStart(Timeline $timeline)
-    {
-        return $timeline->getRangeStart();
-    }
-
-    /**
-     * JavaScript code for client side validation/evaluation
-     *
-     * @return string JavaScript code for client side validation/evaluation
-     */
-    public function returnFieldJS() 
-    {
-        return 'return value;';
-    }
-
     /**
      * Server-side validation/evaluation on saving the record
      *
@@ -63,7 +54,7 @@ class TimelineValidator
             }
 
             $queryImage = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_timelinevis_domain_model_timeline');
-            $queryArray = $queryImage
+            $resultArray = $queryImage
             ->select('tx_timelinevis_domain_model_timeline' . '.uid','title','range_start','range_end')
             ->where(
                 $queryImage->expr()->in('uid', $timelineId)
@@ -71,18 +62,32 @@ class TimelineValidator
             ->from('tx_timelinevis_domain_model_timeline')
             ->execute()->fetchAll();
 
-            $dbDateStart = \DateTime::createFromFormat('Y-m-d', $queryArray[0]['range_start']);
+            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+
+            $dbDateStart = \DateTime::createFromFormat('Y-m-d', $resultArray[0]['range_start']);
             $dbValueStart = $dbDateStart->getTimestamp();
-            $dbDateEnd = \DateTime::createFromFormat('Y-m-d', $queryArray[0]['range_end']);
+            $dbDateEnd = \DateTime::createFromFormat('Y-m-d', $resultArray[0]['range_end']);
             $dbValueEnd = $dbDateEnd->getTimestamp();
 
-            if ($value == $timelineStart->getTimestamp()) {
-                $this->flashMessage('Invalid field value in timeline "' . $queryArray[0]['title'] . '"', 'End date can not be before timeline start date.');
+            // $logger->warning('value ' . $value . ' ' . $timelineStart->getTimestamp());
 
+            if ($value == $timelineStart->getTimestamp()) {
+                $this->flashMessage('Invalid field value in timeline "' . $resultArray[0]['title'] . '"', 'End date can not be before timeline start date.');
+
+                // $logger->warning('value ' . $value
+                // . ', old start value is ' . $dbValueStart . ' (dbValue is ' . $resultArray[0]['range_start']
+                // . '), timelineStart ' . $timelineStart->getTimestamp() . ', timelineEnd ' . $timelineEnd->getTimestamp());
                 return $dbValueStart;
             } else if ($value == $timelineEnd->getTimestamp()) {
+                // $logger->warning('value ' . $value
+                // . ', old end value is ' . $dbValueEnd . ' (dbValue is ' . $resultArray[0]['range_end']
+                // . '), timelineStart ' . $timelineStart->getTimestamp() . ', timelineEnd ' . $timelineEnd->getTimestamp());
                 return $dbValueEnd;
             }
+
+            // Log output:
+            // [WARNING] request="60257d5c74df9" component="AK.TimelineVis.Evaluation.TimelineValidator": value 1674000000, old start value is 1660158095 (dbValue is 2022-08-10), timelineStart 1674000000, timelineEnd 1668643200 
+            // [WARNING] request="60257d5c74df9" component="AK.TimelineVis.Evaluation.TimelineValidator": value 1668643200, old end value is 1668715295 (dbValue is 2022-11-17), timelineStart 1674000000, timelineEnd 1668643200 
 
             return $value;
         }

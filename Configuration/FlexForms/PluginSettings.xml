@@ -9,7 +9,7 @@
         <el>
           <settings.timeline.max>
             <TCEforms>
-              <label>Max number of Timelines</label>
+              <label>LLL:EXT:ak_timeline/Resources/Private/Language/locallang_db.xlf:settings.timeline.max</label>
               <config>
                 <type>input</type>
                 <size>2</size>
@@ -19,9 +19,24 @@
             </TCEforms>
           </settings.timeline.max>
 
+          <settings.timeline.style>
+            <TCEforms>
+              <label>LLL:EXT:ak_timeline/Resources/Private/Language/locallang_db.xlf:settings.timeline.max</label>
+              <config>
+                <type>select</type>
+                <renderType>selectSingle</renderType>
+                <itemsProcFunc>AK\TimelineVis\Hooks\Backend\Form\FormDataProvider\TimelineItemsProcFunc->getTimelineStyles</itemsProcFunc>
+                <size>1</size>
+                <minitems>0</minitems>
+                <maxitems>1</maxitems>
+                <eval>required</eval>
+              </config>
+            </TCEforms>
+          </settings.timeline.style>
+
           <switchableControllerActions>
 						<TCEforms>
-							<label>Plugin Mode</label>
+							<label>Plugin mode</label>
 							<exclude>1</exclude>
 							<config>
 								<type>select</type>
@@ -45,26 +60,72 @@
 					<settings.enablePagination>
 						<TCEforms>
 							<exclude>1</exclude>
-							<label>LLL:EXT:ak_timeline/Resources/Private/Language/locallang.xlf:tx_timelinevis_domain_model_timeline.enablepagination</label>
+							<label>LLL:EXT:ak_timeline/Resources/Private/Language/locallang_db.xlf:tx_timelinevis_domain_model_timeline.enablepagination</label>
 							<config>
 								<type>check</type>
 							</config>
 						</TCEforms>
 					</settings.enablePagination>
 
+          <settings.itemsPerPage>
+            <TCEforms>
+              <exclude>1</exclude>
+              <label>LLL:EXT:ak_timeline/Resources/Private/Language/locallang_db.xlf:tx_timelinevis_domain_model_timeline.itemsperpage</label>
+              <config>
+                <type>input</type>
+                <size>5</size>
+                <min>1</min>
+                <max>49</max>
+                <eval>num</eval>
+                <default>1</default>
+              </config>
+              <displayCond>FIELD:sDEF.settings.enablePagination:=:1</displayCond>
+            </TCEforms>
+          </settings.itemsPerPage>
+
           <settings.pagesCount>
             <TCEforms>
               <exclude>1</exclude>
-              <label>LLL:EXT:ak_timeline/Resources/Private/Language/locallang.xlf:tx_timelinevis_domain_model_timeline.pagescount</label>
+              <label>LLL:EXT:ak_timeline/Resources/Private/Language/locallang_db.xlf:tx_timelinevis_domain_model_timeline.pagescount</label>
               <config>
-                  <type>input</type>
-                  <eval>int</eval>
-                  <size>5</size>
-                  <default>0</default>
-                  <checkbox>0</checkbox>
+                <type>input</type>
+                <size>5</size>
+                <min>1</min>
+                <max>99</max>
+                <eval>num</eval>
+                <default>99</default>
               </config>
+              <displayCond>FIELD:sDEF.settings.enablePagination:=:1</displayCond>
             </TCEforms>
           </settings.pagesCount>
+
+          <!-- <section>
+            <section>1</section>
+            <title>Miltiple</title>
+            <type>array</type>
+            <el>
+              <container>
+                <title>Fields</title>
+                <displayCond>FIELD:sDEF.enablePagination:=:1</displayCond>
+                <type>array</type>
+                <el>
+                  <pagesCount>
+                    <TCEforms>
+                      <exclude>1</exclude>
+                      <label>LLL:EXT:ak_timeline/Resources/Private/Language/locallang.xlf:tx_timelinevis_domain_model_timeline.pagescount</label>
+                      <config>
+                        <type>input</type>
+                        <eval>int</eval>
+                        <size>5</size>
+                        <default>0</default>
+                        <checkbox>0</checkbox>
+                      </config>
+                    </TCEforms>
+                  </pagesCount>
+                </el>
+              </container>
+            </el>
+          </section> -->
         </el>
       </ROOT>
     </sDEF>

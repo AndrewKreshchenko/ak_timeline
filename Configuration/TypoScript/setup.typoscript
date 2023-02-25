@@ -71,14 +71,14 @@ ajax {
 config.tx_extbase {
   persistence {
     classes {
-      AK\TimelineVis\Domain\Model\FileReference {
-        mapping {
-          tableName = sys_file_reference
-          columns {
-            uid_local.mapOnProperty = originalFileIdentifier
-          }
-        }
-      }
+      // AK\TimelineVis\Domain\Model\FileReference {
+      //   mapping {
+      //     tableName = sys_file_reference
+      //     columns {
+      //       uid_local.mapOnProperty = originalFileIdentifier
+      //     }
+      //   }
+      // }
       AK\TimelineVis\Domain\Model\Timeline {
         mapping.columns.crdate.mapOnProperty = crdate
       }

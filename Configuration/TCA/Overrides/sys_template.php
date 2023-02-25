@@ -1,10 +1,9 @@
 <?php
 /**
- * TYPO3 Configuration Array (TCA) to override the system template model
+ * Timeline Controller
  *
- * @package EXT:simpleblog
- * @author Michael Schams <michael@example.com>
- * @link https://www.extbase-book.org
+ * @package EXT:ak-timelinevis
+ * @author Andrii Kreshchenko <mail2andyk@gmail.com>
  */
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(

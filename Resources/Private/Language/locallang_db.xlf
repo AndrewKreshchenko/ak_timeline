@@ -3,84 +3,25 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2017-11-27T17:38:32Z" part-name="timelinevis">
 		<header/>
 		<body>
-			<trans-unit id="tx_timelinevis_domain_model_blog">
-				<source>Blog</source>
-			</trans-unit>
-			<trans-unit id="tx_timelinevis_domain_model_blog.title">
-				<source>Title</source>
-			</trans-unit>
-			<trans-unit id="tx_timelinevis_domain_model_blog.description">
-				<source>Description</source>
-			</trans-unit>
-			<trans-unit id="tx_timelinevis_domain_model_blog.image">
-				<source>Image</source>
-			</trans-unit>
-			<trans-unit id="tx_timelinevis_domain_model_blog.posts">
-				<source>Posts</source>
-			</trans-unit>
-			<trans-unit id="tx_timelinevis_domain_model_post">
-				<source>Post</source>
-			</trans-unit>
-			<trans-unit id="tx_timelinevis_domain_model_post.title">
-				<source>Title</source>
-			</trans-unit>
-			<trans-unit id="tx_timelinevis_domain_model_post.content">
-				<source>Content</source>
-			</trans-unit>
-			<trans-unit id="tx_timelinevis_domain_model_post.postdate">
-				<source>Postdate</source>
-			</trans-unit>
-			<trans-unit id="tx_timelinevis_domain_model_post.comments">
-				<source>Comments</source>
-			</trans-unit>
-			<trans-unit id="tx_timelinevis_domain_model_post.author">
-				<source>Author</source>
-			</trans-unit>
-			<trans-unit id="tx_timelinevis_domain_model_post.tags">
-				<source>Tags</source>
-			</trans-unit>
-			<trans-unit id="tx_timelinevis_domain_model_comment">
-				<source>Comment</source>
-			</trans-unit>
-			<trans-unit id="tx_timelinevis_domain_model_comment.comment">
-				<source>Comment</source>
-			</trans-unit>
-			<trans-unit id="tx_timelinevis_domain_model_comment.commentdate">
-				<source>Commentdate</source>
-			</trans-unit>
-			<trans-unit id="tx_timelinevis_domain_model_author">
-				<source>Author</source>
-			</trans-unit>
-			<trans-unit id="tx_timelinevis_domain_model_author.fullname">
-				<source>Fullname</source>
-			</trans-unit>
-			<trans-unit id="tx_timelinevis_domain_model_author.email">
-				<source>Email</source>
-			</trans-unit>
-			<trans-unit id="tx_timelinevis_domain_model_tag">
-				<source>Tag</source>
-			</trans-unit>
-			<trans-unit id="tx_timelinevis_domain_model_tag.tagvalue">
-				<source>Tagvalue</source>
-			</trans-unit>
-			<trans-unit id="tx_timelinevis_bloglisting.name">
-				<source>Simpleblog</source>
-			</trans-unit>
-			<trans-unit id="tx_timelinevis_bloglisting.description">
-				<source>Frontend plugin to create, show, update and delete Blog posts.</source>
-			</trans-unit>
-
 			<trans-unit id="extension.title">
 				<source>Records</source>
 			</trans-unit>
+
+			<trans-unit id="settings.timeline.max">
+				<source>Maximum number of timelines per page</source>
+			</trans-unit>
+
 			<trans-unit id="tx_timelinevis_domain_model_timeline">
 				<source>Timeline part</source>
 			</trans-unit>
-			<trans-unit id="tx_timelinevis_domain_model_timeline.name">
-				<source>Timeline part name</source>
-			</trans-unit>
+			<trans-unit id="tx_timelinevis_domain_model_timeline.title">
+        <source>Timeline title</source>
+      </trans-unit>
 			<trans-unit id="tx_timelinevis_domain_model_timeline.description">
-				<source>There you're adding text...</source>
+				<source>Timeline description</source>
+			</trans-unit>
+			<trans-unit id="tx_timelinevis_domain_model_timeline.description.desc">
+				<source>History that the timeline covers</source>
 			</trans-unit>
 			<trans-unit id="tx_timelinevis_domain_model_timeline.datestart">
         <source>Date start</source>
@@ -88,12 +29,37 @@
 			<trans-unit id="tx_timelinevis_domain_model_timeline.dateend">
         <source>Date end</source>
       </trans-unit>
-			<trans-unit id="tx_timelinevis_domain_model_timeline.isroot">
-        <source>Is root timeline?</source>
+			<trans-unit id="tx_timelinevis_domain_model_timeline.enablepagination">
+        <source>Enable pagination?</source>
+      </trans-unit>
+			<trans-unit id="tx_timelinevis_domain_model_timeline.itemsperpage">
+        <source>Items per page</source>
+      </trans-unit>
+			<trans-unit id="tx_timelinevis_domain_model_timeline.pagescount">
+        <source>Maximum number of pages</source>
       </trans-unit>
 			<trans-unit id="tx_timelinevis_domain_model_timeline.parentid">
         <source>Parent timeline ID (if needed)</source>
       </trans-unit>
+
+			<trans-unit id="tx_timelinevis_domain_model_point.points">
+				<source>Timeline points</source>
+			</trans-unit>
+			<trans-unit id="tx_timelinevis_domain_model_point.title">
+        <source>Point title</source>
+      </trans-unit>
+			<trans-unit id="tx_timelinevis_domain_model_point.description">
+				<source>Point notes</source>
+			</trans-unit>
+			<trans-unit id="tx_timelinevis_domain_model_point.description.desc">
+				<source>Content of the </source>
+			</trans-unit>
+			<trans-unit id="tx_timelinevis_domain_model_point.source">
+        <source>Source</source>
+      </trans-unit>
+			<trans-unit id="tx_timelinevis_domain_model_point.pointdate">
+				<source>Point date</source>
+			</trans-unit>
 
 			<trans-unit id="tx_timelinevis_domain_model_visualelement.name">
         <source>Visual element name</source>

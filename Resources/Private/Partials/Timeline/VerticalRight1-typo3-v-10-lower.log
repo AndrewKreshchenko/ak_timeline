@@ -1,0 +1,18 @@
+<f:if condition="{timeline.points}">
+  <!-- Use Typo3 widget (example: https://docs.typo3.org/m/typo3/book-extbasefluid/10.4/en-us/3-BlogExample/9-Rendering-the-output-with-fluid.html) -->
+  <f:then>
+    <f:if condition="{settings.enablePagination}">
+      <f:then>
+        <f:widget.paginate objects="{timeline.points}" as="paginatedPoints" configuration="{itemsPerPage: settings.pagesCount}">
+          <mark>paginated</mark>
+          <f:for each="{paginatedPoints}" as="point">
+            ...
+          </f:for>
+        </f:widget.paginate>
+      </f:then>
+    </f:if>
+  </f:then>
+  <f:else>
+    <p>No points for now.</p>
+  </f:else>
+</f:if>
