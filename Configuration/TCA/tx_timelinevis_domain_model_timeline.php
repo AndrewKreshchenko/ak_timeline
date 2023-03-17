@@ -36,6 +36,8 @@ return [
             'disabled' => 'hidden',
             'range_start' => 'range_start',
             'range_end' => 'range_end',
+            'date_start_b_c' => 'date_start_b_c',
+            'date_end_b_c' => 'date_end_b_c',
         ],
         'searchFields' => 'title,description',
         'iconfile' => 'EXT:ak_timeline/Resources/Public/Icons/tx_timelinevis_domain_model_timeline.gif',
@@ -117,6 +119,40 @@ return [
                 'eval' => 'date,' . \AK\TimelineVis\Evaluation\TimelineValidator::class
             ]
         ],
+        'date_start_b_c' => [
+            'exclude' => true,
+            'l10n_display' => 'defaultAsReadonly',
+            'l10n_mode' => 'exclude',
+            'label' => 'LLL:EXT:' . $languageFile . ':tx_timelinevis_domain_model_timeline.datebc',
+            'config' => [
+                'type' => 'check',
+                'renderType' => 'checkboxToggle',
+                'items' => [
+                    [
+                        0 => '',
+                        1 => '',
+                        'invertStateDisplay' => false
+                    ]
+                ],
+            ]
+        ],
+        'date_end_b_c' => [
+            'exclude' => true,
+            'l10n_display' => 'defaultAsReadonly',
+            'l10n_mode' => 'exclude',
+            'label' => 'LLL:EXT:' . $languageFile . ':tx_timelinevis_domain_model_timeline.datebc',
+            'config' => [
+                'type' => 'check',
+                'renderType' => 'checkboxToggle',
+                'items' => [
+                    [
+                        0 => '',
+                        1 => '',
+                        'invertStateDisplay' => false
+                    ]
+                ],
+            ]
+        ],
         'parent_id' => [
             'exclude' => true,
             'label' => 'LLL:EXT:' . $languageFile . ':tx_timelinevis_domain_model_timeline.parentid',
@@ -152,7 +188,7 @@ return [
     ],
     'palettes' => [
         'paletteCore' => [
-            'showitem' => 'range_start, range_end',
+            'showitem' => 'range_start, range_end, --linebreak--, date_start_b_c, date_end_b_c',
         ],
     ]
 ];

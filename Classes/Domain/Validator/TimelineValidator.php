@@ -17,7 +17,7 @@ class TimelineValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstract
     //   return;
     // }
 
-    // NOTE make later "!$value instanceof WideDateTime"
+    // @TODO make later "!$value instanceof WideDateTime"
 
     $result = true;
 

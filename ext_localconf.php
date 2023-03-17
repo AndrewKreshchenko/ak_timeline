@@ -5,7 +5,7 @@
 
 defined('TYPO3_MODE') || die('Access denied.');
 
-// NOTE for Typo3 v.8 - configurePlugin will be a little bit another:
+// @TODO for Typo3 v.8 - configurePlugin will be a little bit another:
 // \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
 //   'TimelineVis',
 //   'Listing',
@@ -68,7 +68,7 @@ call_user_func(
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][\AK\TimelineVis\Evaluation\TimelineValidator::class] = '';
 
     // Draw content into content elements
-    // NOTE Intended to be prepared later
+    // @TODO Intended to be prepared later
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['ak_timeline_div'] = \AK\TimelineVis\Div::class;
   }
 );

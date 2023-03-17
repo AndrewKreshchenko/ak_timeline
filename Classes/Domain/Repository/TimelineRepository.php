@@ -19,28 +19,13 @@ use AK\TimelineVis\Domain\Model\Timeline;
 // use TYPO3\CMS\Core\Log\LogManager;
 // use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 
+// @TODO remove unused functions
+
 /**
  * Repository class: Blog
  */
 class TimelineRepository extends Repository
 {
-
-    /**
-     * Returns timeline points
-     *
-     * @param int uid - ID as value to get the timeline by a key
-     * @return QueryResult
-     */
-    public function findTimelinesByTimelineUid(int $uid = 7): ?QueryResult
-    {
-        $query = $this->createQuery();
-        $query->matching(
-            $query->equals('uid', 7)
-        );
-
-        return $query->execute();
-    }
-
     /**
      * Returns timelines with a specific search term in the title
      *
@@ -93,6 +78,8 @@ class TimelineRepository extends Repository
 
     /**
      * Returns timelines match ID of parent timeline
+     * 
+     * @TODO order by B. C.
      *
      * @param string type - key to get by from database
      * @param int pid - ID as value to get the timeline by a key
@@ -114,40 +101,40 @@ class TimelineRepository extends Repository
         return $query->execute();
     }
 
-    /**
-     * Returns array of timelines with fields
-     *
-     * @param int[] uid of the timeline
-     * @return QueryResult
-     */
-    public function findInList($fields): array
-    {
-        $query = $this->createQuery();
-        $query->matching(
-            $query->equals('hidden', 0)
-        );
+    // /**
+    //  * Returns array of timelines with fields
+    //  *
+    //  * @param int[] uid of the timeline
+    //  * @return QueryResult
+    //  */
+    // public function findInList($fields): array
+    // {
+    //     $query = $this->createQuery();
+    //     $query->matching(
+    //         $query->equals('hidden', 0)
+    //     );
 
-        $queryResult = $query->execute();
-        $resultArray = $queryResult->toArray();
-        $filteredArray = [];
+    //     $queryResult = $query->execute();
+    //     $resultArray = $queryResult->toArray();
+    //     $filteredArray = [];
 
-        if ($resultArray) {
-            foreach (($resultArray  ?? []) as $key => $value) {
-                foreach ($fields as $field) {
-                    if ($field == $key) {
-                        $filteredArray[$key] = $value;
-                    }
-                }
-            }
-            // foreach ($res as $index => $item) {
-            //     if () {
-            //         unset($PA['items'][$index]);
-            //     }
-            // }
-        }
+    //     if ($resultArray) {
+    //         foreach (($resultArray  ?? []) as $key => $value) {
+    //             foreach ($fields as $field) {
+    //                 if ($field == $key) {
+    //                     $filteredArray[$key] = $value;
+    //                 }
+    //             }
+    //         }
+    //         // foreach ($res as $index => $item) {
+    //         //     if () {
+    //         //         unset($PA['items'][$index]);
+    //         //     }
+    //         // }
+    //     }
 
-        return $filteredArray;
-    }
+    //     return $filteredArray;
+    // }
 
     /**
      * Returns the last Blogs created

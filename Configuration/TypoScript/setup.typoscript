@@ -45,7 +45,7 @@ plugin.tx_timelinevis {
 
 page {
   includeJSFooter {
-    mailto = EXT:ak_timeline/Resources/Public/JavaScript/jquery.mailto.min.js
+    // mailto = EXT:ak_timeline/Resources/Public/JavaScript/jquery.mailto.min.js
     timelinevis = EXT:ak_timeline/Resources/Public/JavaScript/timeline.js
   }
   includeCSS {

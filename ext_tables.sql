@@ -9,8 +9,9 @@ CREATE TABLE tx_timelinevis_domain_model_timeline (
 
 	title varchar(255) DEFAULT '' NOT NULL,
 	range_start DATE,
+	date_start_b_c tinyint(4) DEFAULT '0' NOT NULL,
 	range_end DATE,
-	enable_pagination tinyint(4) DEFAULT '0' NOT NULL,
+	date_end_b_c tinyint(4) DEFAULT '0' NOT NULL,
 	parent_id int(11) DEFAULT '0' NOT NULL,
 	points int(11) unsigned DEFAULT '0' NOT NULL,
 	description text,
@@ -54,6 +55,7 @@ CREATE TABLE tx_timelinevis_domain_model_point (
 	title varchar(255) DEFAULT '' NOT NULL,
 	source varchar(255) DEFAULT '' NOT NULL,
 	pointdate DATE,
+	pointdate_b_c tinyint(4) DEFAULT '0' NOT NULL,
 	description text,
 
 	PRIMARY KEY (uid),

@@ -10,7 +10,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 // use AK\TimelineVis\Domain\Repository\TimelineRepository;
 
 class TimelineItemsProcFunc {
-  // NOTE fix a problem and use TimelineRepository (commented now)
+  // @TODO fix a problem and use TimelineRepository (commented now)
   // Fatal error: Uncaught ArgumentCountError: Too few arguments to function TYPO3\CMS\Core\Imaging\IconFactory::__construct()
 
   // protected $timelineRepository;
@@ -20,7 +20,7 @@ class TimelineItemsProcFunc {
   //   $this->TimelineRepository = $timelineRepository;
   // }
 
-  // NOTE Also provide options for user to create Timeline widget (backend module)
+  // @TODO Also provide options for user to create Timeline widget (backend module)
 
   /**
    * Set Timeline stlye
@@ -29,12 +29,12 @@ class TimelineItemsProcFunc {
    */
   public function getTimelineStyles(array &$config, TcaSelectItems $fObj)
   {
-    // NOTE Provide opportunity for user to handle Timeline styles (backend module)
+    // @TODO Provide opportunity for user to handle Timeline styles (backend module)
 
     $config['items'] = [
       ['Vertical, right-side line', 'verticalRight1'],
       ['Vertical, both-sides timestamps', 'verticalBothSides'],
-      ['Horisontal', 'horisontal'],
+      ['Horizontal', 'horizontal'],
       ['Pie', 'pie']
     ];
   }
@@ -73,7 +73,7 @@ class TimelineItemsProcFunc {
       $result = [
         ['None', 0]
       ];
-      // NOTE use LocalizationUtility:
+      // @TODO use LocalizationUtility:
       // $title = LocalizationUtility::translate(['uid' => $item[1]], $tableName);
 
       foreach (($resultArray  ?? []) as $item) {

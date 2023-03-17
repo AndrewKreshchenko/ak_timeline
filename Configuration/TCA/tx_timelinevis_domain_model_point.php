@@ -26,7 +26,9 @@ return [
     ],
     'types' => [
         '1' => [
-            'showitem' => 'hidden, title, description, source, pointdate, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime'
+            'showitem' => 'hidden, title, description, source,
+            --palette--;;paletteCore,
+            --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime'
         ],
     ],
     'columns' => [
@@ -90,5 +92,27 @@ return [
                 'eval' => 'date,required',
             ],
         ],
+        'pointdate_b_c' => [
+            'exclude' => true,
+            'l10n_display' => 'defaultAsReadonly',
+            'l10n_mode' => 'exclude',
+            'label' => 'LLL:EXT:' . $languageFile . ':tx_timelinevis_domain_model_point.pointdatebc',
+            'config' => [
+                'type' => 'check',
+                'renderType' => 'checkboxToggle',
+                'items' => [
+                    [
+                        0 => '',
+                        1 => '',
+                        'invertStateDisplay' => false
+                    ]
+                ],
+            ]
+        ],
     ],
+    'palettes' => [
+        'paletteCore' => [
+            'showitem' => 'pointdate, --linebreak--, pointdate_b_c',
+        ],
+    ]
 ];

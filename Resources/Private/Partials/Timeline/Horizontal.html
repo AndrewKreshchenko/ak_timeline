@@ -1,1 +1,63 @@
-Horizontal
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	  xmlns:tln="http://typo3.org/ns/AK/TimelineVis/ViewHelpers"
+	  data-namespace-typo3-fluid="true">
+
+<div class="tx-timeline timeline-horizontal">
+  <h2>{timeline.title}</h2>
+  <f:if condition="{timeline.rangeStart} && {timeline.rangeEnd}">
+    <p>(<tln:fardate format="%d %B %Y" isbc="{timeline.dateStartBC}">{timeline.rangeStart}</tln:fardate> - <tln:fardate format="%d %B %Y" isbc="{timeline.dateEndBC}">{timeline.rangeEnd}</tln:fardate>)</p>
+  </f:if>
+  <div class="tx-timeline-description">
+    <p><f:format.html>{timeline.description}</f:format.html></p>
+  </div>
+
+  <f:if condition="{timeline.points}">
+    <f:then>
+      <f:if condition="{settings.enablePagination}">
+        <f:then>
+          <!-- Points (limited per page) -->
+          <f:for each="{pagination.paginator.paginatedItems}" as="point" iteration="iterator">
+            <div class="timeline-dates">
+              <div class="tl-date">
+                <div class="tl-content">
+                  <a href="#segment-{f:format.date(date: point.pointdate)}" title="{f:format.date(format: 'Y-m-d', date: point.pointdate)}"><f:format.date format="%d %B %Y">{point.pointdate}</f:format.date></a>
+                </div>
+                <div class="tl-offcut">
+                  <div class="tl-offcut-spot"></div>
+                </div>
+              </div>
+            </div>
+          </f:for>
+
+          <!-- Pagination -->
+          <f:render partial="Pagination" arguments="{pagination: pagination.pagination, paginator: pagination.paginator, actionName: 'show'}" />
+        </f:then>
+        <f:else>
+          <!-- Visual part -->
+          <div data-js="timeline-horizontal"></div>
+
+          <!-- Data to insert -->
+          <template data-js="timeline-data">
+            <f:for each="{timeline.points}" as="point">
+              <!-- Point -->
+              <div class="timeline-segment">
+                <div class="tl-content">
+                  <time datetime="{f:format.date(format: 'Y-m-d', date: point.pointdate)}"><f:format.date format="%d %B %Y">{point.pointdate}</f:format.date></time>
+                  <div class="tl-content-main">
+                    <h3>{point.title}<a href="#segment-{f:format.date(date: point.pointdate)}" class="tl-headerlink" title="Permalink to this headline"></a></h3>
+                    <p><f:format.html>{point.description}</f:format.html></p>
+                  </div>
+                </div>
+              </div>
+            </f:for>
+          </template>
+        </f:else>
+      </f:if>
+    </f:then>
+    <f:else>
+      <p>No points for now.</p>
+    </f:else>
+  </f:if>
+</div>
+
+</html>

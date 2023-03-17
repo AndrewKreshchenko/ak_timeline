@@ -1,5 +1,29 @@
+/**
+ * This file is part of the package ak/ak-timelinevis.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * Made with SMACSS
+ * http://smacss.com/book/type-state
+ *
+*/
+
 // Variables and declarations
 @import "./utils/variables.less";
 
-// Typo3 extensions
-@import "./extensions/timeline";
+// https://lesscss.org/features/#extend-feature
+
+.tx-timeline-description {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 3px dashed @color-paper;
+}
+// .tx-timeline-description:after { 
+//   content: '';
+//   position: absolute;
+//   display: block;
+//   border-bottom: 30px solid grey;
+//   border-right: 30px solid transparent;
+//   border-left: 30px solid grey;
+// }

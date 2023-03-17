@@ -46,11 +46,25 @@ class Timeline extends AbstractEntity
     protected $rangeStart;
 
     /**
+     * B. C. date start flag
+     *
+     * @var bool
+     **/
+    protected $dateStartBC = false;
+
+    /**
      * The range in the timeline part
      *
      * @var \DateTime
      **/
     protected $rangeEnd;
+
+    /**
+     * B. C. date end flag
+     *
+     * @var bool
+     **/
+    protected $dateEndBC = false;
 
     /**
      * ID of a parent timeline element
@@ -73,12 +87,12 @@ class Timeline extends AbstractEntity
      */
     protected $points = null;
 
-    /**
-     * Pagination of timeline
-     *
-     * @var int
-     **/
-    protected $enablePagination = false;
+    // /**
+    //  * Pagination of timeline
+    //  *
+    //  * @var int
+    //  **/
+    // protected $enablePagination = false;
 
     /**
      * Creation timestamp
@@ -189,17 +203,17 @@ class Timeline extends AbstractEntity
 
     // TYPO3 \CMS\Extbase\Annotation\Validate("AK\TimelineVis\Domain\Validator\TimelineValidator", start="rangeStart", operator="greaterThan" end="rangeEnd")
 
-    /**
-     * @param \DateTime $rangeStart
-     *
-     * @return Timeline
-     */
-    public function setRangeStart(\DateTime $rangeStart): self
-    {
-        $this->rangeStart = $rangeStart;
+    // /**
+    //  * @param \DateTime $rangeStart
+    //  *
+    //  * @return Timeline
+    //  */
+    // public function setRangeStart(\DateTime $rangeStart): self
+    // {
+    //     $this->rangeStart = $rangeStart;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     /**
      * @return \DateTime
@@ -209,16 +223,16 @@ class Timeline extends AbstractEntity
         return $this->rangeEnd;
     }
 
-    /**
-     * @param \DateTime $rangeEnd
-     *
-     * @return Timeline
-     */
-    public function setRangeEnd(\DateTime $rangeEnd): self
-    {
-        $this->rangeEnd = $rangeEnd;
-        return $this;
-    }
+    // /**
+    //  * @param \DateTime $rangeEnd
+    //  *
+    //  * @return Timeline
+    //  */
+    // public function setRangeEnd(\DateTime $rangeEnd): self
+    // {
+    //     $this->rangeEnd = $rangeEnd;
+    //     return $this;
+    // }
 
     public function setParentId(int $parentId) {
         $this->parentId = $parentId;
@@ -254,22 +268,62 @@ class Timeline extends AbstractEntity
         $this->points = $points;
     }
 
-    /**
-     * @return int
-     */
-    public function getEnablePagination(): ?int
-    {
-        return $this->enablePagination;
-    }
+    // /**
+    //  * @return int
+    //  */
+    // public function getEnablePagination(): ?int
+    // {
+    //     return $this->enablePagination;
+    // }
+
+    // /**
+    //  * @param int $enablePagination
+    //  *
+    //  * @return Timeline
+    //  */
+    // public function setEnablePagination(int $enablePagination): self
+    // {
+    //     $this->enablePagination = $enablePagination;
+    //     return $this;
+    // }
 
     /**
-     * @param int $enablePagination
-     *
-     * @return Timeline
+     * Get date start B. C. flag
+     * 
+     * @return bool
      */
-    public function setEnablePagination(int $enablePagination): self
+    public function getDateStartBC(): ?int
     {
-        $this->enablePagination = $enablePagination;
-        return $this;
+        return $this->dateStartBC;
     }
+
+    // /**
+    //  * @param bool $dateStartBC
+    //  *
+    //  * @return void
+    //  */
+    // public function setDateStartBC(int $dateStartBC): void
+    // {
+    //     $this->dateStartBC = $dateStartBC;
+    // }
+
+    /**
+     * Get date end B. C. flag
+     * 
+     * @return bool
+     */
+    public function getDateEndBC(): ?int
+    {
+        return $this->dateEndBC;
+    }
+
+    // /**
+    //  * @param bool $dateEndBC
+    //  *
+    //  * @return void
+    //  */
+    // public function setDateEndBC(int $dateEndBC): void
+    // {
+    //     $this->dateEndBC = $dateEndBC;
+    // }
 }

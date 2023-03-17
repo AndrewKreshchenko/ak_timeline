@@ -32,6 +32,9 @@
 			<trans-unit id="tx_timelinevis_domain_model_timeline.enablepagination">
         <source>Enable pagination?</source>
       </trans-unit>
+			<trans-unit id="tx_timelinevis_domain_model_timeline.datebc">
+        <source>Is the date B. C.?</source>
+      </trans-unit>
 			<trans-unit id="tx_timelinevis_domain_model_timeline.itemsperpage">
         <source>Items per page</source>
       </trans-unit>
@@ -60,6 +63,9 @@
 			<trans-unit id="tx_timelinevis_domain_model_point.pointdate">
 				<source>Point date</source>
 			</trans-unit>
+			<trans-unit id="tx_timelinevis_domain_model_point.pointdatebc">
+        <source>Is the date B. C.?</source>
+      </trans-unit>
 
 			<trans-unit id="tx_timelinevis_domain_model_visualelement.name">
         <source>Visual element name</source>

@@ -39,6 +39,13 @@ class Point extends AbstractEntity
     protected $pointdate = null;
 
     /**
+     * B. C. date flag
+     *
+     * @var bool
+     **/
+    protected $pointdateBC = false;
+
+    /**
      * Creation timestamp
      *
      * @var int
@@ -106,6 +113,16 @@ class Point extends AbstractEntity
     public function setPointdate(\DateTime $pointdate)
     {
         $this->pointdate = $pointdate;
+    }
+
+    /**
+     * Get date B. C. flag
+     * 
+     * @return bool
+     */
+    public function getPointDateBC(): bool
+    {
+        return $this->pointdateBC;
     }
 
     /**

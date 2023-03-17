@@ -64,6 +64,7 @@
 							<config>
 								<type>check</type>
 							</config>
+              <onChange>reload</onChange>
 						</TCEforms>
 					</settings.enablePagination>
 
@@ -98,34 +99,6 @@
               <displayCond>FIELD:sDEF.settings.enablePagination:=:1</displayCond>
             </TCEforms>
           </settings.pagesCount>
-
-          <!-- <section>
-            <section>1</section>
-            <title>Miltiple</title>
-            <type>array</type>
-            <el>
-              <container>
-                <title>Fields</title>
-                <displayCond>FIELD:sDEF.enablePagination:=:1</displayCond>
-                <type>array</type>
-                <el>
-                  <pagesCount>
-                    <TCEforms>
-                      <exclude>1</exclude>
-                      <label>LLL:EXT:ak_timeline/Resources/Private/Language/locallang.xlf:tx_timelinevis_domain_model_timeline.pagescount</label>
-                      <config>
-                        <type>input</type>
-                        <eval>int</eval>
-                        <size>5</size>
-                        <default>0</default>
-                        <checkbox>0</checkbox>
-                      </config>
-                    </TCEforms>
-                  </pagesCount>
-                </el>
-              </container>
-            </el>
-          </section> -->
         </el>
       </ROOT>
     </sDEF>

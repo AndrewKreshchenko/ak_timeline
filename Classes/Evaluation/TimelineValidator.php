@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 /*
  * This file is part of the package ak/ak-timelinevis.
+ * 
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
  */
 
 namespace AK\TimelineVis\Evaluation;
@@ -14,6 +17,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+
+// @TODO make with LocalizationUtility
 
 /*
  * This class checks, if given time entry like 08:34 is valid in TCA.
@@ -43,7 +48,7 @@ class TimelineValidator
      *
      * @param string $value The field value to be evaluated
      * @param string $is_in The "is_in" value of the field configuration from TCA
-     * @param bool $set Boolean defining if the value is written to the database or not.
+     * @param bool $set Boolean defining if the value is written to the database or not. (NOTE remove if never helps)
      * @return string Evaluated field value
      */
     public function evaluateFieldValue($value, $is_in, &$set)
@@ -53,11 +58,35 @@ class TimelineValidator
         $timeline = $formData['tx_timelinevis_domain_model_timeline'][$timelineId];
 
         $timelineStart = new \DateTime($timeline['range_start']);
+        $timelineStartTStamp = $timelineStart->getTimestamp();
         $valueStart = $timelineStart->format('Y-m-d');
         $timelineEnd = new \DateTime($timeline['range_end']);
+        $timelineEndTStamp = $timelineEnd->getTimestamp();
         $valueEnd = $timelineEnd->format('Y-m-d');
+        $timelineStartDateBC = $timeline['date_start_b_c'];
+        $timelineEndDateBC = $timeline['date_end_b_c'];
 
-        if ($timelineStart > $timelineEnd) {
+        $warningBCIndex = 0;
+
+        // Calculate B. C. cases
+        if ($timelineStartDateBC) {
+            $timelineStartTStamp -= 62167219200;
+        }
+
+        if ($timelineEndDateBC) {
+            $timelineEndTStamp -= 62167219200;
+
+            if (!$timelineStartDateBC) {
+                $warningBCIndex = 1;
+            } else if ($timelineStartTStamp < $timelineEndTStamp) {
+                $warningBCIndex = 2;
+            }
+        }
+
+        // Do final check-in
+        // In case of error, retrieve old value from DB and save instead
+        if ($warningBCIndex > 0 || ($timelineStartTStamp > $timelineEndTStamp && !$timelineStartDateBC && !$timelineEndDateBC)) {
+            // @TODO Do not allow null or empty
             if (is_null($value) || !strlen($value)) {
                 return $value;
             }
@@ -77,7 +106,14 @@ class TimelineValidator
             $dbValueEnd = $dbDateEnd->getTimestamp();
 
             if ($value == $timelineStart->getTimestamp()) {
-                $this->flashMessage('Invalid field value in timeline "' . $queryArray[0]['title'] . '"', 'End date can not be before timeline start date.');
+                $this->flashMessage('Invalid field value in timeline "' . $queryArray[0]['title'] . '"',
+                'End date can not be before timeline start date.');
+
+                if ($warningBCIndex > 0) {
+                    $this->flashMessage('To your attention',
+                    ($warningBCIndex == 1 ? 'B. C. end date must not precede start A. D. date.'
+                    : ($warningBCIndex == 2 ? 'B. C. (ancient) dates are usually ordered backwards to A. D. dates.' : '')), FlashMessage::WARNING);
+                }
 
                 return $dbValueStart;
             } else if ($value == $timelineEnd->getTimestamp()) {
@@ -88,7 +124,7 @@ class TimelineValidator
         }
 
         return $value;
-    }
+    } 
 
     /**
      * @param string $messageTitle

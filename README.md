@@ -5,7 +5,8 @@
 
 ## Prerequisites
 
-Definitely workes for PHP v. 7.
+* Definitely workes with PHP v. 7.
+* Works on Typo3 v.11 by default. For lower Typo3 versions, please consider `*.log` files that exist near the same actual files (see [installation point 1](#installation)).
 
 ## Installation
 
@@ -29,7 +30,6 @@ Definitely workes for PHP v. 7.
 	},
 	"require": {
 		"ak/ak-timelinevis": "@dev",
-		"t3g/blog": "^11.0",
 		"typo3/cms-backend": "^11.5.0",
 		"typo3/cms-belog": "^11.5.0",
 		"typo3/cms-beuser": "^11.5.0",
