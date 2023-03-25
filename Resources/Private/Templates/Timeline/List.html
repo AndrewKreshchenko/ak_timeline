@@ -4,33 +4,42 @@
 
 <f:layout name="default" />
 <f:section name="content">
-<h1><f:translate key="timeline.headline.list" /></h1>
 
-<f:form action="list" additionalAttributes="{role: 'form'}">
-    <div class="input-group mb-3">
-        <f:form.textfield name="search" value="{search}" class="form-control" />
-        <div class="input-group-append">
-            <f:form.submit value="{f:translate(key: 'label.search')}" class="btn btn-outline-secondary" />
+<f:comment>
+    <!-- NOTE remove unused/commented code-->
+    <h1><f:translate key="timeline.headline.list" /></h1>
+
+    <f:form action="list" additionalAttributes="{role: 'form'}">
+        <div class="input-group mb-3">
+            <f:form.textfield name="search" value="{search}" class="form-control" />
+            <div class="input-group-append">
+                <f:form.submit value="{f:translate(key: 'label.search')}" class="btn btn-outline-secondary" />
+            </div>
+        </div>
+    </f:form>
+</f:comment>
+
+<div class="container">
+    <div class="card p-3 p-lg-4 w-100" style="background-color: aliceblue;">
+        <h4>List of timelines</h4>
+        <p>Maximum number of timelines per view: {settings.timeline.max}</p>
+        <p>Timeline view (style) selected: {settings.timeline.style}</p>
+        <div class="list">
+            <f:for each="{timelines}" as="v">
+                <f:render partial="Timeline/Entry" arguments="{timeline: v}" />
+            </f:for>
         </div>
     </div>
-</f:form>
-
-<div class="card w-100" style="background-color: aliceblue;">
-    <h4>Just to debug timeline</h4>
-    <p>Max number: {settings.timeline.max}</p>
-    <p>Max number: {settings.timeline.style}</p>
-    <div class="list">
-		<f:for each="{timelines}" as="v">
-			<f:render partial="Timeline/Entry" arguments="{timeline: v}" />
-		</f:for>
-	</div>
 </div>
 
-<p><small><f:translate key="timeline.list.max-timelines-shown" arguments="{1: settings.timeline.max}" /></small></p>
-<f:link.action action="addForm" class="btn btn-primary">
-    <i class="fas fa-plus-circle"></i>
-    <f:translate key="timeline.list.button.add-timelines" />
-</f:link.action>
+<f:comment>
+    <p><small><f:translate key="timeline.list.max-timelines-shown" arguments="{1: settings.timeline.max}" /></small></p>
+    <f:link.action action="addForm" class="btn btn-primary">
+        <i class="fas fa-plus-circle"></i>
+        <f:translate key="timeline.list.button.add-timelines" />
+    </f:link.action>
+</f:comment>
+
 </f:section>
 
 </html>

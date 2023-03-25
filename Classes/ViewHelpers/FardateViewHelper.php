@@ -8,9 +8,10 @@ namespace AK\TimelineVis\ViewHelpers;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  * 
- * INFO about the viewhelper
- * A part of functionality got from core DateTimeViewHelper in order to use native format.date options:
+ * INFO The viewhelper has a part of functionality got from core DateTimeViewHelper:
  * https://github.com/TYPO3/typo3/blob/main/typo3/sysext/fluid/Classes/ViewHelpers/Format/DateViewHelper.php
+ * Extended logic by accepting more options for far (ancient) dates
+ * In addition, gives accommodation for PHP of version 8 and bigger
  */
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -30,11 +31,38 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
 
 /**
  * ViewHelper to get the extended date
+ * 
+ * Formats an object implementing :php:`\DateTimeInterface`.
  *
- * # Example: Basic Example
- * @TODO provide example
- * @TODO output with LocalizationUtility
+ * Examples
+ * ========
+ *
+ * Defaults
+ * --------
+ *
+ * ::
+ *
+ * <tln:fardate>{dateObject}</tln:fardate>
+ * (the same as when using standard DateViewHelper <f:format.date>{dateObject}</f:format.date>)
+ *
+ * ``1980-12-13``
+ * Depending on the current date.
+ *
+ *
+ * Localized dates using strftime date format
+ * ------------------------------------------
+ *
+ * ::
+ *
+ * <tln:fardate format="%d %B %Y" isbc="{obj.flagBC}">{dateObject}</tln:fardate>
+ *
+ * Depending on the "isbc" argument, the date will display with or without a day part.
+ * For instance, when date is 02-03-0134 and "isbc" is true, the date will display as "March 134 B. C.".
+ * When "isbc" is false, it will be "02 March 134"
  */
+
+// @TODO output with LocalizationUtility
+
 class FardateViewHelper extends AbstractViewHelper implements ViewHelperInterface
 {
     use CompileWithContentArgumentAndRenderStatic;
@@ -48,6 +76,8 @@ class FardateViewHelper extends AbstractViewHelper implements ViewHelperInterfac
         $this->registerArgument('format', 'string', 'Format String which is taken to format the Date/Time', false, '');
         $this->registerArgument('base', 'mixed', 'A base time (an object implementing DateTimeInterface or a string) used if $date is a relative date specification. Defaults to current time.');
         $this->registerArgument('isbc', 'boolean', 'Indicator date is before Christ', false, false);
+        $this->registerArgument('isaround', 'boolean', 'Indicator time is approximate', false, false);
+        $this->registerArgument('iscenture', 'boolean', 'Indicator time is a centure', false, false);
     }
 
     /**
@@ -63,7 +93,11 @@ class FardateViewHelper extends AbstractViewHelper implements ViewHelperInterfac
         $format = $arguments['format'] ?? '';
         $base = $arguments['base'] ?? GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
         $is_bc = $arguments['isbc'];
+        $iscenture = $arguments['iscenture'];
+        // NOTE localize
+        $prefix = $arguments['isaround'] ? 'around ' : '';
 
+        // NOTE remove line
         $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
 
         if (is_string($base)) {
@@ -101,21 +135,22 @@ class FardateViewHelper extends AbstractViewHelper implements ViewHelperInterfac
         if (str_contains($format, '%')) {
             // strftime is deprecated starting from PHP 8.1: https://stackoverflow.com/questions/70930824/php-8-1-strftime-is-deprecated
             $php_upper_ver = version_compare(PHP_VERSION, '8.1.0') < 0;
-            // $logger->warning('strcontains % ' . ($php_upper_ver ? 'I am still lower 8.1' : 'bigger'));
 
             if ($is_bc) {
-                // $logger->warning('there b.c.');
-                return $php_upper_ver ? @strftime("%B %Y", (int)$date->format('U')) . ' B. C.' : date("F Y", strtotime($date->format('U'))) . ' B. C.';
+                return $php_upper_ver ? $prefix . @strftime("%B %Y", (int)$date->format('U')) . ' B. C.' : $prefix . date("F Y", strtotime($date->format('U'))) . ' B. C.';
             } else {
-                // $logger->warning('there ');
-                return $php_upper_ver ? @strftime($format, (int)$date->format('U')) : date("d F Y", strtotime($date->format('U')));
+                return $php_upper_ver ? $prefix . @strftime($format, (int)$date->format('U')) : $prefix . date("d F Y", strtotime($date->format('U')));
             }
         }
 
         if ($is_bc) {
-            return $date->format("F Y") . ' B. C.';
+            return $prefix . $date->format("F Y") . ' B. C.';
         }
 
-        return $date->format($format);
+        if ($iscenture) {
+            return $prefix . ceil((int)$date->format("Y") / 100) . ' century';
+        }
+
+        return $prefix . $date->format($format);
     }
 }

@@ -5,7 +5,18 @@
  */
 return [
     'timelinevis_dispatch' => [
-        'path' => '/ak_timeline/ajax',
-        'target' => \AK\TimelineVis\Controller\AjaxDispatcher::class . '::dispatch'
+        'path' => '/ak_timeline/dispatch',
+        'target' => \AK\TimelineVis\Controller\AjaxController::class . '::dispatchAction'
     ]
 ];
+
+// return [
+//     'frontend' => [
+//         'AK/my_sitepackage/ajaxdispatcher' => [
+//             'target' => \Vendor\MySitepackage\Middleware\AjaxDispatcher::class,
+//             'after' => [
+//                 'typo3/cms-frontend/prepare-tsfe-rendering'
+//             ]
+//         ],
+//     ],
+// ];

@@ -17,8 +17,8 @@ use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Log\LogManager;
+// use TYPO3\CMS\Core\Utility\GeneralUtility;
+// use TYPO3\CMS\Core\Log\LogManager;
 
 /**
  * Point controller class
@@ -39,7 +39,7 @@ class PointController extends ActionController
      */
     public function injectPointRepository(PointRepository $pointRepository): void
     {
-         $this->PointRepository = $pointRepository;
+        $this->PointRepository = $pointRepository;
     }
 
     /**
@@ -68,59 +68,17 @@ class PointController extends ActionController
     }
 
     /**
-     * List all points
+     * Show a point
      */
-    public function listAction(): void
+    public function showAction(): void
     {
-        $points = $this->PointRepository->findAll();
-        $query = $points->getQuery();
-        $query->setOrderings(['pointdate' => QueryInterface::ORDER_DESCENDING]);
-        $this->view->assign('points', array('key' => 123));
-        $this->view->assign('limit', $limit);
+        $pageArguments = $this->request->getAttribute('routing');
+        $result = $this->PointRepository->findPoint('pid', $pageArguments['pageId']);
 
-        $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-        $logger->warning('Points key ');
-    }
-
-    /**
-     * Pagination provider
-     * 
-     * Used examples / tutorials:
-     * https://t3planet.com/blog/typo3-tutorials/migrate-typo3-fluid-to-native-paginatorinterface
-     * https://www.in2code.de/aktuelles/pagebrowser-viewhelper-in-typo3-11/
-     * 
-     * @param int $timelineUid
-     * @param int $currentPage
-    */
-    private function paginate(int $timelineUid, int $currentPage = 1) {
-        $limit = ($this->settings['pagesCount']) ?: null;
-
-        // $items = GeneralUtility::makeInstance(ObjectStorage::class) (Timeline $timeline)
-        // $items = $this->itemService->getItemsByIds($itemIds);
-        $items = $this->PointRepository->findLastRecordCreated($timelineUid);
-
-        // $arrayPaginator = new ArrayPaginator($items, 1, $limit);
-        // $paging = new SimplePagination($arrayPaginator);
-        // $this->view->assignMultiple(
-        //     [
-        //         'items' => $items,
-        //         'paginator' => $arrayPaginator,
-        //         'paging' => $paging,
-        //         'pages' => range(1, $paging->getLastPageNumber()),
-        //     ]
-        // );
-
-        // $itemsPerPage = 1;
-        // $paginator = new \TYPO3\CMS\Extbase\Pagination\QueryResultPaginator($items, $currentPage, $itemsPerPage);
-        // $pagination = new \GeorgRinger\NumberedPagination\NumberedPagination($paginator, 10);
-        // $this->view->assign('pagination', [
-        //     'paginator' => $paginator,
-        //     'pagination' => $pagination,
-        // ]);
-        $this->view->assign('itemss', $items);
+        $this->view->assign('point', $result);
 
         // $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-        // $logger->warning('items page ' . gettype($timelineUid) . $timelineUid);
+        // $logger->warning('Points key ' . count($result));
     }
 
     /**

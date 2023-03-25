@@ -19,8 +19,8 @@ use \AK\TimelineVis\Domain\Repository\PointRepository;
 use \TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use \GeorgRinger\NumberedPagination\NumberedPagination;
 
-// use TYPO3\CMS\Core\Utility\GeneralUtility;
-// use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Log\LogManager;
 
 /**
  * Timeline controller class
@@ -101,6 +101,32 @@ class TimelineController extends ActionController
 
         $this->view->assign('timeline', $result);
         $this->view->assign('segments', $segments);
+
+        // Make odered points list, if needed
+
+        if ($result && !is_int(strpos($this->settings['timeline']['style'], 'horiz'))) {
+            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+            $logger->warning('or1 ' . strpos($this->settings['timeline']['style'], 'horiz'));
+
+            $resultPoints = $this->orderPoints($result, (int)$result->getUid());
+
+            $this->view->assign('timelinePoints', $resultPoints);
+        }
+    }
+
+    /**
+     * Helper method. get points
+     * @param Timeline|null
+     * @param int timeline ID
+     * // return 
+    */
+    protected function orderPoints(Timeline $timeline, int $timelineId)
+    {
+        if (!is_numeric($timelineId)) {
+            return null;
+        }
+
+        return $timeline->getSortedPoints($timelineId);
     }
 
     /**
@@ -113,7 +139,7 @@ class TimelineController extends ActionController
      * @param int $timelineUid
      * @param int $currentPage
     */
-    private function paginate(int $timelineUid, int $currentPage) {
+    protected function paginate(int $timelineUid, int $currentPage) {
         $items = $this->PointRepository->findPointsByTimelineUid($timelineUid);
         $paginator = new QueryResultPaginator($items, $currentPage, ($this->settings['itemsPerPage']) ?: 49);
         $pagination = new NumberedPagination($paginator, ($this->settings['pagesCount']) ?: 99);

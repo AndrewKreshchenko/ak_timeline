@@ -8,15 +8,33 @@
         <f:asset.script identifier="tl-horizontal-vis-setup" src="EXT:ak_timeline/Resources/Public/JavaScript/setup.js" />
     </f:if>
 
+    <f:comment>
+        <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{content}" />
+        <f:cObject typoscriptObjectPath="tt_content.list" data="{contentObjectData}" table="tt_content"/>
+    </f:comment>
+
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h1><f:translate key="timeline.headline.show" /></h1>
+                <!-- Test with segments -->
+                <f:if condition="{segments}">
+                    <ol>
+                        <f:for each="{segments}" as="segment">
+                        <li>Tl. segment {segment.title}
+                            
 
+                        </li>
+                        </f:for>
+                    </ol>
+                </f:if>
+            </div>
+            <div class="col-12">
+                <f:comment><h1><f:translate key="timeline.headline.show" /></h1></f:comment>
                 <f:if condition="{timeline}">
-                    <f:comment>
-                        <f:debug>{timeline}</f:debug>
-                    </f:comment>
+                    <f:comment><f:debug>{timeline}</f:debug></f:comment>
+                    <div style="background-color: antiquewhite;">
+                        {settings.test}
+                    </div>
             
                     <f:render partial="Timeline/{f:format.case(mode: 'capital', value: '{settings.timeline.style}')}.html" arguments="{_all}"/>
                 </f:if>

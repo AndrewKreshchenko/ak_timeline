@@ -8,11 +8,13 @@ use \TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use \TYPO3\CMS\Core\Database\ConnectionPool;
 use \TYPO3\CMS\Core\DataHandling\DataHandler;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Log\LogManager;
 
-// NOTE check if class is needed
+// Notice: sorting will work on saving form the second time, if new point was added
 
 class Div
 {
+    private const ERA_BEGIN = -62167219200;
 
     /**
      * Hook for clear page caches on video change
@@ -31,7 +33,7 @@ class Div
             return;
         }
 
-        /* Clear Cache */
+        // Clear Cache
         $table = 'tt_content';
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
         $res = $queryBuilder->select('content.uid', 'content.pid')
@@ -58,9 +60,48 @@ class Div
             $cache->clear_cacheCmd($pid);
         }
 
-        /* General Storage Folder */
+        // General Storage Folder
         if ($id = self::getGeneralStorageFolder()) {
             $fieldArray['pid'] = $id;
+        }
+
+        // Order points
+        $formData = GeneralUtility::_GP('data');
+        $timelineId = key($formData['tx_timelinevis_domain_model_timeline']);
+        $queryImage = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_timelinevis_domain_model_point');
+        $resultArray = $queryImage
+            ->select('tx_timelinevis_domain_model_point' . '.uid','order','pointdate', 'pointdate_b_c')
+            ->where(
+                $queryImage->expr()->in('timeline', $timelineId)
+            )
+            ->from('tx_timelinevis_domain_model_point')
+            ->execute()->fetchAll();
+        
+        $sortable = [];
+        // @TODO use LocalizationUtility:
+        // $title = LocalizationUtility::translate(['uid' => $item[1]], $tableName);
+
+        foreach (($resultArray  ?? []) as $item) {
+            $dateV = new \DateTime($item['pointdate']);
+            $sortable[] = array('uid' => $item['uid'], 'date' => $item['pointdate_b_c'] ? $dateV->getTimestamp() + self::ERA_BEGIN : $dateV->getTimestamp());
+        }
+
+        usort($sortable, function($a, $b) {
+            return $a['date'] > $b['date'];
+        });
+
+        $queryBuilder->getRestrictions()->removeAll();
+
+        for ($i = 0; $i <= count($sortable); $i++) {
+            if (gettype($sortable[$i]['date']) == 'integer') {
+                $queryBuilder->update('tx_timelinevis_domain_model_point')
+                    ->set('order', $i)
+                    ->where(
+                        $queryBuilder->expr()->eq('timeline', (int)$timelineId),
+                        $queryBuilder->expr()->eq('uid', (int)$sortable[$i]['uid'])
+                    )->execute();
+                // $queryBuilder->statement('UPDATE `tx_timelinevis_domain_model_point` SET `order`=' . $i . ' WHERE timeline=' . $timelineId . ' AND `uid`=' . $sorted[$i]['uid']);
+            }
         }
     }
 
@@ -92,5 +133,9 @@ class Div
         } else {
             return 0;
         }
+    }
+
+    protected function compare($a, $b) {
+        return strcmp($a->name, $b->name);
     }
 }

@@ -15,4 +15,8 @@ plugin.tx_timelinevis {
     settings {
         storagePid = 
     }
+    ajax {
+        # You could override identifier in backend Template tools (Constants)
+        pageId = 36
+    }
 }

@@ -10,9 +10,15 @@ namespace AK\TimelineVis\Domain\Model;
 
 use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
-use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+// use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
+
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use AK\TimelineVis\Domain\Repository\PointRepository;
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Log\LogManager;
 
 /**
  * Domain Model: Blog
@@ -250,11 +256,37 @@ class Timeline extends AbstractEntity
     /**
      * Returns the points
      *
+     * // param bool indicator the points should be ordered
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\AK\TimelineVis\Domain\Model\Point> $points
      */
     public function getPoints()
     {
+        // bool $ordering = false
+        // if ($ordering) {
+        //     $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+        //     $logger->warning('getPoints ' . count($this->points) . $this->points[0]['title']);
+        // }
+
         return $this->points;
+    }
+
+    /**
+     * Returns sorted points
+     * 
+     * @param int $timelineId - ID of timeline
+     * @return array|\TYPO3\CMS\Extbase\Persistence\ObjectStorage<\AK\TimelineVis\Domain\Model\Point> $points
+     * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     */
+    public function getSortedPoints(int $timelineId)
+    {
+        // $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+        // $logger->warning('getPoints ' . count($this->points) . $this->points[0]['title']);
+
+        // return $this->points;
+        return GeneralUtility::makeInstance(ObjectManager::class)
+            ->get(PointRepository::class)
+            ->findPointsByTimelineUid($timelineId, 'order');
     }
 
     /**

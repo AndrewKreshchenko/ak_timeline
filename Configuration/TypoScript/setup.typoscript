@@ -1,11 +1,4 @@
 
-#[{$plugin.tx_events2.settings.useExtForm} == "1"]
-#  plugin.tx_form.settings.yamlConfigurations.1661247670 = EXT:events2/Configuration/Form/OverrideFormSettings.yaml
-#  # This part will be moved back with "if.isTrue" until this patch was fixed: https://forge.typo3.org/issues/98200
-#  plugin.tx_events2.view.templateRootPaths.1 = EXT:events2/Resources/Private/FormFramework/Templates/
-#  plugin.tx_events2.view.partialRootPaths.1 = EXT:events2/Resources/Private/FormFramework/Partials/
-#[GLOBAL]
-
 plugin.tx_timelinevis {
   view {
     templateRootPaths.0 = EXT:ak_timeline/Resources/Private/Templates/
@@ -19,33 +12,30 @@ plugin.tx_timelinevis {
     storagePid = {$plugin.tx_timelinevis.persistence.storagePid}
     recursive = 1
     enableAutomaticCacheClearing = 1
-    # classes {
-      # AK\TimelineVis\Domain\Model\Timeline {
-        # newRecordStoragePid = 37
-      # }
-    # }
   }
   features {
-      #skipDefaultArguments = 1
+      # skipDefaultArguments = 1
       # if set to 1, the enable fields are ignored in BE context
       ignoreAllEnableFieldsInBe = 0
       # Should be on by default, but can be disabled if all action in the plugin are uncached
       requireCHashArgumentForActionArguments = 1
   }
   mvc {
-      #callDefaultActionIfActionCantBeResolved = 1
+    # callDefaultActionIfActionCantBeResolved = 1
   }
   settings {
     loginpage = 4
     timeline {
       max = 10
     }
+    ajax {
+      page = {$plugin.tx_timelinevis.ajax.pageId}
+    }
   }
 }
 
 page {
   includeJSFooter {
-    // mailto = EXT:ak_timeline/Resources/Public/JavaScript/jquery.mailto.min.js
     timelinevis = EXT:ak_timeline/Resources/Public/JavaScript/timeline.js
   }
   includeCSS {
@@ -53,9 +43,14 @@ page {
   }
 }
 
-ajax = PAGE
-ajax {
-  typeNum = 1550786448
+ajax_page = PAGE
+ajax_page {
+  typeNum = {$plugin.tx_timelinevis.ajax.pageId}
+  10 = USER
+  10.userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+  10.extensionName= TimelineVis
+  10.pluginName = JsonData
+  10.vendorName = AK
   config {
     disableAllHeaderCode = 1
     additionalHeaders {
@@ -65,29 +60,17 @@ ajax {
     admPanel = 0
     debug = 0
   }
-  10 < tt_content.list.20.timelinevis_listing
 }
 
 config.tx_extbase {
   persistence {
     classes {
-      // AK\TimelineVis\Domain\Model\FileReference {
-      //   mapping {
-      //     tableName = sys_file_reference
-      //     columns {
-      //       uid_local.mapOnProperty = originalFileIdentifier
-      //     }
-      //   }
-      // }
       AK\TimelineVis\Domain\Model\Timeline {
         mapping.columns.crdate.mapOnProperty = crdate
       }
       AK\TimelineVis\Domain\Model\Point {
         mapping.columns.crdate.mapOnProperty = crdate
       }
-      // AK\TimelineVis\Domain\Model\Point {
-      //   newRecordStoragePid = 8
-      // }
     }
   }
   objects {

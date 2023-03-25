@@ -1,6 +1,9 @@
 <?php
 /**
  * Extension local configuration
+ * 
+ * For Typo3 v.8 - configurePlugin will be a little bit another:
+ * @TODO check this variant and test
  */
 
 defined('TYPO3_MODE') || die('Access denied.');
@@ -11,13 +14,13 @@ call_user_func(
       'TimelineVis',
       'Listing',
       [
-        \AK\TimelineVis\Controller\TimelineController::class => 'list, show',
-        // \AK\TimelineVis\Controller\Pointontroller::class => 'show',
+        'Timeline' => 'list, show',
+        'Point' => 'show',
       ],
       // non-cacheable actions
       [
-        \AK\TimelineVis\Controller\TimelineController::class => 'list, show',
-        // \AK\TimelineVis\Controller\Pointontroller::class => 'show',
+        'Timeline' => 'list, show',
+        'Point' => 'show',
       ]
     );
 
@@ -25,11 +28,11 @@ call_user_func(
       'AK.TimelineVis',
       'JsonData',
       [
-        \AK\TimelineVis\Controller\AjaxController::class => 'dispatch',
+        'Ajax' => 'dispatch',
       ],
       // non-cacheable actions
       [
-        \AK\TimelineVis\Controller\AjaxController::class => 'dispatch',
+        'Ajax' => 'dispatch',
       ]
     );
 
@@ -81,6 +84,6 @@ call_user_func(
 
     // Draw content into content elements
     // @TODO enhace and customize
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['ak_timeline_div'] = \AK\TimelineVis\Div::class;
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['ak_timeline_div'] = \AK\TimelineVis\Normalize::class;
   }
 );

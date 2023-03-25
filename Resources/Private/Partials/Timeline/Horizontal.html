@@ -2,8 +2,12 @@
 	  xmlns:tln="http://typo3.org/ns/AK/TimelineVis/ViewHelpers"
 	  data-namespace-typo3-fluid="true">
 
-<div class="tx-timeline timeline-horizontal">
+<div class="tx-timeline timeline-horizontal"
+  data-tl_id="{timeline.pid}"
+  data-url="{f:uri.action(action: 'dispatch', controller: 'Ajax', pluginName: 'JsonData', pageType:'{settings.ajax.page}', arguments:{page: settings.ajax.page})}">
+
   <h2>{timeline.title}</h2>
+
   <f:if condition="{timeline.rangeStart} && {timeline.rangeEnd}">
     <p>(<tln:fardate format="%d %B %Y" isbc="{timeline.dateStartBC}">{timeline.rangeStart}</tln:fardate> - <tln:fardate format="%d %B %Y" isbc="{timeline.dateEndBC}">{timeline.rangeEnd}</tln:fardate>)</p>
   </f:if>

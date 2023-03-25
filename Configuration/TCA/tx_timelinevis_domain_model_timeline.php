@@ -10,21 +10,6 @@ $infoTimelineProcessor = \AK\TimelineVis\Hooks\Backend\Form\FormDataProvider\Tim
 $languageFile = 'ak_timeline/Resources/Private/Language/locallang_db.xlf';
 
 return [
-    // 'ctrl' => [
-    //     'label' => 'title',
-    //     'label_alt' => 'cn_iso_2',
-    //     'label_alt_force' => 1,
-    //     'label_userFunc' => \SJBR\StaticInfoTables\Hook\Backend\Form\FormDataProvider\TcaLabelProcessor::class . '->addIsoCodeToLabel',
-    //     'adminOnly' => true,
-    //     'rootLevel' => 1,
-    //     'is_static' => 1,
-    //     'readOnly' => 1,
-    //     'default_sortby' => 'ORDER BY cn_short_en',
-    //     'delete' => 'deleted',
-    //     'title' => 'LLL:EXT:static_info_tables/Resources/Private/Language/locallang_db.xlf:static_countries.title',
-    //     'iconfile' => 'EXT:static_info_tables/Resources/Public/Images/Icons/static_countries.svg',
-    //     'searchFields' => 'cn_short_en,cn_official_name_local,cn_official_name_en',
-    // ],
     'ctrl' => [
         'title' => 'LLL:EXT:' . $languageFile . ':tx_timelinevis_domain_model_timeline',
         'label' => 'title',
@@ -42,9 +27,6 @@ return [
         'searchFields' => 'title,description',
         'iconfile' => 'EXT:ak_timeline/Resources/Public/Icons/tx_timelinevis_domain_model_timeline.gif',
     ],
-    // 'interface' => [
-    //     'showRecordFieldList' => 'hidden, title, description, range_start, range_end, parent_id, points',
-    // ],
     'types' => [
         '1' => [
             'showitem' => 'hidden, title, description,
@@ -106,8 +88,6 @@ return [
                 'eval' => 'date,' . \AK\TimelineVis\Evaluation\TimelineValidator::class
             ],
         ],
-        // \JWeiland\Events2\Tca\Type\Time::class
-        // make custom render type https://docs.typo3.org/m/typo3/reference-tca/main/en-us/ColumnsConfig/Type/Check/Properties/RenderType.html
         'range_end' => [
             'exclude' => false,
             'label' => 'range end',
@@ -157,7 +137,6 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:' . $languageFile . ':tx_timelinevis_domain_model_timeline.parentid',
             'config' => [
-                // app/public/typo3conf/ext/news/Configuration/TCA/tx_news_domain_model_news.php
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'itemsProcFunc' => $infoTimelineProcessor,
@@ -169,7 +148,7 @@ return [
         ],
         'points' => [
             'exclude' => false,
-            'label' => 'LLL:EXT:' . $languageFile . ':tx_timelinevis_domain_model_point.points', // 'LLL:EXT:' . $languageFile . ':tx_simpleblog_domain_model_post.points',
+            'label' => 'LLL:EXT:' . $languageFile . ':tx_timelinevis_domain_model_point.points',
             'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'tx_timelinevis_domain_model_point',

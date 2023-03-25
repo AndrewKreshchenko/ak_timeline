@@ -57,6 +57,7 @@ CREATE TABLE tx_timelinevis_domain_model_point (
 	pointdate DATE,
 	pointdate_b_c tinyint(4) DEFAULT '0' NOT NULL,
 	description text,
+	order smallint(6) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)

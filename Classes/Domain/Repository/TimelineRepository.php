@@ -16,9 +16,6 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use AK\TimelineVis\Domain\Model\Timeline;
 
-// use TYPO3\CMS\Core\Log\LogManager;
-// use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
-
 // @TODO remove unused functions
 
 /**
@@ -67,12 +64,6 @@ class TimelineRepository extends Repository
             $query->equals($type, $id)
         );
 
-        // $queryParser = $this->objectManager->get(Typo3DbQueryParser::class);
-        // $queryBuilder = $queryParser->convertQueryToDoctrineQueryBuilder($query);
-
-        // $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-        // $logger->warning('items result ' . $queryBuilder->getSQL());
-
         return $query->execute()->getFirst();
     }
 
@@ -92,49 +83,10 @@ class TimelineRepository extends Repository
             $query->equals('parentId', $parentId)
         );
 
-        $query->setOrderings(
-            [
-                'rangeStart' => QueryInterface::ORDER_ASCENDING
-            ]
-        );
+        $query->setOrderings(['rangeStart' => QueryInterface::ORDER_ASCENDING]);
 
         return $query->execute();
     }
-
-    // /**
-    //  * Returns array of timelines with fields
-    //  *
-    //  * @param int[] uid of the timeline
-    //  * @return QueryResult
-    //  */
-    // public function findInList($fields): array
-    // {
-    //     $query = $this->createQuery();
-    //     $query->matching(
-    //         $query->equals('hidden', 0)
-    //     );
-
-    //     $queryResult = $query->execute();
-    //     $resultArray = $queryResult->toArray();
-    //     $filteredArray = [];
-
-    //     if ($resultArray) {
-    //         foreach (($resultArray  ?? []) as $key => $value) {
-    //             foreach ($fields as $field) {
-    //                 if ($field == $key) {
-    //                     $filteredArray[$key] = $value;
-    //                 }
-    //             }
-    //         }
-    //         // foreach ($res as $index => $item) {
-    //         //     if () {
-    //         //         unset($PA['items'][$index]);
-    //         //     }
-    //         // }
-    //     }
-
-    //     return $filteredArray;
-    // }
 
     /**
      * Returns the last Blogs created

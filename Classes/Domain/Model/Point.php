@@ -10,6 +10,10 @@ namespace AK\TimelineVis\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Annotation\Validate;
+use AK\TimelineVis\Domain\Model\Point;
+
+// use TYPO3\CMS\Core\Utility\GeneralUtility;
+// use TYPO3\CMS\Core\Log\LogManager;
 
 /**
  * Domain Model: Point
@@ -32,6 +36,13 @@ class Point extends AbstractEntity
     protected $description = '';
 
     /**
+     * Point web link
+     *
+     * @var string
+     */
+    protected $source = '';
+
+    /**
      * pointdate
      *
      * @var \DateTime
@@ -44,6 +55,13 @@ class Point extends AbstractEntity
      * @var bool
      **/
     protected $pointdateBC = false;
+
+    /**
+     * order of Point
+     *
+     * @var int
+     **/
+    protected $order = 0;
 
     /**
      * Creation timestamp
@@ -95,6 +113,16 @@ class Point extends AbstractEntity
     }
 
     /**
+     * Returns the web source
+     *
+     * @return string $source
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    /**
      * Returns the pointdate
      *
      * @return \DateTime $pointdate
@@ -123,6 +151,16 @@ class Point extends AbstractEntity
     public function getPointDateBC(): bool
     {
         return $this->pointdateBC;
+    }
+
+    /**
+     * Get order
+     * 
+     * @return int
+     */
+    public function getOrder(): int
+    {
+        return $this->order;
     }
 
     /**

@@ -13,6 +13,7 @@ return [
         'title' => 'LLL:EXT:' . $languageFile . ':tx_timelinevis_domain_model_point',
         'label' => 'title',
         'tstamp' => 'tstamp',
+        'order' => 'order',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
@@ -22,7 +23,7 @@ return [
             'endtime' => 'endtime',
         ],
         'searchFields' => 'title',
-        // 'iconfile' => 'EXT:ak_timeline/Resources/Public/Icons/tx_timelinevis_domain_model_point.gif',
+        'iconfile' => 'EXT:ak_timeline/Resources/Public/Icons/ak_timeline-point.png',
     ],
     'types' => [
         '1' => [
@@ -45,6 +46,16 @@ return [
                         'invertStateDisplay' => true
                     ]
                 ],
+            ],
+        ],
+        'order' => [
+            'readonly' => 1,
+            'label' => 'order',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'readOnly' => 1,
+                'default' => '0'
             ],
         ],
         'crdate' => [
@@ -75,12 +86,19 @@ return [
             ]
         ],
         'source' => [
+            'exclude' => false,
             'label' => 'LLL:EXT:' . $languageFile . ':tx_timelinevis_domain_model_point.source',
             'config' => [
                 'type' => 'input',
-                'size' => 59,
-                'eval' => 'www',
-            ],
+                'renderType' => 'inputLink',
+                'placeholder' => 'A link text',
+                'size' => 30,
+                'eval' => 'www,trim',
+                'softref' => 'typolink',
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true,
+                ],
+            ]
         ],
         'pointdate' => [
             'exclude' => true,
@@ -89,7 +107,7 @@ return [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
                 'dbType' => 'date',
-                'eval' => 'date,required',
+                'eval' => 'date,required,' . \AK\TimelineVis\Evaluation\PointValidator::class,
             ],
         ],
         'pointdate_b_c' => [
