@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
-// use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Log\LogManager;
 // @TODO make with LocalizationUtility
 
 /*
@@ -61,8 +61,7 @@ class PointValidator
 
         $warningBCIndex = 0;
 
-        // $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-        // $logger->warning($value . ' - point value, TL ID ' . $timelineId);
+        $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
 
         // Calculate B. C. cases
         if ($timelineStartDateBC) {
@@ -81,8 +80,10 @@ class PointValidator
 
         // Do final check-in
         // In case of error, retrieve old value from DB and save instead
+        $logger->warning($value . ' - point value, TL ID ' . $timelineId . ', timeline data ' . implode($timeline));
 
         if ($value < $timelineStartTStamp || $value > $timelineEndTStamp) {
+            $logger->warning($timelineStartTStamp . ' - timelineStartTStamp, timelineEndTStamp is ' . $timelineEndTStamp);
             $this->flashMessage('Point date is out of timeline range', 'Your input was ' . $value . ' (timeline with index' . $timelineId .'.)');
 
             return $timelineStartTStamp;

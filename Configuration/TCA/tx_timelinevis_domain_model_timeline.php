@@ -28,7 +28,7 @@ return [
         'iconfile' => 'EXT:ak_timeline/Resources/Public/Icons/tx_timelinevis_domain_model_timeline.gif',
     ],
     'types' => [
-        '1' => [
+        '0' => [
             'showitem' => 'hidden, title, description,
             --palette--;;paletteCore,
             parent_id, points,

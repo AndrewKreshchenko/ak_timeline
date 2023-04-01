@@ -115,6 +115,45 @@ class TimelineController extends ActionController
     }
 
     /**
+     * Dispatch request
+     */
+    public function dispatchAction()
+    {
+        $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+
+        $result = array();
+
+        if ($this->request->hasArgument('page')) {
+            $pageId = $this->request->getArgument('page');
+            $id = $this->request->getArgument('id');
+            $result['pageId'] = $pageId;
+
+            $logger->warning("Controller AjaxController Timeline " . $pageId . ', id ' . $id);
+
+            $data = $this->TimelineRepository->findTimeline2('pid', $pageId);
+            // $uid = $data->getUid();
+            $result['data'] = json_encode($data);
+
+            $logger->warning("Controller AjaxController Timeline " . gettype($data));
+
+            // // Other timelines that have relation to current timeline
+            // $segments = null;
+
+            // if ($result) {
+            //     $segments = $this->TimelineRepository->findTimelinesSegments($data->getUid());
+            // }
+
+            // $result['data'] = $data;
+            // $result['segments'] = $segments;
+        }
+
+        $response = $this->responseFactory->createResponse()->withHeader('Content-Type', 'application/json; charset=utf-8');
+        $response->getBody()->write(json_encode($result, JSON_THROW_ON_ERROR));
+
+        return $response;
+    }
+
+    /**
      * Helper method. get points
      * @param Timeline|null
      * @param int timeline ID

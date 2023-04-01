@@ -28,6 +28,7 @@ ExtensionManagementUtility::addPiFlexFormValue(
 );
 
 /* column */
+// Or \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_content', [...
 $GLOBALS['TCA']['tt_content']['columns']['tx_' . 'timelinevis' . '_timelines'] = [
     'exclude' => false,
     'label' => 'LLL:EXT:ak_timeline/Resources/Private/Language/locallang.xlf:timelines',
@@ -39,7 +40,7 @@ $GLOBALS['TCA']['tt_content']['columns']['tx_' . 'timelinevis' . '_timelines'] =
         'foreign_sortby' => 'sorting',
         'foreign_selector' => 'timeline_uid',
         'foreign_unique' => 'timeline_uid',
-        'maxitems' => '100',
+        'maxitems' => '1',
         'appearance' => [
             'collapseAll' => false, // working RTE in TYPO3 > 7.4?!?!
             'expandSingle' => true,
@@ -98,6 +99,51 @@ if ($storageId) {
 
 $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['timelinevis' . '_listing'] = 'layout,select_key,pages,recursive';
 $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['timelinevis' . '_listing'] = 'pi_flexform,tx_timelinevis_timelines';
+
+// ExtensionManagementUtility::addTCAcolumns('tx_timelinevis_domain_model_timeline', [
+// 	'title' => [
+//         'exclude' => false,
+//         'label' => 'LLL:EXT:' . $languageFile . ':tx_timelinevis_domain_model_timeline.title',
+//         'config' => [
+//             'type' => 'input',
+//             'size' => 30,
+//             'eval' => 'trim,required'
+//         ],
+//     ],
+//     'description' => [
+//         'exclude' => false,
+//         'label' => 'LLL:EXT:' . $languageFile . ':tx_timelinevis_domain_model_timeline.description',
+//         'description' => 'LLL:EXT:' . $languageFile . ':tx_timelinevis_domain_model_timeline.description.desc',
+//         'config' => [
+//             'type' => 'text',
+//             'enableRichtext' => true
+//         ]
+//     ],
+//     'range_start' => [
+//         'exclude' => false,
+//         'label' => 'range start',
+//         'config' => [
+//             'type' => 'input',
+//             'size' => 10,
+//             'renderType' => 'inputDateTime',
+//             'dbType' => 'date',
+//             'eval' => 'date,' . \AK\TimelineVis\Evaluation\TimelineValidator::class
+//         ],
+//     ],
+//     'range_end' => [
+//         'exclude' => false,
+//         'label' => 'range end',
+//         'config' => [
+//             'type' => 'input',
+//             'size' => 10,
+//             'renderType' => 'inputDateTime',
+//             'dbType' => 'date',
+//             'eval' => 'date,' . \AK\TimelineVis\Evaluation\TimelineValidator::class
+//         ]
+//     ],
+// ]);
+
+// ExtensionManagementUtility::addToAllTCAtypes('tx_timelinevis_domain_model_timeline', 'title, description, range_start, range_end', '', 'after:title');
 
 
 // $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['timelineexample'] = 'select_key';

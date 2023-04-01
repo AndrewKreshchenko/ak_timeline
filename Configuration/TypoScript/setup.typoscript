@@ -49,7 +49,7 @@ ajax_page {
   10 = USER
   10.userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
   10.extensionName= TimelineVis
-  10.pluginName = JsonData
+  10.pluginName = Listing
   10.vendorName = AK
   config {
     disableAllHeaderCode = 1

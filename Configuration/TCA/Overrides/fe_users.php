@@ -1,10 +1,14 @@
 <?php
 /**
- * TYPO3 Configuration Array (TCA) to override the frontend user model
+ * Timeline Controller
  *
- * @package EXT:simpleblog
- * @author Michael Schams <michael@example.com>
- * @link https://www.extbase-book.org
+ * @package EXT:ak-timelinevis
+ * @author Andrii Kreshchenko <mail2andyk@gmail.com>
  */
 
 $GLOBALS['TCA']['fe_users']['ctrl']['label'] = 'name';
+
+// \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
+//   'fe_users',
+//   '--div--;LLL:EXT:ak_timeline/Resources/Private/Language/locallang_db.xlf:settings.timeline.max,tx_some'
+// );

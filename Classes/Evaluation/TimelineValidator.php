@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 
-// use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Log\LogManager;
 // @TODO make with LocalizationUtility
 
 /*
@@ -76,8 +76,8 @@ class TimelineValidator
             }
         }
 
-        // $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-        // $logger->warning($value . ' warningBCIndex ' . $warningBCIndex . ' timelineStartTStamp ' . $timelineStartTStamp . ' timelineEndTStamp ' . $timelineEndTStamp . ' $valueStart ' . $valueStart);
+        $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+        $logger->warning($value . ' warningBCIndex ' . $warningBCIndex . ' timelineStartTStamp ' . $timelineStartTStamp . ' timelineEndTStamp ' . $timelineEndTStamp . ' $valueStart ' . $valueStart);
 
         // Do final check-in
         // In case of error, retrieve old value from DB and save instead

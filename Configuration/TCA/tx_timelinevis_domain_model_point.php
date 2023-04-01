@@ -107,7 +107,7 @@ return [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
                 'dbType' => 'date',
-                'eval' => 'date,required,' . \AK\TimelineVis\Evaluation\PointValidator::class,
+                'eval' => 'date,' . \AK\TimelineVis\Evaluation\PointValidator::class,
             ],
         ],
         'pointdate_b_c' => [

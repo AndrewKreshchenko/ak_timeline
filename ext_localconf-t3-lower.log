@@ -74,11 +74,6 @@ call_user_func(
       ['source' => 'EXT:ak_timeline/Resources/Public/Icons/timeline-ce.png']
     );
 
-    // Register TypeConverter (chapter 15)
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter(
-      \AK\TimelineVis\Property\TypeConverter\UploadedFileReferenceConverter::class
-    );
-
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][\AK\TimelineVis\Evaluation\TimelineValidator::class] = '';
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][\AK\TimelineVis\Evaluation\PointValidator::class] = '';
 

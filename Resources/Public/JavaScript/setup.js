@@ -28,12 +28,13 @@ document.addEventListener('DOMContentLoaded', function(e) {
   }
 
   var container = document.querySelector('.tx-timeline[data-tl_id]');
-  var dataId = container.dataset.tl_id;
+  // var dataPageId = container.dataset.tl_pid;
+  // var dataId = container.dataset.tl_id;
   var dataMore = container.dataset.url;
 
   // GET data by action
 
-  console.log(dataId);
+  // console.log(dataId);
   var xhr = new XMLHttpRequest();
 
   xhr.onreadystatechange = function() {

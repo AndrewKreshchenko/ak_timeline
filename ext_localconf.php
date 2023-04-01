@@ -11,27 +11,27 @@ call_user_func(
       'TimelineVis',
       'Listing',
       [
-        \AK\TimelineVis\Controller\TimelineController::class => 'list, show',
+        \AK\TimelineVis\Controller\TimelineController::class => 'list, show, dispatch',
         // \AK\TimelineVis\Controller\Pointontroller::class => 'show',
       ],
       // non-cacheable actions
       [
-        \AK\TimelineVis\Controller\TimelineController::class => 'list, show',
+        \AK\TimelineVis\Controller\TimelineController::class => 'list, show, dispatch',
         // \AK\TimelineVis\Controller\Pointontroller::class => 'show',
       ]
     );
 
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-      'AK.TimelineVis',
-      'JsonData',
-      [
-        \AK\TimelineVis\Controller\AjaxController::class => 'dispatch',
-      ],
-      // non-cacheable actions
-      [
-        \AK\TimelineVis\Controller\AjaxController::class => 'dispatch',
-      ]
-    );
+    // \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+    //   'AK.TimelineVis',
+    //   'JsonData',
+    //   [
+    //     \AK\TimelineVis\Controller\AjaxController::class => 'dispatch',
+    //   ],
+    //   // non-cacheable actions
+    //   [
+    //     \AK\TimelineVis\Controller\AjaxController::class => 'dispatch',
+    //   ]
+    // );
 
     // Add PageTSConfig (chapter 6)
     $languageFile = 'ak_timeline/Resources/Private/Language/locallang_db.xlf';
@@ -68,12 +68,7 @@ call_user_func(
     $iconRegistry->registerIcon(
       'timelinevis-plugin-listing',
       \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-      ['source' => 'EXT:ak_timeline/Resources/Public/Icons/timeline-ce.png']
-    );
-
-    // Register TypeConverter (chapter 15)
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter(
-      \AK\TimelineVis\Property\TypeConverter\UploadedFileReferenceConverter::class
+      ['source' => 'EXT:ak_timeline/Resources/Public/Icons/user_plugin_listing.svg']
     );
 
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][\AK\TimelineVis\Evaluation\TimelineValidator::class] = '';

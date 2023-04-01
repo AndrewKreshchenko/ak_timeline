@@ -66,43 +66,43 @@ class Div
         }
 
         // Order points
-        $formData = GeneralUtility::_GP('data');
-        $timelineId = key($formData['tx_timelinevis_domain_model_timeline']);
-        $queryImage = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_timelinevis_domain_model_point');
-        $resultArray = $queryImage
-            ->select('tx_timelinevis_domain_model_point' . '.uid','order','pointdate', 'pointdate_b_c')
-            ->where(
-                $queryImage->expr()->in('timeline', $timelineId)
-            )
-            ->from('tx_timelinevis_domain_model_point')
-            ->execute()->fetchAll();
+        // $formData = GeneralUtility::_GP('data');
+        // $timelineId = key($formData['tx_timelinevis_domain_model_timeline']);
+        // $queryImage = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_timelinevis_domain_model_point');
+        // $resultArray = $queryImage
+        //     ->select('tx_timelinevis_domain_model_point' . '.uid','order','pointdate', 'pointdate_b_c')
+        //     ->where(
+        //         $queryImage->expr()->in('timeline', $timelineId)
+        //     )
+        //     ->from('tx_timelinevis_domain_model_point')
+        //     ->execute()->fetchAll();
         
-        $sortable = [];
-        // @TODO use LocalizationUtility:
-        // $title = LocalizationUtility::translate(['uid' => $item[1]], $tableName);
+        // $sortable = [];
+        // // @TODO use LocalizationUtility:
+        // // $title = LocalizationUtility::translate(['uid' => $item[1]], $tableName);
 
-        foreach (($resultArray  ?? []) as $item) {
-            $dateV = new \DateTime($item['pointdate']);
-            $sortable[] = array('uid' => $item['uid'], 'date' => $item['pointdate_b_c'] ? $dateV->getTimestamp() + self::ERA_BEGIN : $dateV->getTimestamp());
-        }
+        // foreach (($resultArray  ?? []) as $item) {
+        //     $dateV = new \DateTime($item['pointdate']);
+        //     $sortable[] = array('uid' => $item['uid'], 'date' => $item['pointdate_b_c'] ? $dateV->getTimestamp() + self::ERA_BEGIN : $dateV->getTimestamp());
+        // }
 
-        usort($sortable, function($a, $b) {
-            return $a['date'] > $b['date'];
-        });
+        // usort($sortable, function($a, $b) {
+        //     return $a['date'] > $b['date'];
+        // });
 
-        $queryBuilder->getRestrictions()->removeAll();
+        // $queryBuilder->getRestrictions()->removeAll();
 
-        for ($i = 0; $i <= count($sortable); $i++) {
-            if (gettype($sortable[$i]['date']) == 'integer') {
-                $queryBuilder->update('tx_timelinevis_domain_model_point')
-                    ->set('order', $i)
-                    ->where(
-                        $queryBuilder->expr()->eq('timeline', (int)$timelineId),
-                        $queryBuilder->expr()->eq('uid', (int)$sortable[$i]['uid'])
-                    )->execute();
-                // $queryBuilder->statement('UPDATE `tx_timelinevis_domain_model_point` SET `order`=' . $i . ' WHERE timeline=' . $timelineId . ' AND `uid`=' . $sorted[$i]['uid']);
-            }
-        }
+        // for ($i = 0; $i <= count($sortable); $i++) {
+        //     if (gettype($sortable[$i]['date']) == 'integer') {
+        //         $queryBuilder->update('tx_timelinevis_domain_model_point')
+        //             ->set('order', $i)
+        //             ->where(
+        //                 $queryBuilder->expr()->eq('timeline', (int)$timelineId),
+        //                 $queryBuilder->expr()->eq('uid', (int)$sortable[$i]['uid'])
+        //             )->execute();
+        //         // $queryBuilder->statement('UPDATE `tx_timelinevis_domain_model_point` SET `order`=' . $i . ' WHERE timeline=' . $timelineId . ' AND `uid`=' . $sorted[$i]['uid']);
+        //     }
+        // }
     }
 
     /**
