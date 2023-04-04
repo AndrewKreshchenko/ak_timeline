@@ -5,6 +5,8 @@
  *
  * @package EXT:ak-timelinevis
  * @author Andrii Kreshchenko <mail2andyk@gmail.com>
+ * 
+ * @TODO consider migration v 11.0 follow also rules PSR-17
  */
 
 namespace AK\TimelineVis\Controller;
@@ -116,37 +118,23 @@ class TimelineController extends ActionController
 
     /**
      * Dispatch request
+     * 
+     * // return \Psr\Http\Message\ResponseInterface
      */
     public function dispatchAction()
     {
-        $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-
         $result = array();
 
         if ($this->request->hasArgument('page')) {
             $pageId = $this->request->getArgument('page');
-            $id = $this->request->getArgument('id');
             $result['pageId'] = $pageId;
+            $id = $this->request->getArgument('id');
 
-            $logger->warning("Controller AjaxController Timeline " . $pageId . ', id ' . $id);
-
-            $data = $this->TimelineRepository->findTimeline2('pid', $pageId);
-            // $uid = $data->getUid();
-            $result['data'] = json_encode($data);
-
-            $logger->warning("Controller AjaxController Timeline " . gettype($data));
-
-            // // Other timelines that have relation to current timeline
-            // $segments = null;
-
-            // if ($result) {
-            //     $segments = $this->TimelineRepository->findTimelinesSegments($data->getUid());
-            // }
-
-            // $result['data'] = $data;
-            // $result['segments'] = $segments;
+            $data = $this->PointRepository->getPointData($id);
+            $result['points'] = $data;
         }
 
+        // @TODO implement for old Typo3 versions
         $response = $this->responseFactory->createResponse()->withHeader('Content-Type', 'application/json; charset=utf-8');
         $response->getBody()->write(json_encode($result, JSON_THROW_ON_ERROR));
 

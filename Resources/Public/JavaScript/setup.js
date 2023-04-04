@@ -1,23 +1,10 @@
+// moment.js
 
 document.addEventListener('DOMContentLoaded', function(e) {
   // DOM element where the Timeline will be attached
   var visBlock = document.querySelector('[data-js="timeline-horizontal"]');
   var dataBlock = visBlock.parentNode.querySelector('[data-js="timeline-data"]');
 
-  // Create a DataSet (allows two way data-binding)
-  var items = new vis.DataSet([
-    { id: 'segment1', content: "item 1", start: "2022-04-20" },
-    { id: 'segment2', content: "item 4", start: "2023-01-16", end: "2023-03-08" },
-    { id: 'segment6', content: "item 6", start: "2022-12-27", type: "point" }
-  ]);
-
-  // Configuration for the Timeline
-  var options = {};
-
-  // Create a Timeline
-  var timeline = new vis.Timeline(visBlock, items, options);
-
-  // AJAX
   var handleClickVisItem = function(e) {
     e.preventDefault();
 
@@ -39,12 +26,49 @@ document.addEventListener('DOMContentLoaded', function(e) {
 
   xhr.onreadystatechange = function() {
     if (xhr.readyState === 4) {
-      console.log(xhr.readyState, JSON.parse(xhr.responseText));
+      try {
+        var data = JSON.parse(xhr.responseText)
 
-      if (xhr.responseText.points) {
-        container.querySelectorAll('.vis-item-content').forEach((point) => {
-          point.addEventListener('click', handleClickVisItem);
-        });
+        console.log('Status ' + xhr.readyState);
+
+        if (data.points && data.points.length) {
+          // Prepare visual part
+          var dataVisual = [];
+
+          data.points.forEach(function(point, i) {
+            var dateValue = point.date.date.split(' ')[0].split('-');
+            var date = {
+              year: Number(dateValue[0]),
+              month: Number(dateValue[1]),
+              day: Number(dateValue[2])
+            };
+
+            var dateString = [date.year, date.month, date.day].join('-');
+
+            dataVisual.push({
+              id: 'segment' + point.id,
+              type: 'point',
+              start: dateString,
+              content: point.title,
+            });
+          });
+
+          // Create a DataSet (allows two way data-binding)
+          var items = new vis.DataSet(dataVisual);
+
+          // Configuration for the Timeline
+          var options = {};
+
+          // Create a Timeline
+          var timeline = new vis.Timeline(visBlock, items, options);
+
+          // Open content block by clicked point
+          container.querySelectorAll('.vis-item-content').forEach((point) => {
+            point.addEventListener('click', handleClickVisItem);
+          });
+        }
+      } catch(e) {
+        console.error(e);
       }
     }
   };

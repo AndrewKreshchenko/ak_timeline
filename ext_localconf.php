@@ -11,27 +11,13 @@ call_user_func(
       'TimelineVis',
       'Listing',
       [
-        \AK\TimelineVis\Controller\TimelineController::class => 'list, show, dispatch',
-        // \AK\TimelineVis\Controller\Pointontroller::class => 'show',
+        \AK\TimelineVis\Controller\TimelineController::class => 'list, show, dispatch'
       ],
       // non-cacheable actions
       [
-        \AK\TimelineVis\Controller\TimelineController::class => 'list, show, dispatch',
-        // \AK\TimelineVis\Controller\Pointontroller::class => 'show',
+        \AK\TimelineVis\Controller\TimelineController::class => 'list, show, dispatch'
       ]
     );
-
-    // \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    //   'AK.TimelineVis',
-    //   'JsonData',
-    //   [
-    //     \AK\TimelineVis\Controller\AjaxController::class => 'dispatch',
-    //   ],
-    //   // non-cacheable actions
-    //   [
-    //     \AK\TimelineVis\Controller\AjaxController::class => 'dispatch',
-    //   ]
-    // );
 
     // Add PageTSConfig (chapter 6)
     $languageFile = 'ak_timeline/Resources/Private/Language/locallang_db.xlf';
@@ -53,13 +39,6 @@ call_user_func(
         }
       }'
     );
-
-    // jsondata {
-    //   tt_content_defValues {
-    //     CType = list
-    //     list_type = timelinevis_jsondata
-    //   }
-    // }
 
     // Register extension icon (chapter 6)
     $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(

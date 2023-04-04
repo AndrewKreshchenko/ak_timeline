@@ -8,7 +8,8 @@ use \TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use \TYPO3\CMS\Core\Database\ConnectionPool;
 use \TYPO3\CMS\Core\DataHandling\DataHandler;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Log\LogManager;
+
+// use TYPO3\CMS\Core\Log\LogManager;
 
 // Notice: sorting will work on saving form the second time, if new point was added
 
@@ -66,43 +67,51 @@ class Div
         }
 
         // Order points
-        // $formData = GeneralUtility::_GP('data');
-        // $timelineId = key($formData['tx_timelinevis_domain_model_timeline']);
-        // $queryImage = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_timelinevis_domain_model_point');
-        // $resultArray = $queryImage
-        //     ->select('tx_timelinevis_domain_model_point' . '.uid','order','pointdate', 'pointdate_b_c')
-        //     ->where(
-        //         $queryImage->expr()->in('timeline', $timelineId)
-        //     )
-        //     ->from('tx_timelinevis_domain_model_point')
-        //     ->execute()->fetchAll();
+        $formData = GeneralUtility::_GP('data');
+        $timelineId = key($formData['tx_timelinevis_domain_model_timeline']);
+
+        if (!is_int($timelineId)) {
+            return;
+        }
+
+        $queryImage = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_timelinevis_domain_model_point');
+        $resultArray = $queryImage
+            ->select('tx_timelinevis_domain_model_point' . '.uid','order','pointdate', 'pointdate_b_c')
+            ->where(
+                $queryImage->expr()->in('timeline', $timelineId)
+            )
+            ->from('tx_timelinevis_domain_model_point')
+            ->execute()->fetchAll();
+
+        // $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+        // $logger->warning($value . ' - Div Timeline ID is ' . $timelineId . ', SQL query is ' . $queryImage->getSQL()); // . ', SQL query is ' . $queryImage->getSQL()
         
-        // $sortable = [];
-        // // @TODO use LocalizationUtility:
-        // // $title = LocalizationUtility::translate(['uid' => $item[1]], $tableName);
+        $sortable = [];
+        // @TODO use LocalizationUtility:
+        // $title = LocalizationUtility::translate(['uid' => $item[1]], $tableName);
 
-        // foreach (($resultArray  ?? []) as $item) {
-        //     $dateV = new \DateTime($item['pointdate']);
-        //     $sortable[] = array('uid' => $item['uid'], 'date' => $item['pointdate_b_c'] ? $dateV->getTimestamp() + self::ERA_BEGIN : $dateV->getTimestamp());
-        // }
+        foreach (($resultArray  ?? []) as $item) {
+            $dateV = new \DateTime($item['pointdate']);
+            $sortable[] = array('uid' => $item['uid'], 'date' => $item['pointdate_b_c'] ? $dateV->getTimestamp() + self::ERA_BEGIN : $dateV->getTimestamp());
+        }
 
-        // usort($sortable, function($a, $b) {
-        //     return $a['date'] > $b['date'];
-        // });
+        usort($sortable, function($a, $b) {
+            return $a['date'] > $b['date'];
+        });
 
-        // $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder->getRestrictions()->removeAll();
 
-        // for ($i = 0; $i <= count($sortable); $i++) {
-        //     if (gettype($sortable[$i]['date']) == 'integer') {
-        //         $queryBuilder->update('tx_timelinevis_domain_model_point')
-        //             ->set('order', $i)
-        //             ->where(
-        //                 $queryBuilder->expr()->eq('timeline', (int)$timelineId),
-        //                 $queryBuilder->expr()->eq('uid', (int)$sortable[$i]['uid'])
-        //             )->execute();
-        //         // $queryBuilder->statement('UPDATE `tx_timelinevis_domain_model_point` SET `order`=' . $i . ' WHERE timeline=' . $timelineId . ' AND `uid`=' . $sorted[$i]['uid']);
-        //     }
-        // }
+        for ($i = 0; $i <= count($sortable); $i++) {
+            if (gettype($sortable[$i]['date']) == 'integer') {
+                $queryBuilder->update('tx_timelinevis_domain_model_point')
+                    ->set('order', $i)
+                    ->where(
+                        $queryBuilder->expr()->eq('timeline', (int)$timelineId),
+                        $queryBuilder->expr()->eq('uid', (int)$sortable[$i]['uid'])
+                    )->execute();
+                // $queryBuilder->statement('UPDATE `tx_timelinevis_domain_model_point` SET `order`=' . $i . ' WHERE timeline=' . $timelineId . ' AND `uid`=' . $sorted[$i]['uid']);
+            }
+        }
     }
 
     /**

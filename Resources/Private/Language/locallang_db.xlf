@@ -4,7 +4,13 @@
 		<header/>
 		<body>
 			<trans-unit id="extension.title">
-				<source>Records</source>
+				<source>Timeline content</source>
+			</trans-unit>
+			<trans-unit id="extension.new_record_title">
+				<source>Add timeline content</source>
+			</trans-unit>
+			<trans-unit id="extension.add_points">
+				<source>Add points for the timeline</source>
 			</trans-unit>
 
 			<trans-unit id="settings.timeline.max">

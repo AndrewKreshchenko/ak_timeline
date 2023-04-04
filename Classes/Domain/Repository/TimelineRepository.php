@@ -59,41 +59,14 @@ class TimelineRepository extends Repository
      * @param int id - ID as value to get the timeline by a key
      * @return Timeline|null
      */
-    public function findTimeline(string $type = 'pid', int $id = 0): ?Timeline
+    public function findTimeline(string $type = 'pid', int $id = 1): ?Timeline
     {
         $query = $this->createQuery();
         $query->matching(
             $query->equals($type, $id)
         );
 
-        $result = $query->execute();
-
-        // $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-        // $logger->warning('items result ' . $id . ', ' . count($result->toArray()));
-
-        return $result->getFirst();
-    }
-
-    /**
-     * Returns timeline
-     *
-     * @param string type - key to get by from database
-     * @param int id - ID as value to get the timeline by a key
-     * @return Array|null
-     */
-    public function findTimeline2(string $type = 'pid', int $id = 0)
-    {
-        $query = $this->createQuery();
-        $query->matching(
-            $query->equals($type, $id)
-        );
-
-        $result = $query->execute();
-
-        $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-        $logger->warning('Items result ' . $id . ', ' . count($result->toArray()));
-
-        return $result->toArray();
+        return $query->execute()->getFirst();
     }
 
     /**

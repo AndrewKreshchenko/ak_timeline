@@ -19,8 +19,6 @@ return [
         'delete' => 'deleted',
         'enablecolumns' => [
             'disabled' => 'hidden',
-            'starttime' => 'starttime',
-            'endtime' => 'endtime',
         ],
         'searchFields' => 'title',
         'iconfile' => 'EXT:ak_timeline/Resources/Public/Icons/ak_timeline-point.png',
@@ -29,7 +27,7 @@ return [
         '1' => [
             'showitem' => 'hidden, title, description, source,
             --palette--;;paletteCore,
-            --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime'
+            --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access'
         ],
     ],
     'columns' => [
@@ -107,7 +105,7 @@ return [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
                 'dbType' => 'date',
-                'eval' => 'date,' . \AK\TimelineVis\Evaluation\PointValidator::class,
+                'eval' => 'date,required,' . \AK\TimelineVis\Evaluation\PointValidator::class,
             ],
         ],
         'pointdate_b_c' => [

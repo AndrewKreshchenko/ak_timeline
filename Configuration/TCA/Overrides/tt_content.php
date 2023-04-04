@@ -20,6 +20,7 @@ ExtensionUtility::registerPlugin(
 
 // include FlexForm of plugin "Listing" of extension EXT:ak_timeline
 $pluginSignature = 'timelinevis_listing';
+$languageFile = 'ak_timeline/Resources/Private/Language/locallang_db.xlf';
 
 $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
 ExtensionManagementUtility::addPiFlexFormValue(
@@ -31,7 +32,7 @@ ExtensionManagementUtility::addPiFlexFormValue(
 // Or \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_content', [...
 $GLOBALS['TCA']['tt_content']['columns']['tx_' . 'timelinevis' . '_timelines'] = [
     'exclude' => false,
-    'label' => 'LLL:EXT:ak_timeline/Resources/Private/Language/locallang.xlf:timelines',
+    'label' => 'LLL:EXT:' . $languageFile . ':extension.title',
     'config' => [
         'type' => 'inline',
         'foreign_table' => 'tx_timelinevis_timeline_content',
@@ -42,6 +43,10 @@ $GLOBALS['TCA']['tt_content']['columns']['tx_' . 'timelinevis' . '_timelines'] =
         'foreign_unique' => 'timeline_uid',
         'maxitems' => '1',
         'appearance' => [
+            'newRecordLinkTitle' => 'LLL:EXT:' . $languageFile . ':extension.new_record_title',
+            // @TODO try to not display relation button, or remove createNewRelationLinkTitle field
+            'createNewRelationLinkTitle' => ' ',
+            'levelLinksPosition' => 'bottom',
             'collapseAll' => false, // working RTE in TYPO3 > 7.4?!?!
             'expandSingle' => true,
             'useCombination' => 1,
@@ -61,7 +66,7 @@ $GLOBALS['TCA']['tt_content']['columns']['tx_' . 'timelinevis' . '_timelines'] =
 
 $GLOBALS['TCA']['tt_content']['columns']['tx_' . 'timelinevis' . '_point'] = [
     'exclude' => false,
-    'label' => 'Points', // 'LLL:EXT:ak_timeline/Resources/Private/Language/locallang.xlf:points',
+    'label' => 'LLL:EXT:' . $languageFile . ':extension.add_points',
     'config' => [
         'type' => 'inline',
         'foreign_table' => 'tx_timelinevis_timeline_point',
@@ -72,6 +77,8 @@ $GLOBALS['TCA']['tt_content']['columns']['tx_' . 'timelinevis' . '_point'] = [
         'foreign_unique' => 'timeline_uid',
         'maxitems' => '100',
         'appearance' => [
+            'newRecordLinkTitle' => 'LLL:EXT:' . $languageFile . ':extension.add_points',
+            'levelLinksPosition' => 'both',
             'collapseAll' => false, // working RTE in TYPO3 > 7.4?!?!
             'expandSingle' => true,
             'useCombination' => 1,

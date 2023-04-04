@@ -12,9 +12,6 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Annotation\Validate;
 use AK\TimelineVis\Domain\Model\Point;
 
-// use TYPO3\CMS\Core\Utility\GeneralUtility;
-// use TYPO3\CMS\Core\Log\LogManager;
-
 /**
  * Domain Model: Point
  */
@@ -81,17 +78,6 @@ class Point extends AbstractEntity
     }
 
     /**
-     * Sets the title
-     *
-     * @param string $title
-     * @return void
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-    }
-
-    /**
      * Returns the description
      *
      * @return string $description
@@ -99,17 +85,6 @@ class Point extends AbstractEntity
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Sets the description
-     *
-     * @param string $description
-     * @return void
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
     }
 
     /**
@@ -130,17 +105,6 @@ class Point extends AbstractEntity
     public function getPointdate()
     {
         return $this->pointdate;
-    }
-
-    /**
-     * Sets the pointdate
-     *
-     * @param \DateTime $pointdate
-     * @return void
-     */
-    public function setPointdate(\DateTime $pointdate)
-    {
-        $this->pointdate = $pointdate;
     }
 
     /**

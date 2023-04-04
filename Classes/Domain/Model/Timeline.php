@@ -41,8 +41,6 @@ class Timeline extends AbstractEntity
      */
     protected $description = '';
 
-    // @TYPO3\CMS\Extbase\Annotation\Validate("AK\TimelineVis\Domain\Validator\TimelineValidator")
-
     /**
      * The range in the timeline part
      *
@@ -92,13 +90,6 @@ class Timeline extends AbstractEntity
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\AK\TimelineVis\Domain\Model\Point>
      */
     protected $points = null;
-
-    // /**
-    //  * Pagination of timeline
-    //  *
-    //  * @var int
-    //  **/
-    // protected $enablePagination = false;
 
     /**
      * Creation timestamp
@@ -157,38 +148,6 @@ class Timeline extends AbstractEntity
         $this->setDescription($description);
     }
 
-    // public function __construct()
-    // {
-    //     //Do not remove the next line: It would break the functionality
-    //     $this->initStorageObjects();
-    // }
-
-    // /**
-    //  * Initializes all ObjectStorage properties
-    //  * Do not modify this method!
-    //  * It will be rewritten on each save in the extension builder
-    //  * You may modify the constructor of this class instead
-    //  *
-    //  * @return void
-    //  */
-    // protected function initStorageObjects()
-    // {
-    //     $this->posts = new ObjectStorage();
-    // }
-
-    // /**
-    //  * Initializes all ObjectStorage properties
-    //  * Do not modify this method!
-    //  * It will be rewritten on each save in the extension builder
-    //  * You may modify the constructor of this class instead
-    //  *
-    //  * @return void
-    //  */
-    // protected function initStorageObjects()
-    // {
-    //     $this->points = new ObjectStorage();
-    // }
-
     /**
      * Returns the creation timestamp
      *
@@ -207,20 +166,6 @@ class Timeline extends AbstractEntity
         return $this->rangeStart;
     }
 
-    // TYPO3 \CMS\Extbase\Annotation\Validate("AK\TimelineVis\Domain\Validator\TimelineValidator", start="rangeStart", operator="greaterThan" end="rangeEnd")
-
-    // /**
-    //  * @param \DateTime $rangeStart
-    //  *
-    //  * @return Timeline
-    //  */
-    // public function setRangeStart(\DateTime $rangeStart): self
-    // {
-    //     $this->rangeStart = $rangeStart;
-
-    //     return $this;
-    // }
-
     /**
      * @return \DateTime
      */
@@ -228,17 +173,6 @@ class Timeline extends AbstractEntity
     {
         return $this->rangeEnd;
     }
-
-    // /**
-    //  * @param \DateTime $rangeEnd
-    //  *
-    //  * @return Timeline
-    //  */
-    // public function setRangeEnd(\DateTime $rangeEnd): self
-    // {
-    //     $this->rangeEnd = $rangeEnd;
-    //     return $this;
-    // }
 
     public function setParentId(int $parentId) {
         $this->parentId = $parentId;
@@ -261,12 +195,6 @@ class Timeline extends AbstractEntity
      */
     public function getPoints()
     {
-        // bool $ordering = false
-        // if ($ordering) {
-        //     $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-        //     $logger->warning('getPoints ' . count($this->points) . $this->points[0]['title']);
-        // }
-
         return $this->points;
     }
 
@@ -280,10 +208,6 @@ class Timeline extends AbstractEntity
      */
     public function getSortedPoints(int $timelineId)
     {
-        // $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-        // $logger->warning('getPoints ' . count($this->points) . $this->points[0]['title']);
-
-        // return $this->points;
         return GeneralUtility::makeInstance(ObjectManager::class)
             ->get(PointRepository::class)
             ->findPointsByTimelineUid($timelineId, 'order');
@@ -300,25 +224,6 @@ class Timeline extends AbstractEntity
         $this->points = $points;
     }
 
-    // /**
-    //  * @return int
-    //  */
-    // public function getEnablePagination(): ?int
-    // {
-    //     return $this->enablePagination;
-    // }
-
-    // /**
-    //  * @param int $enablePagination
-    //  *
-    //  * @return Timeline
-    //  */
-    // public function setEnablePagination(int $enablePagination): self
-    // {
-    //     $this->enablePagination = $enablePagination;
-    //     return $this;
-    // }
-
     /**
      * Get date start B. C. flag
      * 
@@ -329,16 +234,6 @@ class Timeline extends AbstractEntity
         return $this->dateStartBC;
     }
 
-    // /**
-    //  * @param bool $dateStartBC
-    //  *
-    //  * @return void
-    //  */
-    // public function setDateStartBC(int $dateStartBC): void
-    // {
-    //     $this->dateStartBC = $dateStartBC;
-    // }
-
     /**
      * Get date end B. C. flag
      * 
@@ -348,14 +243,4 @@ class Timeline extends AbstractEntity
     {
         return $this->dateEndBC;
     }
-
-    // /**
-    //  * @param bool $dateEndBC
-    //  *
-    //  * @return void
-    //  */
-    // public function setDateEndBC(int $dateEndBC): void
-    // {
-    //     $this->dateEndBC = $dateEndBC;
-    // }
 }

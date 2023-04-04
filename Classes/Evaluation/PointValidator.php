@@ -17,8 +17,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 
-use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
-use TYPO3\CMS\Core\Log\LogManager;
 // @TODO make with LocalizationUtility
 
 /*
@@ -52,39 +50,42 @@ class PointValidator
         $timelineId = key($formData['tx_timelinevis_domain_model_timeline']);
         $timeline = $formData['tx_timelinevis_domain_model_timeline'][$timelineId];
 
-        $timelineStart = new \DateTime($timeline['range_start']);
+        $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+
+        $timelineStart = new \DateTime($timeline['range_start']); // is_string($timeline['range_start']) ? $timeline['range_start'] : 'now'
         $timelineStartTStamp = $timelineStart->getTimestamp();
         $timelineEnd = new \DateTime($timeline['range_end']);
         $timelineEndTStamp = $timelineEnd->getTimestamp();
         $timelineStartDateBC = $timeline['date_start_b_c'];
         $timelineEndDateBC = $timeline['date_end_b_c'];
 
-        $warningBCIndex = 0;
-
-        $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+        $warningBCIndex = false;
 
         // Calculate B. C. cases
+
         if ($timelineStartDateBC) {
-            $timelineStartTStamp += self::ERA_BEGIN;
-        }
+            if ($timelineEndDateBC) {
+                // Check with minus one day, allow value be equat to timeline end date
+                if (($timelineStartTStamp < $value) || ($value < $timelineEndTStamp - 86400)) {
+                    $warningBCIndex = true;
+                }
+    
+                if ($warningBCIndex) {
+                    return $timelineStartTStamp;
+                }
 
-        if ($timelineEndDateBC) {
-            $timelineEndTStamp += self::ERA_BEGIN;
+                return $value;
+            } else {
+                // @TODO Provide functionality to check with only timeline start date
+                $timelineStartTStamp += self::ERA_BEGIN;
 
-            if (!$timelineStartDateBC) {
-                $warningBCIndex = 1;
-            } else if ($timelineStartTStamp < $timelineEndTStamp) {
-                $warningBCIndex = 2;
+                return $timelineStartTStamp;
             }
         }
 
-        // Do final check-in
-        // In case of error, retrieve old value from DB and save instead
-        $logger->warning($value . ' - point value, TL ID ' . $timelineId . ', timeline data ' . implode($timeline));
-
         if ($value < $timelineStartTStamp || $value > $timelineEndTStamp) {
-            $logger->warning($timelineStartTStamp . ' - timelineStartTStamp, timelineEndTStamp is ' . $timelineEndTStamp);
-            $this->flashMessage('Point date is out of timeline range', 'Your input was ' . $value . ' (timeline with index' . $timelineId .'.)');
+            $logger->warning($timelineStartTStamp . ' - timelineStartTStamp, timelineEndTStamp is ' . $timelineEndTStamp . ', w. index is ' . $warningBCIndex);
+            $this->flashMessage('Point date is out of timeline range', 'Your input was ' . $value . ' (timeline with index ' . $timelineId .'). ' . ($warningBCIndex > 0 ? $warningBCIndex : ''));
 
             return $timelineStartTStamp;
         }

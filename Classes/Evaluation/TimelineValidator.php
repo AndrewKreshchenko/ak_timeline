@@ -17,8 +17,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-
-use TYPO3\CMS\Core\Log\LogManager;
 // @TODO make with LocalizationUtility
 
 /*
@@ -54,10 +52,11 @@ class TimelineValidator
 
         $timelineStart = new \DateTime($timeline['range_start']);
         $timelineStartTStamp = $timelineStart->getTimestamp();
-        $timelineEnd = new \DateTime($timeline['range_end']);
+        $timelineEnd = new \DateTime(is_string($timeline['range_end']) ? $timeline['range_end'] : 'now');
         $timelineEndTStamp = $timelineEnd->getTimestamp();
         $timelineStartDateBC = $timeline['date_start_b_c'];
         $timelineEndDateBC = $timeline['date_end_b_c'];
+        // $currentDate = new \DateTime('now');
 
         $warningBCIndex = 0;
 
@@ -76,9 +75,6 @@ class TimelineValidator
             }
         }
 
-        $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-        $logger->warning($value . ' warningBCIndex ' . $warningBCIndex . ' timelineStartTStamp ' . $timelineStartTStamp . ' timelineEndTStamp ' . $timelineEndTStamp . ' $valueStart ' . $valueStart);
-
         // Do final check-in
         // In case of error, retrieve old value from DB and save instead
         if ($warningBCIndex > 0 || ($timelineStartTStamp > $timelineEndTStamp && !$timelineStartDateBC && !$timelineEndDateBC)) {
@@ -89,12 +85,12 @@ class TimelineValidator
 
             $queryImage = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_timelinevis_domain_model_timeline');
             $queryArray = $queryImage
-            ->select('tx_timelinevis_domain_model_timeline' . '.uid','title','range_start','range_end')
-            ->where(
-                $queryImage->expr()->in('uid', $timelineId)
-            )
-            ->from('tx_timelinevis_domain_model_timeline')
-            ->execute()->fetchAll();
+                ->select('tx_timelinevis_domain_model_timeline' . '.uid','title','range_start','range_end')
+                ->where(
+                    $queryImage->expr()->in('uid', $timelineId)
+                )
+                ->from('tx_timelinevis_domain_model_timeline')
+                ->execute()->fetchAll();
 
             $dbDateStart = \DateTime::createFromFormat('Y-m-d', $queryArray[0]['range_start']);
             $dbValueStart = $dbDateStart->getTimestamp();
