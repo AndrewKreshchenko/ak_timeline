@@ -17,6 +17,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use \AK\TimelineVis\Timeline\FarDate\FarDate;
+
+use TYPO3\CMS\Core\Log\LogManager;
 // @TODO make with LocalizationUtility
 
 /*
@@ -24,7 +27,8 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
  */
 class TimelineValidator
 {
-    private const ERA_BEGIN = -62167219200;
+    // private const ERA_BEGIN = -62167219200;
+    private const DAY_TSTAMP = 86400;
 
     /**
      * JavaScript code for client side validation/evaluation
@@ -50,34 +54,39 @@ class TimelineValidator
         $timelineId = key($formData['tx_timelinevis_domain_model_timeline']);
         $timeline = $formData['tx_timelinevis_domain_model_timeline'][$timelineId];
 
+        $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+
+        if (strlen($timeline['range_start']) == 0) {
+            return $value;
+        }
+
         $timelineStart = new \DateTime($timeline['range_start']);
         $timelineStartTStamp = $timelineStart->getTimestamp();
         $timelineEnd = new \DateTime(is_string($timeline['range_end']) ? $timeline['range_end'] : 'now');
         $timelineEndTStamp = $timelineEnd->getTimestamp();
-        $timelineStartDateBC = $timeline['date_start_b_c'];
-        $timelineEndDateBC = $timeline['date_end_b_c'];
-        // $currentDate = new \DateTime('now');
+        $timelineStartDateBC = (bool)$timeline['date_start_b_c'];
+        $timelineEndDateBC = (bool)$timeline['date_end_b_c'];
 
-        $warningBCIndex = 0;
+        $farDateErrorIndex = 0;
 
         // Calculate B. C. cases
         if ($timelineStartDateBC) {
-            $timelineStartTStamp += self::ERA_BEGIN;
-        }
+            // $timelineStartTStamp += self::ERA_BEGIN;
 
-        if ($timelineEndDateBC) {
-            $timelineEndTStamp += self::ERA_BEGIN;
+            $farDateStart = (new FarDate($timelineStartTStamp, $timelineStartDateBC))->getFarDateTimestamp();
+            $farDateEnd = (new FarDate($timelineEndTStamp, $timelineEndDateBC))->getFarDateTimestamp();
 
-            if (!$timelineStartDateBC) {
-                $warningBCIndex = 1;
-            } else if ($timelineStartTStamp < $timelineEndTStamp) {
-                $warningBCIndex = 2;
+            $farDateVObj = new FarDate((int)$value, true);
+            $farDateV = $farDateVObj->getFarDateTimestamp();
+
+            if (($farDateV < $farDateStart) || ($farDateV > $farDateEnd + self::DAY_TSTAMP)) {
+
             }
         }
 
         // Do final check-in
         // In case of error, retrieve old value from DB and save instead
-        if ($warningBCIndex > 0 || ($timelineStartTStamp > $timelineEndTStamp && !$timelineStartDateBC && !$timelineEndDateBC)) {
+        if ($farDateErrorIndex > 0 || ($timelineStartTStamp > $timelineEndTStamp && !$timelineStartDateBC && !$timelineEndDateBC)) {
             // @TODO Do not allow null or empty
             if (is_null($value) || !strlen($value)) {
                 return $value;
@@ -101,10 +110,10 @@ class TimelineValidator
                 $this->flashMessage('Invalid field value in timeline "' . $queryArray[0]['title'] . '"',
                 'End date can not be before timeline start date.');
 
-                if ($warningBCIndex > 0) {
+                if ($farDateErrorIndex > 0) {
                     $this->flashMessage('To your attention',
-                    ($warningBCIndex == 1 ? 'B. C. end date must not precede start A. D. date.'
-                    : ($warningBCIndex == 2 ? 'B. C. (ancient) dates are usually ordered backwards to A. D. dates.' : '')), FlashMessage::WARNING);
+                    ($farDateErrorIndex == 1 ? 'B. C. end date must not precede start A. D. date.'
+                    : ($farDateErrorIndex == 2 ? 'B. C. (ancient) dates are usually ordered backwards to A. D. dates.' : '')), FlashMessage::WARNING);
                 }
 
                 return $dbValueStart;

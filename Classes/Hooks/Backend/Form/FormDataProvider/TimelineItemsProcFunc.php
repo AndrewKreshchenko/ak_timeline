@@ -1,25 +1,21 @@
 <?php
 
-// declare(strict_types=1);
+/*
+ * This file is part of the package ak/ak-timelinevis.
+ * 
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ */
 
 namespace AK\TimelineVis\Hooks\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-// use AK\TimelineVis\Domain\Repository\TimelineRepository;
 
 class TimelineItemsProcFunc {
   // @TODO fix a problem and use TimelineRepository (commented now)
   // Fatal error: Uncaught ArgumentCountError: Too few arguments to function TYPO3\CMS\Core\Imaging\IconFactory::__construct()
-
-  // protected $timelineRepository;
-
-  // public function injectTimelineRepository(TimelineRepository $timelineRepository): void
-  // {
-  //   $this->TimelineRepository = $timelineRepository;
-  // }
-
   // @TODO Also provide options for user to create Timeline widget (backend module)
 
   /**

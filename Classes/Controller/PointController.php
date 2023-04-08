@@ -17,9 +17,6 @@ use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
-// use TYPO3\CMS\Core\Utility\GeneralUtility;
-// use TYPO3\CMS\Core\Log\LogManager;
-
 /**
  * Point controller class
  */
@@ -61,7 +58,7 @@ class PointController extends ActionController
      */
     public function initializeAction(): void
     {
-        $querySettings = $this->objectManager->get(Typo3QuerySettings::class);
+        $querySettings = GeneralUtility::makeInstance(Typo3QuerySettings::class);
         $querySettings->setRespectStoragePage(false);
         $querySettings->setIgnoreEnableFields(true);
         $this->PointRepository->setDefaultQuerySettings($querySettings);
@@ -76,9 +73,6 @@ class PointController extends ActionController
         $result = $this->PointRepository->findPoint('pid', $pageArguments['pageId']);
 
         $this->view->assign('point', $result);
-
-        // $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-        // $logger->warning('Points key ' . count($result));
     }
 
     /**

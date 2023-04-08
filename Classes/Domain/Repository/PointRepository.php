@@ -49,7 +49,7 @@ class PointRepository extends Repository
     public function getPointData(int $id = 0)
     {
         $query = $this->createQuery();
-        $querySettings = $this->objectManager->get(Typo3QuerySettings::class);
+        $querySettings = GeneralUtility::makeInstance(Typo3QuerySettings::class);
         $querySettings->setRespectStoragePage(false);
         $query->setQuerySettings($querySettings);
         $query->matching(
@@ -83,7 +83,7 @@ class PointRepository extends Repository
     public function findPointsByTimelineUid(int $uid, string $ordering = ''): ?QueryResult
     {
         $query = $this->createQuery();
-        $querySettings = $this->objectManager->get(Typo3QuerySettings::class);
+        $querySettings = GeneralUtility::makeInstance(Typo3QuerySettings::class);
         $querySettings->setRespectStoragePage(false);
         $query->setQuerySettings($querySettings);
 

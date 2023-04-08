@@ -5,8 +5,9 @@
 
 ## Prerequisites
 
-* Definitely workes with PHP v. 7.
-* Works on Typo3 v.11 by default. For lower Typo3 versions, please consider `*.log` files that exist near the same actual files (see [installation point 1](#installation)).
+* PHP v. 7-8 (currently tested on v. 7).
+* Works on Typo3 v.11 by default. For lower Typo3 versions, please consider `*.log` files or `*.md` documentation that exist near the same actual files (see [installation point 1](#installation)).
+* 64-bit operation system, but I'm inclined to think you have. :smile: Mostly for dates computation and operations with large timestamps due to PHP [limits](https://www.php.net/manual/en/language.types.integer.php#language.types.integer.overflow).
 
 ## Installation
 

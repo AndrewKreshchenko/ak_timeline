@@ -104,7 +104,7 @@ class Div
         for ($i = 0; $i <= count($sortable); $i++) {
             if (gettype($sortable[$i]['date']) == 'integer') {
                 $queryBuilder->update('tx_timelinevis_domain_model_point')
-                    ->set('order', $i)
+                    ->set('order', ($i + 1))
                     ->where(
                         $queryBuilder->expr()->eq('timeline', (int)$timelineId),
                         $queryBuilder->expr()->eq('uid', (int)$sortable[$i]['uid'])

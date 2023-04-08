@@ -2,7 +2,13 @@
 document.addEventListener('DOMContentLoaded', function(e) {
   // DOM element where the Timeline will be attached
   const visBlock = document.querySelector('[data-js="timeline-horizontal"]');
-  const dataBlock = visBlock.parentNode.querySelector('[data-js="timeline-data"]');
+
+  if (!visBlock) {
+    console.warn('%cPoints are not exist for the Timeline yet, or error in Timeline found. Please check settings.', 'padding:15px;font-size:12px;font-weight:bold;');
+    return;
+  }
+
+  // const dataBlock = visBlock.parentNode.querySelector('[data-js="timeline-data"]');
 
   const handleClickVisItem = (e) => {
     e.preventDefault();

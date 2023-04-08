@@ -86,8 +86,9 @@ class Timeline extends AbstractEntity
 
     /**
      * Timeline points
-     *
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\AK\TimelineVis\Domain\Model\Point>
+     * 
+     * @var ObjectStorage<Point>
+     * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
      */
     protected $points = null;
 
@@ -191,7 +192,7 @@ class Timeline extends AbstractEntity
      * Returns the points
      *
      * // param bool indicator the points should be ordered
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\AK\TimelineVis\Domain\Model\Point> $points
+     * @return ObjectStorage<Point> $points
      */
     public function getPoints()
     {
@@ -202,7 +203,7 @@ class Timeline extends AbstractEntity
      * Returns sorted points
      * 
      * @param int $timelineId - ID of timeline
-     * @return array|\TYPO3\CMS\Extbase\Persistence\ObjectStorage<\AK\TimelineVis\Domain\Model\Point> $points
+     * @return array|ObjectStorage<Point> $points
      * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      */
@@ -216,7 +217,7 @@ class Timeline extends AbstractEntity
     /**
      * Sets the points
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\AK\TimelineVis\Domain\Model\Point> $points
+     * @param ObjectStorage<Point> $points
      * @return void
      */
     public function setPoints(ObjectStorage $points)

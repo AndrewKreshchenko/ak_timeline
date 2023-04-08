@@ -83,7 +83,7 @@ class TimelineController extends ActionController
     /**
      * Show a single Timeline (detail view)
      * 
-     * @param int $currentPage
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation int $currentPage
      */
     public function showAction(int $currentPage = 1): void
     {
