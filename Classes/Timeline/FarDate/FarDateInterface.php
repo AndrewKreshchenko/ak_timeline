@@ -28,7 +28,7 @@ namespace AK\TimelineVis\Timeline\FarDate;
 
 interface FarDateInterface
 {
-  const UNIX_EPOCH = -62167219200;
+  const EPOCH_TSTAMP = -62167219200;
 
   public function __construct(int $timestamp, bool $isBC);
 
@@ -37,4 +37,6 @@ interface FarDateInterface
   public function getDateBC(): bool;
 
   public function getFarDate(): ?array;
+
+  public function getEpoch(): ?int;
 }

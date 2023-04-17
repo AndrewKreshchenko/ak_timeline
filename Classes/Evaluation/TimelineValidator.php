@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use \AK\TimelineVis\Timeline\FarDate\FarDate;
 
-use TYPO3\CMS\Core\Log\LogManager;
 // @TODO make with LocalizationUtility
 
 /*
@@ -27,7 +26,6 @@ use TYPO3\CMS\Core\Log\LogManager;
  */
 class TimelineValidator
 {
-    // private const ERA_BEGIN = -62167219200;
     private const DAY_TSTAMP = 86400;
 
     /**
@@ -54,9 +52,9 @@ class TimelineValidator
         $timelineId = key($formData['tx_timelinevis_domain_model_timeline']);
         $timeline = $formData['tx_timelinevis_domain_model_timeline'][$timelineId];
 
-        $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-
         if (strlen($timeline['range_start']) == 0) {
+            return $value;
+        } else if (strlen($timeline['range_start']) > 0 && strlen($timeline['range_end']) == 0) {
             return $value;
         }
 
@@ -71,8 +69,6 @@ class TimelineValidator
 
         // Calculate B. C. cases
         if ($timelineStartDateBC) {
-            // $timelineStartTStamp += self::ERA_BEGIN;
-
             $farDateStart = (new FarDate($timelineStartTStamp, $timelineStartDateBC))->getFarDateTimestamp();
             $farDateEnd = (new FarDate($timelineEndTStamp, $timelineEndDateBC))->getFarDateTimestamp();
 
@@ -80,8 +76,10 @@ class TimelineValidator
             $farDateV = $farDateVObj->getFarDateTimestamp();
 
             if (($farDateV < $farDateStart) || ($farDateV > $farDateEnd + self::DAY_TSTAMP)) {
-
+                $farDateErrorIndex = 2;
             }
+        } else if ($timelineEndDateBC) {
+            $farDateErrorIndex = 1;
         }
 
         // Do final check-in
@@ -101,9 +99,16 @@ class TimelineValidator
                 ->from('tx_timelinevis_domain_model_timeline')
                 ->execute()->fetchAll();
 
-            $dbDateStart = \DateTime::createFromFormat('Y-m-d', $queryArray[0]['range_start']);
+            $dbDateStart = \DateTime::createFromFormat('Y-m-d', is_string($queryArray[0]['range_start']) ? $queryArray[0]['range_start'] : '0000-01-01');
             $dbValueStart = $dbDateStart->getTimestamp();
-            $dbDateEnd = \DateTime::createFromFormat('Y-m-d', $queryArray[0]['range_end']);
+
+            if (is_null($queryArray['range_end'])) {
+                $dbDateEndF = (new \DateTime('now'))->format('Y-m-d');
+            } else {
+                $dbDateEndF = $queryArray['range_end'];
+            }
+
+            $dbDateEnd = \DateTime::createFromFormat('Y-m-d', $dbDateEndF);
             $dbValueEnd = $dbDateEnd->getTimestamp();
 
             if ($value == $timelineStart->getTimestamp()) {

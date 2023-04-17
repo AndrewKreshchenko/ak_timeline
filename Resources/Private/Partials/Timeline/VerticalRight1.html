@@ -3,11 +3,19 @@
 	  data-namespace-typo3-fluid="true">
 
 <div class="tx-timeline timeline-vertical">
-  <f:debug>{timelinePoints}</f:debug>
   <h2>{timeline.title}</h2>
+
   <f:if condition="{timeline.rangeStart} && {timeline.rangeEnd}">
-    <span>(<tln:fardate format="%d %B %Y" isbc="{timeline.dateStartBC}">{timeline.rangeStart}</tln:fardate> - <tln:fardate format="%d %B %Y" isbc="{timeline.dateEndBC}">{timeline.rangeEnd}</tln:fardate>)</span>
+    <f:then>
+      <span class="timeline-range">(<tln:fardate format="%d %B %Y" isbc="{timeline.dateStartBC}">{timeline.rangeStart}</tln:fardate> - <tln:fardate format="%d %B %Y" isbc="{timeline.dateEndBC}">{timeline.rangeEnd}</tln:fardate>)</span>
+    </f:then>
+    <f:else>
+      <f:if condition="{timeline.rangeEnd}">
+        <span class="timeline-range">(<mark>&infin;</mark> - <tln:fardate format="%d %B %Y" isbc="{timeline.dateEndBC}">{timeline.rangeEnd}</tln:fardate>)</span>
+      </f:if>
+    </f:else>
   </f:if>
+
   <div class="tx-timeline-description">
     <p><f:format.html>{timeline.description}</f:format.html></p>
   </div>

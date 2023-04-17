@@ -25,7 +25,7 @@
     background-color: transparent;
     color: inherit;
     font-size: 1.5rem;
-    transform: translateY(2px);
+    transform: translateY(-2px);
     line-height: 1;
   }
 }
@@ -77,22 +77,13 @@
   }
 }
 .tl-content time {
-  // position: absolute;
-  // right: 19px;
   padding: 0 10px;
   background: #fff;
   font-size: 90%;
   line-height: 1.75;
   float: right;
 }
-// .tl-content:after {
-//   content: '';
-//   position: absolute;
-//   display: block;
-//   border-bottom: 30px solid @color-paper;
-//   border-right: 30px solid transparent;
-//   border-left: 30px solid @color-paper;
-// }
+
 .tl-offcut-line {
   width: 3px;
   height: 100%;
@@ -114,7 +105,7 @@
 }
 
 // Timeline variations
-.timeline-vertical {
+.timeline-vertical-both {
   margin-top: 30px;
   margin-bottom: 45px;
 }
@@ -148,16 +139,36 @@
       font-size: 1.375rem;
     }
   }
-  .tl-content time {
-    padding-left: 12px;
-    padding-right: 12px;
-    line-height: 2;
+  .tl-content {
+    flex: initial;
+    width: 50%;
+    time {
+      padding-left: 12px;
+      padding-right: 12px;
+      line-height: 2;
+    }
   }
   .tl-offcut-spot:after {
     right: -10px;
     margin-top: -12px;
     width: 16px;
     height: 16px;
+  }
+
+  // Timeline variations
+  .timeline-vertical-both {
+    .timeline-segment:nth-child(odd) {
+      flex-direction: row-reverse;
+      .tl-content {
+        width: calc(50% - 3px);
+        time {
+          float: left;
+        }
+      }
+      .tl-content-main {
+        padding-top: 2.5rem;
+      }
+    }
   }
 }
 
@@ -167,5 +178,9 @@
     h3 {
       font-size: 1.5rem;
     }
+  }
+
+  .timeline-vertical-both .tl-content-main {
+    padding-top: 2.5rem;
   }
 }

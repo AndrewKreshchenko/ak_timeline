@@ -58,9 +58,14 @@ final class FarDate implements FarDateInterface
     return $this->farDate;
   }
 
+  public function getEpoch(): int
+  {
+    return FarDateInterface::EPOCH_TSTAMP;
+  }
+
   public function constructFarDate(): void
   {
-    $farDateTimestamp = $this->timestamp - FarDateInterface::UNIX_EPOCH;
+    $farDateTimestamp = $this->timestamp - FarDateInterface::EPOCH_TSTAMP;
 
     $this->farDate = array(
       'timestamp' => $this->isBC ? -$farDateTimestamp : $farDateTimestamp,

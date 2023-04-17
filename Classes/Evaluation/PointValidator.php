@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Log\LogManager;
  */
 class PointValidator
 {
-    private const ERA_BEGIN = -62167219200;
+    // private const ERA_BEGIN = -62167219200;
     private const DAY_TSTAMP = 86400;
 
     /**
@@ -53,29 +53,86 @@ class PointValidator
         $timelineId = key($formData['tx_timelinevis_domain_model_timeline']);
         $timeline = $formData['tx_timelinevis_domain_model_timeline'][$timelineId];
 
+        $timelineStartDateBC = (bool)$timeline['date_start_b_c'];
+        $timelineEndDateBC = (bool)$timeline['date_end_b_c'];
+
         $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
 
         $timelineStartTStamp = 0;
+        $timelineEnd = new \DateTime(is_string($timeline['range_end']) ? $timeline['range_end'] : 'now');
+        $timelineEndTStamp = $timelineEnd->getTimestamp();
+        $farDateError = false;
 
+        // Case Range start is not specified
         if (strlen($timeline['range_start']) == 0) {
-            // @TODO create method for this case
-            $timelineStartTStamp = self::ERA_BEGIN;
+            // NOTE May be useful create method for this case
+
+            // At least one limit should be defined
+            if (strlen($timeline['range_end']) == 0) {
+                // FlashMessage is in Timeline validator
+                // default value is UNIX epoch
+                return 0;
+            }
+
+            // Considering B. C. dates
+            if ($timelineEndDateBC) {
+                $farDateVObj = new FarDate((int)$value, true);
+                $farDateV = $farDateVObj->getFarDateTimestamp();
+
+                $farDateEnd = (new FarDate($timelineEnd->getTimestamp(), true))->getFarDateTimestamp();
+
+                if ($farDateV > $farDateEnd + self::DAY_TSTAMP) {
+                    $farDateError = true;
+                }
+        
+                if ($farDateError) {
+                    $this->flashMessage('Point date is out of timeline range', 'Your input was ' . $value . '. Pay attention on B. C. dates.');
+            
+                    return $timelineEnd->getTimestamp();
+                }
+
+                $this->flashMessage('One point has date "' . $farDateVObj->logDate() . '"', 'B. C. flag must be checked (for your confidence). Please consider start date of Timeline is not specified.', FlashMessage::INFO);
+
+                return $value;
+            } else {
+
+                // @TODO make sure the value is not B. C.
+
+                // Set Far date as positive number
+                $farDateVObj = new FarDate((int)$value, false);
+                $farDateV = $farDateVObj->getFarDateTimestamp();
+
+                $farDateEnd = (new FarDate($timelineEnd->getTimestamp(), false))->getFarDateTimestamp();
+
+                if ($farDateV > $farDateEnd + self::DAY_TSTAMP) {
+                    $farDateError = true;
+                }
+        
+                if ($farDateError) {
+                    $this->flashMessage('Point date is out of timeline range', 'Your input was ' . $value . '. Pay attention on B. C. dates.');
+
+                    // Save value because it may be right
+                    return $timelineEnd->getTimestamp();
+                }
+
+                $this->flashMessage('One point has date "' . $farDateVObj->logDate() . '"', 'You could make sure the value is not out of timeline range. Please consider start date of Timeline is not specified.', FlashMessage::INFO);
+
+                return $value;
+            }
         } else {
             $timelineStart = new \DateTime($timeline['range_start']);
             $timelineStartTStamp = $timelineStart->getTimestamp();
         }
 
-        $timelineEnd = new \DateTime(is_string($timeline['range_end']) ? $timeline['range_end'] : 'now');
-        $timelineEndTStamp = $timelineEnd->getTimestamp();
-        $timelineStartDateBC = (bool)$timeline['date_start_b_c'];
-        $timelineEndDateBC = (bool)$timeline['date_end_b_c'];
-
-        $farDateError = false;
+        $logger->warning($value . ' - point value, TL ID ' . $timelineId
+            . ', timeline start date ' . $timeline['range_start'] . '(' . $timelineStartTStamp . ')'
+            . ', timeline end date ' . $timeline['range_end'] . '(' . $timelineEndTStamp . '), end B. C. ' . $timeline['date_end_b_c']
+        );
 
         // Case of usual D. C. range
         if (!$timelineStartDateBC) {
-            if ($value < $timelineStartTStamp || $value > $timelineEndTStamp) {
-                $this->flashMessage('Point date is out of timeline range', 'Your input was ' . $value . ' (timeline with index ' . $timelineId .').');
+            if ($value < $timelineStartTStamp - self::DAY_TSTAMP || $value > $timelineEndTStamp) {
+                $this->flashMessage('Point date is out of timeline range', 'Your input was ' . $value . '.');
     
                 return $timelineStartTStamp;
             }
@@ -97,7 +154,7 @@ class PointValidator
             }
     
             if ($farDateError) {
-                $this->flashMessage('Point date is out of timeline range', 'Your input was ' . $value . ' (timeline with index ' . $timelineId .'). Pay attention on B. C. dates.');
+                $this->flashMessage('Point date is out of timeline range', 'Your input was ' . $value . '. Pay attention on B. C. dates.');
         
                 return $timelineStartTStamp;
             }
@@ -117,13 +174,13 @@ class PointValidator
             }
     
             if ($farDateError) {
-                $this->flashMessage('Point date is out of timeline range', 'Your input was ' . $value . ' (timeline with index ' . $timelineId .'). Pay attention on B. C. dates.');
+                $this->flashMessage('Point date is out of timeline range', 'Your input was ' . $value . '. Pay attention on B. C. dates.');
 
                 // Save value because it may be right
                 return $timelineStartTStamp;
             }
 
-            $this->flashMessage('One point has date "' . $farDateVObj->logDate() . '"', 'You may check if the value may be out of timeline range.', FlashMessage::INFO);
+            $this->flashMessage('One point has date "' . $farDateVObj->logDate() . '"', 'You could make sure the value is not out of timeline range.', FlashMessage::INFO);
 
             return $value;
         }

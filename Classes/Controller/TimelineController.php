@@ -6,7 +6,7 @@
  * @package EXT:ak-timelinevis
  * @author Andrii Kreshchenko <mail2andyk@gmail.com>
  * 
- * @TODO consider migration v 11.0 follow also rules PSR-17
+ * @TODO make version for Typo3 10, considering migration v. 11.0 and following the rules PSR-17
  */
 
 namespace AK\TimelineVis\Controller;
@@ -104,12 +104,8 @@ class TimelineController extends ActionController
         $this->view->assign('timeline', $result);
         $this->view->assign('segments', $segments);
 
-        // Make odered points list, if needed
-
+        // Make odered points list depending on style
         if ($result && !is_int(strpos($this->settings['timeline']['style'], 'horiz'))) {
-            $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-            $logger->warning('or1 ' . strpos($this->settings['timeline']['style'], 'horiz'));
-
             $resultPoints = $this->orderPoints($result, (int)$result->getUid());
 
             $this->view->assign('timelinePoints', $resultPoints);

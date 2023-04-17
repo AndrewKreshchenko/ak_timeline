@@ -10,15 +10,13 @@ namespace AK\TimelineVis\Domain\Model;
 
 use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
-// use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use AK\TimelineVis\Domain\Repository\PointRepository;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Log\LogManager;
+// use TYPO3\CMS\Core\Log\LogManager;
 
 /**
  * Domain Model: Blog
