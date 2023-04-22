@@ -9,6 +9,107 @@
 */
 
 // Variables and declarations
-@import "../utils/variables.less";
+@import "../utils/variables/colors.less";
+@import "../utils/variables/dimensions.less";
+
+@color-light-grey: #f2f2f2;
+@color-light-grey-2: #dbdbdb;
+
+@panel-height: 80px;
 
 // https://lesscss.org/features/#extend-feature
+// font-family: system-ui, -apple-system, Arial, sans-serif;
+
+// Visual elements
+.vis-timeline {
+  background-color: @color-light-grey;
+  border: none;
+}
+
+// .vis-time-axis .vis-grid.vis-minor {}
+// .vis-time-axis {}
+.vis-time-axis {
+  .vis-text {
+    padding: 0.25rem 0.5rem;
+  }
+  .vis-grid.vis-vertical {
+    border-left: none;
+  }
+}
+
+.vis-even {
+  background-color: @color-light-grey;
+}
+.vis-odd {
+  background-color: @color-paper-light;
+}
+
+.vis-group {
+  // height: @panel-height !important;
+  transform: translateY(25px);
+}
+
+.vis-item.vis-dot {
+  top: 0 !important;
+  width: 14px;
+  height: 14px;
+  border: none;
+  border-radius: 50%;
+  background-color: @color-default;
+}
+
+// Text elements
+.vis-item {
+  margin-top: -5px;
+  border-left: 1px dashed @color-grey;
+
+  // &, &-content {
+  //   height: @panel-height;
+  // }
+  .vis-item-content {
+    padding: 0 0.5rem;
+    strong {
+      display: table;
+      margin-bottom: 0.25rem;
+    }
+    span {
+      font-size: 90%;
+    }
+  }
+}
+.vis-item.vis-item-content {
+  padding: 0 0.5rem;
+}
+.vis-item.vis-point {
+  cursor: pointer;
+  transition: background-color 200ms;
+}
+.vis-item.vis-point.vis-selected {
+  border-color: @color-default;
+  background-color: white;
+}
+
+@panel-height: 120px;
+
+@media screen and (min-width: 1200px) {
+  // .vis-item {
+  //   &, &-content {
+  //     height: @panel-height;
+  //   }
+  // }
+  
+  // .vis-group {
+  //   height: @panel-height !important;
+  // }
+
+  .vis-item.vis-dot {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+
+// --------------
+// Timeline
+
+@import "../blocks/tl-content.less";

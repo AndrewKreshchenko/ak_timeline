@@ -44,7 +44,7 @@
           <template data-js="timeline-data">
             <f:for each="{timeline.points}" as="point">
               <!-- Point -->
-              <div class="timeline-segment">
+              <div class="timeline" data-point_id="tl-{timeline.uid}-{point.uid}">
                 <div class="tl-content">
                   <time datetime="{f:format.date(format: 'Y-m-d', date: point.pointdate)}"><f:format.date format="%d %B %Y">{point.pointdate}</f:format.date></time>
                   <div class="tl-content-main">
@@ -55,6 +55,8 @@
               </div>
             </f:for>
           </template>
+
+          <div class="timeline"></div>
         </f:else>
       </f:if>
     </f:then>

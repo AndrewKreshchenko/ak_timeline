@@ -1,3 +1,5 @@
 # Temporary files
+tests
 **/*.txt
-
+Resources/Public/JavaScript/*.map
+Resources/Public/JavaScript/*.min.js

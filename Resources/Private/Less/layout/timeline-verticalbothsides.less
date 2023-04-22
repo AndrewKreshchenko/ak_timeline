@@ -9,9 +9,10 @@
 */
 
 // Variables and declarations
-@import "../utils/variables.less";
+@import "../utils/variables/colors.less";
+@import "../utils/variables/dimensions.less";
 
-.timeline-segment {
+.timeline {
   display: flex;
   flex-wrap: wrap;
 }
@@ -42,47 +43,11 @@
 .tl-content-level2 {
   background-color: @color-paper-light;
 }
-.timeline-segment:last-of-type .tl-content {
+.timeline:last-of-type .tl-content {
   margin-bottom: 0;
 }
 
-.tl-content-main {
-  padding: 1.375rem 1rem 0.75rem;
-  * {
-    word-break: break-word;
-    hyphens: manual;
-  }
-  h3 {
-    font-size: 1.25rem;
-  }
-  p {
-    margin-top: 1rem;
-    margin-bottom: 0;
-  }
-  a {
-    color: @color-link;
-  }
-  .tl-link-more {
-    padding: 5px 0.75rem 7px;
-    background: @color-link;
-    background: linear-gradient(to right, fade(@color-link, 65%), @color-link);
-    color: #fff;
-  }
-  .tl-link-more:after {
-    content: '';
-    display: inline-block;
-    border-right: 22px solid @color-link;
-    border-bottom: 22px solid transparent;
-    transform: translate(23px, 6px) rotate(45deg);
-  }
-}
-.tl-content time {
-  padding: 0 10px;
-  background: #fff;
-  font-size: 90%;
-  line-height: 1.75;
-  float: right;
-}
+@import "../blocks/tl-content.less";
 
 .tl-offcut-line {
   width: 3px;
@@ -110,43 +75,10 @@
   margin-bottom: 45px;
 }
 
-@media screen and (min-width: 390px) {
-  .tl-content-main {
-    padding-top: 1.5rem;
-    padding-bottom: 1rem;
-  }
-}
-
-@media screen and (min-width: 575px) {
-  .tl-content-main {
-    h3 {
-      font-size: 1.313rem;
-    }
-    .tl-link-more {
-      padding-left: 1.25rem;
-      padding-right: 1.25rem;
-    }
-    .tl-link-more:after {
-      transform: translate(30px, 6px) rotate(45deg);
-    }
-  }
-}
-
 @media screen and (min-width: 768px) {
-  .tl-content-main {
-    padding: 1.5rem 1.25rem 1rem;
-    h3 {
-      font-size: 1.375rem;
-    }
-  }
   .tl-content {
     flex: initial;
     width: 50%;
-    time {
-      padding-left: 12px;
-      padding-right: 12px;
-      line-height: 2;
-    }
   }
   .tl-offcut-spot:after {
     right: -10px;
@@ -157,7 +89,7 @@
 
   // Timeline variations
   .timeline-vertical-both {
-    .timeline-segment:nth-child(odd) {
+    .timeline:nth-child(odd) {
       flex-direction: row-reverse;
       .tl-content {
         width: calc(50% - 3px);
@@ -173,13 +105,6 @@
 }
 
 @media screen and (min-width: 1200px) {
-  .tl-content-main {
-    padding: 1.5rem 1.5rem 1.25rem;
-    h3 {
-      font-size: 1.5rem;
-    }
-  }
-
   .timeline-vertical-both .tl-content-main {
     padding-top: 2.5rem;
   }
