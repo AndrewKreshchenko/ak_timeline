@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
-	<file source-language="en" datatype="plaintext" original="messages" date="2023-04-22T11:04:00Z" product-name="ak_timeline">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2023-04-22T11:04:00Z" product-name="ak_timeline">
 		<header/>
 		<body>
 			<trans-unit id="flashmessage.timeline.invalid_range">
-				<source>Invalid range start date or range end date</source>
+				<source>Ungültiges Start- oder Enddatum des Bereichs</source>
 			</trans-unit>
 			<trans-unit id="flashmessage.timeline.details.invalid_range">
-				<source>End date can not be before timeline start date.</source>
+				<source>Das Enddatum darf nicht vor dem Startdatum der Timeline liegen.</source>
 			</trans-unit>
 			<trans-unit id="flashmessage.timeline.pay_attention">
-				<source>Please, pay attention</source>
+				<source>Bitte pass auf</source>
 			</trans-unit>
 			<trans-unit id="flashmessage.timeline.details.BC_precedes_AD">
-				<source>B. C. end date must not precede start A. D. date.</source>
+				<source>Das B. C. Enddatum darf nicht vor dem A. D. Startdatum liegen.</source>
 			</trans-unit>
 			<trans-unit id="flashmessage.timeline.details.BC_dates_order">
-				<source>B. C. (ancient) dates are usually ordered backwards to A. D. dates.</source>
+				<source>B. C. (alte) Daten werden normalerweise rückwärts zu A. D.-Daten geordnet.</source>
 			</trans-unit>
 
 			<trans-unit id="flashmessage.point.date_is_out">
-				<source>Point date is out of timeline range</source>
+				<source>Das Punktdatum liegt außerhalb des Timeline bereich</source>
 			</trans-unit>
 			<trans-unit id="flashmessage.point.details.input_was">
-				<source>Your input was </source>
+				<source>Ihre Eingabe war </source>
 			</trans-unit>
 			<trans-unit id="flashmessage.point.warn.BC_date">
-				<source>Please pay attention on B. C. dates.</source>
+				<source>Bitte achten Sie auf B.C.-Termine.</source>
 			</trans-unit>
 			<trans-unit id="flashmessage.point.one_point_date">
-				<source>One point has date </source>
+				<source>Ein Punkt hat ein Datum </source>
 			</trans-unit>
 			<trans-unit id="flashmessage.point.warn.not_out">
-				<source>You could make sure the value is not out of timeline range.</source>
+				<source>Sie könnten sicherstellen, dass der Wert nicht außerhalb des Timeline-Bereichs liegt.</source>
 			</trans-unit>
 
 			<trans-unit id="timeline_relation">
-				<source>Timeline relation</source>
+				<source>Timeline beziehung</source>
 			</trans-unit>
 
 		</body>

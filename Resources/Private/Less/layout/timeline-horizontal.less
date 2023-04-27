@@ -112,4 +112,29 @@
 // --------------
 // Timeline
 
+.timeline-horizontal {
+  .timeline {
+    margin-top: 35px;
+    margin-bottom: 35px;
+  }
+
+  .tl-content {
+    width: 100%;
+  }
+}
+
 @import "../blocks/tl-content.less";
+
+@media screen and (min-width: 768px) {
+  .timeline-horizontal .timeline {
+    margin-top: 45px;
+    margin-bottom: 45px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .timeline-horizontal .timeline {
+    margin-top: 60px;
+    margin-bottom: 60px;
+  }
+}

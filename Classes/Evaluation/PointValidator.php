@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 /*
+ * Class checks entered Point date is within Timeline range
+ * 
  * This file is part of the package ak/ak-timelinevis.
  * 
  * For the full copyright and license information, please read the
@@ -11,23 +13,18 @@ declare(strict_types=1);
 
 namespace AK\TimelineVis\Evaluation;
 
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use \AK\TimelineVis\Timeline\FarDate\FarDate;
+use TYPO3\CMS\Core\Localization\LanguageService;
 
 use TYPO3\CMS\Core\Log\LogManager;
-// @TODO make with LocalizationUtility
 
-/*
- * This class checks, if given time entry like 08:34 is valid in TCA.
- */
 class PointValidator
 {
-    // private const ERA_BEGIN = -62167219200;
     private const DAY_TSTAMP = 86400;
+    private const EXT_KEY = 'ak_timeline';
 
     /**
      * JavaScript code for client side validation/evaluation
@@ -56,17 +53,16 @@ class PointValidator
         $timelineStartDateBC = (bool)$timeline['date_start_b_c'];
         $timelineEndDateBC = (bool)$timeline['date_end_b_c'];
 
-        $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-
         $timelineStartTStamp = 0;
         $timelineEnd = new \DateTime(is_string($timeline['range_end']) ? $timeline['range_end'] : 'now');
         $timelineEndTStamp = $timelineEnd->getTimestamp();
         $farDateError = false;
 
+        $locale = $this->getFileLocale();
+        $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+
         // Case Range start is not specified
         if (strlen($timeline['range_start']) == 0) {
-            // NOTE May be useful create method for this case
-
             // At least one limit should be defined
             if (strlen($timeline['range_end']) == 0) {
                 // FlashMessage is in Timeline validator
@@ -74,51 +70,38 @@ class PointValidator
                 return 0;
             }
 
-            // Considering B. C. dates
-            if ($timelineEndDateBC) {
-                $farDateVObj = new FarDate((int)$value, true);
-                $farDateV = $farDateVObj->getFarDateTimestamp();
+            // Set Far date as positive number
+            $farDateVObj = new FarDate((int)$value, $timelineEndDateBC);
+            $farDateV = $farDateVObj->getFarDateTimestamp();
 
-                $farDateEnd = (new FarDate($timelineEnd->getTimestamp(), true))->getFarDateTimestamp();
+            $farDateEnd = (new FarDate($timelineEnd->getTimestamp(), $timelineEndDateBC))->getFarDateTimestamp();
 
-                if ($farDateV > $farDateEnd + self::DAY_TSTAMP) {
-                    $farDateError = true;
-                }
-        
-                if ($farDateError) {
-                    $this->flashMessage('Point date is out of timeline range', 'Your input was ' . $value . '. Pay attention on B. C. dates.');
-            
-                    return $timelineEnd->getTimestamp();
-                }
-
-                $this->flashMessage('One point has date "' . $farDateVObj->logDate() . '"', 'B. C. flag must be checked (for your confidence). Please consider start date of Timeline is not specified.', FlashMessage::INFO);
-
-                return $value;
-            } else {
-
-                // @TODO make sure the value is not B. C.
-
-                // Set Far date as positive number
-                $farDateVObj = new FarDate((int)$value, false);
-                $farDateV = $farDateVObj->getFarDateTimestamp();
-
-                $farDateEnd = (new FarDate($timelineEnd->getTimestamp(), false))->getFarDateTimestamp();
-
-                if ($farDateV > $farDateEnd + self::DAY_TSTAMP) {
-                    $farDateError = true;
-                }
-        
-                if ($farDateError) {
-                    $this->flashMessage('Point date is out of timeline range', 'Your input was ' . $value . '. Pay attention on B. C. dates.');
-
-                    // Save value because it may be right
-                    return $timelineEnd->getTimestamp();
-                }
-
-                $this->flashMessage('One point has date "' . $farDateVObj->logDate() . '"', 'You could make sure the value is not out of timeline range. Please consider start date of Timeline is not specified.', FlashMessage::INFO);
-
-                return $value;
+            if ($farDateV > $farDateEnd + self::DAY_TSTAMP) {
+                $farDateError = true;
             }
+    
+            if ($farDateError) {
+                $detailsMsg = [
+                    $this->getLanguageService()->sL($locale . ':flashmessage.point.details.input_was'),
+                    $farDateVObj->logDate(),
+                    '. ' . $this->getLanguageService()->sL($locale . ':flashmessage.point.warn.BC_date')
+                ];
+    
+                $this->flashMessage('point.date_is_out', $detailsMsg);
+        
+                // Save value because it may be right
+                return $timelineEnd->getTimestamp();
+            }
+
+            $titleMsg = [
+                $this->getLanguageService()->sL($locale . ':flashmessage.point.one_point_date') . '"',
+                $farDateVObj->logDate(),
+                '"'
+            ];
+    
+            $this->flashMessage($titleMsg, 'point.warn.not_out', FlashMessage::INFO);
+
+            return $value;
         } else {
             $timelineStart = new \DateTime($timeline['range_start']);
             $timelineStartTStamp = $timelineStart->getTimestamp();
@@ -132,7 +115,12 @@ class PointValidator
         // Case of usual D. C. range
         if (!$timelineStartDateBC) {
             if ($value < $timelineStartTStamp - self::DAY_TSTAMP || $value > $timelineEndTStamp) {
-                $this->flashMessage('Point date is out of timeline range', 'Your input was ' . $value . '.');
+                $detailsMsg = [
+                    $this->getLanguageService()->sL($locale . ':flashmessage.point.details.input_was'),
+                    (new \DateTime())->setTimestamp((int)$value)->format('Y-m-d')
+                ];
+
+                $this->flashMessage('point.date_is_out', $detailsMsg);
     
                 return $timelineStartTStamp;
             }
@@ -152,16 +140,6 @@ class PointValidator
             if (($farDateV < $farDateStart) || ($farDateV > $farDateEnd + self::DAY_TSTAMP)) {
                 $farDateError = true;
             }
-    
-            if ($farDateError) {
-                $this->flashMessage('Point date is out of timeline range', 'Your input was ' . $value . '. Pay attention on B. C. dates.');
-        
-                return $timelineStartTStamp;
-            }
-
-            $this->flashMessage('One point has date "' . $farDateVObj->logDate() . '"', 'B. C. flag must be checked (for your confidence).', FlashMessage::INFO);
-
-            return $value;
         } else {
             $farDateLimit = (new FarDate(($timelineStartTStamp > $timelineEndTStamp ? $timelineStartTStamp : $timelineEndTStamp), false))->getFarDateTimestamp();
 
@@ -169,34 +147,78 @@ class PointValidator
             $farDateVObj = new FarDate((int)$value, false);
             $farDateV = $farDateVObj->getFarDateTimestamp();
 
-            if ((-$farDateV < -abs($farDateLimit)) || ($farDateV > $farDateLimit)) {
+            // @TODO fit for cases only start BC date
+            if ((-$farDateV < -abs($farDateLimit)) || ($farDateV > $farDateLimit + self::DAY_TSTAMP)) {
                 $farDateError = true;
             }
-    
-            if ($farDateError) {
-                $this->flashMessage('Point date is out of timeline range', 'Your input was ' . $value . '. Pay attention on B. C. dates.');
-
-                // Save value because it may be right
-                return $timelineStartTStamp;
-            }
-
-            $this->flashMessage('One point has date "' . $farDateVObj->logDate() . '"', 'You could make sure the value is not out of timeline range.', FlashMessage::INFO);
-
-            return $value;
         }
+
+        if ($farDateError) {
+            $detailsMsg = [
+                $this->getLanguageService()->sL($locale . ':flashmessage.point.details.input_was'),
+                $farDateVObj->logDate(),
+                '. ' . $this->getLanguageService()->sL($locale . ':flashmessage.point.warn.BC_date')
+            ];
+
+            $this->flashMessage('point.date_is_out', $detailsMsg);
+    
+            // Save value because it may be right
+            return $timelineStartTStamp;
+        }
+
+        $titleMsg = [
+            $this->getLanguageService()->sL($locale . ':flashmessage.point.one_point_date') . '"',
+            $farDateVObj->logDate(),
+            '"'
+        ];
+
+        $this->flashMessage($titleMsg, 'point.warn.not_out', FlashMessage::INFO);
+
+        return $value;
     }
 
     /**
-     * @param string $messageTitle
-     * @param string $messageText
+     * Get file with localization
+     *
+     * @return string
+     */
+    protected static function getFileLocale(): string
+    {
+        $lang = $GLOBALS['BE_USER']->uc['lang'] ?? '';
+        $lang = $lang == 'default' ? '' : $lang . '.';
+
+        return 'LLL:EXT:' . self::EXT_KEY . '/Resources/Private/Language/' . $lang . 'locallang.xlf';
+    }
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
+    }
+
+    /**
+     * Flash message in BE
+     * @param string $keyTitle
+     * @param string $keyText
      * @param int $severity
      */
-    protected function flashMessage($messageTitle, $messageText, $severity = FlashMessage::ERROR)
+    protected function flashMessage($keyTitle, $keyText, $severity = FlashMessage::ERROR)
     {
-        // TODO make with LocalizationUtility
+        $locale = $this->getFileLocale();
+        $titleMessage = gettype($keyTitle) == 'array'
+            ? implode($keyTitle)
+            : $this->getLanguageService()->sL($locale . ':flashmessage.' . $keyTitle);
+        $detailsMessage = gettype($keyText) == 'array'
+            ? implode($keyText)
+            : $this->getLanguageService()->sL($locale . ':flashmessage.' . $keyText);
 
-        // show messages in TYPO3 BE when started manually
-        $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $messageText, $messageTitle, $severity, true);
+        $flashMessage = GeneralUtility::makeInstance(FlashMessage::class,
+            $detailsMessage,
+            $titleMessage,
+            $severity, true);
+
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
         $messageQueue = $flashMessageService->getMessageQueueByIdentifier();
         $messageQueue->addMessage($flashMessage);

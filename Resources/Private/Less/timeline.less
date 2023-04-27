@@ -13,22 +13,14 @@
 @import "./utils/variables/colors.less";
 @import "./utils/variables/dimensions.less";
 
-// https://lesscss.org/features/#extend-feature
-
-.tx-timeline-description {
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 3px dashed @color-paper;
+// General extension styles
+.tx-timeline {
+  &-description {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 3px dashed @color-paper;
+  }
 }
 
 // Pagination
-@import "./helpers/pagination.less";
-
-// .tx-timeline-description:after { 
-//   content: '';
-//   position: absolute;
-//   display: block;
-//   border-bottom: 30px solid grey;
-//   border-right: 30px solid transparent;
-//   border-left: 30px solid grey;
-// }
+@import "./extra/pagination.less";

@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 /*
+ * Class checks entered dates of Timeline range
+ * 
  * This file is part of the package ak/ak-timelinevis.
  * 
  * For the full copyright and license information, please read the
@@ -14,16 +16,11 @@ namespace AK\TimelineVis\Evaluation;
 use \AK\TimelineVis\Domain\Model\Timeline;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use \AK\TimelineVis\Timeline\FarDate\FarDate;
+use TYPO3\CMS\Core\Localization\LanguageService;
 
-// @TODO make with LocalizationUtility
-
-/*
- * This class checks, if given time entry like 08:34 is valid in TCA.
- */
 class TimelineValidator
 {
     private const DAY_TSTAMP = 86400;
@@ -67,7 +64,9 @@ class TimelineValidator
 
         $farDateErrorIndex = 0;
 
-        // Calculate B. C. cases
+        $locale = $this->getFileLocale();
+
+        // B. C. cases
         if ($timelineStartDateBC) {
             $farDateStart = (new FarDate($timelineStartTStamp, $timelineStartDateBC))->getFarDateTimestamp();
             $farDateEnd = (new FarDate($timelineEndTStamp, $timelineEndDateBC))->getFarDateTimestamp();
@@ -82,7 +81,7 @@ class TimelineValidator
             $farDateErrorIndex = 1;
         }
 
-        // Do final check-in
+        // A. D. cases (final check-in)
         // In case of error, retrieve old value from DB and save instead
         if ($farDateErrorIndex > 0 || ($timelineStartTStamp > $timelineEndTStamp && !$timelineStartDateBC && !$timelineEndDateBC)) {
             // @TODO Do not allow null or empty
@@ -111,18 +110,23 @@ class TimelineValidator
             $dbDateEnd = \DateTime::createFromFormat('Y-m-d', $dbDateEndF);
             $dbValueEnd = $dbDateEnd->getTimestamp();
 
+            // Save (return) only value that points to anyone of range limit
+            // Show message only once (e. g., when evaluating range start value)
             if ($value == $timelineStart->getTimestamp()) {
-                $this->flashMessage('Invalid field value in timeline "' . $queryArray[0]['title'] . '"',
-                'End date can not be before timeline start date.');
+                $this->flashMessage('timeline.invalid_range', 'timeline.details.invalid_range');
 
                 if ($farDateErrorIndex > 0) {
-                    $this->flashMessage('To your attention',
-                    ($farDateErrorIndex == 1 ? 'B. C. end date must not precede start A. D. date.'
-                    : ($farDateErrorIndex == 2 ? 'B. C. (ancient) dates are usually ordered backwards to A. D. dates.' : '')), FlashMessage::WARNING);
+                    $this->flashMessage('timeline.pay_attention',
+                    ($farDateErrorIndex == 1 ? 'timeline.details.BC_precedes_AD'
+                    : ($timelineStartTStamp < $timelineEndTStamp + self::DAY_TSTAMP ? 'timeline.details.BC_dates_order' : '')), FlashMessage::WARNING);
                 }
 
                 return $dbValueStart;
             } else if ($value == $timelineEnd->getTimestamp()) {
+                if ($farDateErrorIndex == 2) {
+                    return $dbValueStart - self::DAY_TSTAMP;
+                }
+
                 return $dbValueEnd;
             }
 
@@ -130,19 +134,43 @@ class TimelineValidator
         }
 
         return $value;
-    } 
+    }
 
     /**
-     * @param string $messageTitle
-     * @param string $messageText
+     * Get file with localization
+     *
+     * @return string
+     */
+    protected static function getFileLocale(): string
+    {
+        $lang = $GLOBALS['BE_USER']->uc['lang'] ?? '';
+        $lang = $lang == 'default' ? '' : $lang . '.';
+
+        return 'LLL:EXT:ak_timeline/Resources/Private/Language/' . $lang . 'locallang.xlf';
+    }
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
+    }
+
+    /**
+     * Flash message in BE
+     * @param string $keyTitle
+     * @param string $keyText
      * @param int $severity
      */
-    protected function flashMessage($messageTitle, $messageText, $severity = FlashMessage::ERROR)
+    protected function flashMessage($keyTitle, $keyText, $severity = FlashMessage::ERROR)
     {
-        // TODO make with LocalizationUtility
+        $locale = $this->getFileLocale();
+        $flashMessage = GeneralUtility::makeInstance(FlashMessage::class,
+            strlen($keyText) == 0 ? '' : $this->getLanguageService()->sL($locale . ':flashmessage.' . $keyText),
+            $this->getLanguageService()->sL($locale . ':flashmessage.' . $keyTitle),
+            $severity, true);
 
-        // show messages in TYPO3 BE when started manually
-        $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $messageText, $messageTitle, $severity, true);
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
         $messageQueue = $flashMessageService->getMessageQueueByIdentifier();
         $messageQueue->addMessage($flashMessage);

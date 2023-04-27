@@ -11,18 +11,15 @@
 
 namespace AK\TimelineVis\Controller;
 
-use \TYPO3\CMS\Core\Messaging\AbstractMessage;
-use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use \TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use \AK\TimelineVis\Domain\Model\Timeline;
 use \AK\TimelineVis\Domain\Repository\TimelineRepository;
 use \AK\TimelineVis\Domain\Repository\PointRepository;
 use \TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use \GeorgRinger\NumberedPagination\NumberedPagination;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Log\LogManager;
+// use TYPO3\CMS\Core\Utility\GeneralUtility;
+// use TYPO3\CMS\Core\Log\LogManager;
 
 /**
  * Timeline controller class

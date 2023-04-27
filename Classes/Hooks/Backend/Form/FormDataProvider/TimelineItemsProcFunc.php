@@ -14,8 +14,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class TimelineItemsProcFunc {
-  // @TODO fix a problem and use TimelineRepository (commented now)
-  // Fatal error: Uncaught ArgumentCountError: Too few arguments to function TYPO3\CMS\Core\Imaging\IconFactory::__construct()
   // @TODO Also provide options for user to create Timeline widget (backend module)
 
   /**
@@ -31,6 +29,7 @@ class TimelineItemsProcFunc {
       ['Vertical, right-side line', 'verticalRight1'],
       ['Vertical, both-sides timestamps', 'verticalBothSides'],
       ['Horizontal', 'horizontal'],
+      ['Horizontal multiple', 'horizontalMulti'],
       ['Pie', 'pie']
     ];
   }

@@ -4,13 +4,13 @@
 		<header/>
 		<body>
 			<trans-unit id="extension.title">
-				<source>Timeline content</source>
+				<source>Timeline inhalt</source>
 			</trans-unit>
 			<trans-unit id="extension.new_record_title">
-				<source>Add timeline content</source>
+				<source>Zeitachse der Timeline inhalt</source>
 			</trans-unit>
 			<trans-unit id="extension.add_points">
-				<source>Add points for the timeline</source>
+				<source>Add punkts for the timeline</source>
 			</trans-unit>
 
 			<trans-unit id="settings.timeline.max">
@@ -61,7 +61,7 @@
 				<source>Point notes</source>
 			</trans-unit>
 			<trans-unit id="tx_timelinevis_domain_model_point.description.desc">
-				<source>Content that belongs to the point</source>
+				<source>Content of the </source>
 			</trans-unit>
 			<trans-unit id="tx_timelinevis_domain_model_point.source">
         <source>Source</source>

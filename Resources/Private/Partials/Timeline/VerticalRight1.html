@@ -5,7 +5,7 @@
 <div class="tx-timeline timeline-vertical">
   <h2>{timeline.title}</h2>
 
-  <f:if condition="{timeline.rangeStart} && {timeline.rangeEnd}">
+dateStartBC  <f:if condition="{timeline.rangeStart} && {timeline.rangeEnd}">
     <f:then>
       <span class="timeline-range">(<tln:fardate format="%d %B %Y" isbc="{timeline.dateStartBC}">{timeline.rangeStart}</tln:fardate> - <tln:fardate format="%d %B %Y" isbc="{timeline.dateEndBC}">{timeline.rangeEnd}</tln:fardate>)</span>
     </f:then>
@@ -48,28 +48,39 @@
           <f:render partial="Pagination" arguments="{pagination: pagination.pagination, paginator: pagination.paginator, actionName: 'show'}" />
         </f:then>
         <f:else>
-          <!-- Points -->
+          <!-- Child timeline segments -->
           <f:for each="{segments}" as="segment">
-            <f:for each="{segment.points}" as="point">
-              <div class="timeline">
-                <div class="tl-content tl-content-level2">
-                  <time datetime="{f:format.date(format: 'Y-m-d', date: point.pointdate)}"><tln:fardate format="%d %B %Y" isbc="{point.pointdateBC}">{point.pointdate}</tln:fardate></time>
-                  <div class="tl-content-main">
-                    <h3>{point.title}</h3>
-                    <p><f:format.html>{point.description}</f:format.html></p>
-                    <f:if condition="{point.source}">
-                      <f:link.external class="tl-link-more" uri="{point.source}" target="_blank" title="{point.title} link">mehr erfahren</f:link.external>
-                    </f:if>
+
+            <template data-js="timeline-segment"
+              data-range-start="{tln:fardate(format: 'Y-m-d', date: segment.rangeStart)}"
+              data-range-start-BC="{segment.dateStartBC}"
+              data-range-end="{tln:fardate(format: 'Y-m-d', date: segment.rangeEnd)}"
+              data-range-end-BC="{segment.dateEndBC}">
+
+              <div class="timeline-segment">
+                <f:for each="{segment.points}" as="point">
+                  <div class="timeline">
+                    <div class="tl-content tl-content-level2">
+                      <time datetime="{f:format.date(format: 'Y-m-d', date: point.pointdate)}"><tln:fardate format="%d %B %Y" isbc="{point.pointdateBC}">{point.pointdate}</tln:fardate></time>
+                      <div class="tl-content-main">
+                        <h3>{point.title}</h3>
+                        <p><f:format.html>{point.description}</f:format.html></p>
+                        <f:if condition="{point.source}">
+                          <f:link.external class="tl-link-more" uri="{point.source}" target="_blank" title="{point.title} link">mehr erfahren</f:link.external>
+                        </f:if>
+                      </div>
+                    </div>
+                    <div class="tl-offcut">
+                      <div class="tl-offcut-spot"></div>
+                      <div class="tl-offcut-line"></div>
+                    </div>
                   </div>
-                </div>
-                <div class="tl-offcut">
-                  <div class="tl-offcut-spot"></div>
-                  <div class="tl-offcut-line"></div>
-                </div>
+                </f:for>
               </div>
-            </f:for>
+            </template>
           </f:for>
 
+          <!-- Points -->
           <f:for each="{timelinePoints}" as="point">
             <div class="timeline">
               <div class="tl-content">

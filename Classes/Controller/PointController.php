@@ -13,9 +13,6 @@ namespace AK\TimelineVis\Controller;
 use AK\TimelineVis\Domain\Repository\PointRepository;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
-use TYPO3\CMS\Backend\View\BackendTemplateView;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
-use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 /**
  * Point controller class
@@ -39,19 +36,19 @@ class PointController extends ActionController
         $this->PointRepository = $pointRepository;
     }
 
-    /**
-     * Initialize view
-     *
-     * @param ViewInterface
-     */
-    protected function initializeView(ViewInterface $view): void
-    {
-        if ($view instanceof BackendTemplateView) {
-            /** @var BackendTemplateView $view */
-            parent::initializeView($view);
-            $this->generateMenu();
-        }
-    }
+    // /**
+    //  * Initialize view
+    //  *
+    //  * @param ViewInterface
+    //  */
+    // protected function initializeView(ViewInterface $view): void
+    // {
+    //     if ($view instanceof BackendTemplateView) {
+    //         /** @var BackendTemplateView $view */
+    //         parent::initializeView($view);
+    //         $this->generateMenu();
+    //     }
+    // }
 
     /**
      * Initialize action
