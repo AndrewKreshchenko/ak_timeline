@@ -1,11 +1,14 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-	  xmlns:tln="http://typo3.org/ns/AK/TimelineVis/ViewHelpers"
-	  data-namespace-typo3-fluid="true">
+	xmlns:tln="http://typo3.org/ns/AK/TimelineVis/ViewHelpers"
+	data-namespace-typo3-fluid="true">
 
-<div class="tx-timeline timeline-vertical">
+<div class="tx-timeline timeline-vertical"
+  data-async="{settings.loadAsync ? 'true' : 'false'}"
+  data-hide-derived="{settings.hideDerivedPoints ? 'true' : 'false'}">
+
   <h2>{timeline.title}</h2>
 
-dateStartBC  <f:if condition="{timeline.rangeStart} && {timeline.rangeEnd}">
+  <f:if condition="{timeline.rangeStart} && {timeline.rangeEnd}">
     <f:then>
       <span class="timeline-range">(<tln:fardate format="%d %B %Y" isbc="{timeline.dateStartBC}">{timeline.rangeStart}</tln:fardate> - <tln:fardate format="%d %B %Y" isbc="{timeline.dateEndBC}">{timeline.rangeEnd}</tln:fardate>)</span>
     </f:then>
@@ -52,6 +55,7 @@ dateStartBC  <f:if condition="{timeline.rangeStart} && {timeline.rangeEnd}">
           <f:for each="{segments}" as="segment">
 
             <template data-js="timeline-segment"
+              data-async="false"
               data-range-start="{tln:fardate(format: 'Y-m-d', date: segment.rangeStart)}"
               data-range-start-BC="{segment.dateStartBC}"
               data-range-end="{tln:fardate(format: 'Y-m-d', date: segment.rangeEnd)}"
@@ -59,7 +63,7 @@ dateStartBC  <f:if condition="{timeline.rangeStart} && {timeline.rangeEnd}">
 
               <div class="timeline-segment">
                 <f:for each="{segment.points}" as="point">
-                  <div class="timeline">
+                  <div class="timeline" data-date="{f:format.date(format: 'Y-m-d', date: point.pointdate)}">
                     <div class="tl-content tl-content-level2">
                       <time datetime="{f:format.date(format: 'Y-m-d', date: point.pointdate)}"><tln:fardate format="%d %B %Y" isbc="{point.pointdateBC}">{point.pointdate}</tln:fardate></time>
                       <div class="tl-content-main">

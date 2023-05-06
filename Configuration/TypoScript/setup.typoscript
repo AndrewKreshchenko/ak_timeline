@@ -36,7 +36,7 @@ plugin.tx_timelinevis {
 
 page {
   includeJSFooter {
-    timelinevis = EXT:ak_timeline/Resources/Public/JavaScript/timeline.js
+    timelinevis = EXT:ak_timeline/Resources/Public/JavaScript/timeline.umd.js
   }
   includeCSS {
     timelinevis = EXT:ak_timeline/Resources/Public/Css/timeline.css

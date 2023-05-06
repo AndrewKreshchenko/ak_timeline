@@ -1,3 +1,15 @@
+// Utility functions
+Object.prototype.joinTplNodes = function(selector) {
+  const nodes = Array.from(this).map(elem => {
+    const tplNode = elem.content.cloneNode(true);
+    const tplElements = tplNode.querySelectorAll(selector);
+
+    return Array.prototype.slice.call(tplElements);
+  });
+
+  return Array.prototype.concat.call(...nodes);
+}
+
 function getClosest(elem, selector) {
   if (!elem.matches && !elem.mozMatchesSelector) {
     return null;
@@ -17,20 +29,15 @@ function getClosest(elem, selector) {
   }
 }
 
+// Handlers for DOM ready
 document.addEventListener('DOMContentLoaded', function(e) {
   // DOM element where the Timeline will be attached
-  const visBlock = document.querySelector('[data-js="timeline-horizontal"]');
-
-  if (!visBlock) {
-    console.warn('%cPoints are not exist for the Timeline yet, or error in Timeline found. Please check settings.', 'padding:15px;font-size:12px;font-weight:bold;');
-    return;
-  }
-
   // const dataBlock = visBlock.parentNode.querySelector('[data-js="timeline-data"]');
-  const container = document.querySelector('.tx-timeline[data-tl_id]');
-  const pointContainer = container.querySelector('.timeline');
-  const dataId = container.dataset.tl_id;
-  const ajaxURL = container.dataset.url;
+  // const container = document.querySelector('.tx-timeline[data-tl_id]');
+  const points = document.querySelectorAll('.tx-timeline .timeline');
+  // const pointContainer = container.querySelector('.timeline');
+  // const dataId = container.dataset.tl_id;
+  // const ajaxURL = container.dataset.url;
 
   const handleClickVisItem = (e) => {
     e.preventDefault();
@@ -43,60 +50,40 @@ document.addEventListener('DOMContentLoaded', function(e) {
     pointContainer.innerHTML = pointBlock.innerHTML;
   }
 
-  // GET data by action
+  //----------
+  // Segments
+  if (document.querySelector('[data-js="timeline-segment"]')) {
+    // Make array of points from each segment
+    const tplPoints = document.querySelectorAll('[data-js="timeline-segment"]').joinTplNodes('.timeline');
 
-  const xhr = new XMLHttpRequest();
+    // Spread points of each segments
+    // const pointNode = segment.content.cloneNode(true);
+    // const tplPoints = pointNode.querySelectorAll('.timeline');
+    const pointsLen = tplPoints.length;
+    let html;
 
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState === 4) {
-      try {
-        var data = JSON.parse(xhr.responseText)
+    // const segRangeStart = new Date(segment.dataset.rangeStart);
+    // const segRangeEnd = new Date(segment.dataset.rangeEnd);
 
-        console.log('Status ' + xhr.readyState);
+    for (let i = 0; i < pointsLen; i++) {
+      const time = new Date(points[i].querySelector('time').getAttribute('datetime'));
+      html = '';
 
-        if (data.points && data.points.length) {
-          // Prepare visual part
-          const dataVisual = [];
+      console.log(i, time.getDate());
 
-          data.points.forEach((point, i) => {
-            const dateFormat = dayjs(point.date.date, "YYYY-MM-DD").format('DD MMM YYYY');
-
-            dataVisual.push({
-              id: `tl-${dataId}-${point.id}`,
-              type: 'point',
-              start: dateFormat,
-              content: `<strong>${point.title}</strong><span>${dateFormat}</span>`,
-            });
-          });
-
-          // Create a DataSet (allows two way data-binding)
-          const items = new vis.DataSet(dataVisual);
-
-          // Configuration for the Timeline
-          const options = {
-            dataAttributes: ['id'],
-            height: 200,
-            groupHeightMode: 'fixed'
-          };
-
-          // Create a Timeline
-          const timeline = new vis.Timeline(visBlock, items, options);
-
-          // Open content block by clicked point
-          container.querySelectorAll('.vis-item-content').forEach((point) => {
-            point.addEventListener('click', handleClickVisItem);
-          });
+      for (let j = 0; j < tplPoints.length; j++) {
+        const tplTime = new Date(tplPoints[j].dataset.date);
+        console.log(tplPoints[j].dataset.date);
+    
+        if (tplTime >= time && i < pointsLen - 1) {
+          console.log(i + ' append after, there');
+          points[i + 1].before(tplPoints[j]);
+        } else if (tplTime < time) {
+          console.log(i + ' append before, there');
+          points[i].previousElementSibling.after(tplPoints[j]);
         }
-      } catch(e) {
-        console.error(e);
       }
     }
-  };
-
-  // Test using middleware:
-  // xhr.open('GET', 'http://localhost:8000/index.php?tlinfo=true&pid=' + dataId);
-
-  xhr.open('GET', ajaxURL);
-  xhr.send();
+  }
 
 });

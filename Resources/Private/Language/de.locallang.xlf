@@ -7,7 +7,7 @@
 				<source>Ungültiges Start- oder Enddatum des Bereichs</source>
 			</trans-unit>
 			<trans-unit id="flashmessage.timeline.details.invalid_range">
-				<source>Das Enddatum darf nicht vor dem Startdatum der Timeline liegen.</source>
+				<source>Das Enddatum sollte nicht vor dem Startdatum liegen.</source>
 			</trans-unit>
 			<trans-unit id="flashmessage.timeline.pay_attention">
 				<source>Bitte pass auf</source>
@@ -16,7 +16,7 @@
 				<source>Das B. C. Enddatum darf nicht vor dem A. D. Startdatum liegen.</source>
 			</trans-unit>
 			<trans-unit id="flashmessage.timeline.details.BC_dates_order">
-				<source>B. C. (alte) Daten werden normalerweise rückwärts zu A. D.-Daten geordnet.</source>
+				<source>B. C. (alte) Datum werden normalerweise rückwärts zu A. D.-Daten geordnet.</source>
 			</trans-unit>
 
 			<trans-unit id="flashmessage.point.date_is_out">

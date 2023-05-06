@@ -7,7 +7,7 @@
 				<source>Invalid range start date or range end date</source>
 			</trans-unit>
 			<trans-unit id="flashmessage.timeline.details.invalid_range">
-				<source>End date can not be before timeline start date.</source>
+				<source>End date should not precede start date.</source>
 			</trans-unit>
 			<trans-unit id="flashmessage.timeline.pay_attention">
 				<source>Please, pay attention</source>

@@ -72,7 +72,7 @@ class TimelineValidator
             // $logger->warning('value ' . $value . ' ' . $timelineStart->getTimestamp());
 
             if ($value == $timelineStart->getTimestamp()) {
-                $this->flashMessage('Invalid field value in timeline "' . $resultArray[0]['title'] . '"', 'End date can not be before timeline start date.');
+                $this->flashMessage('Invalid field value in timeline "' . $resultArray[0]['title'] . '"', 'End date can not be set before timeline start date.');
 
                 // $logger->warning('value ' . $value
                 // . ', old start value is ' . $dbValueStart . ' (dbValue is ' . $resultArray[0]['range_start']
@@ -102,8 +102,6 @@ class TimelineValidator
      */
     protected function flashMessage($messageTitle, $messageText, $severity = FlashMessage::ERROR)
     {
-        // TODO make with LocalizationUtility
-
         // show messages in TYPO3 BE when started manually
         $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $messageText, $messageTitle, $severity, true);
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);

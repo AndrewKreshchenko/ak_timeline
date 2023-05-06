@@ -68,13 +68,12 @@ class TimelineController extends ActionController
     public function listAction($search = ''): void
     {
         $search = '';
+
         if ($this->request->hasArgument('search')) {
             $search = $this->request->getArgument('search');
         }
-        $limit = ($this->settings['timeline']['max']) ?: null;
 
-        $this->view->assign('timelines', $this->TimelineRepository->findSearchForm($search, $limit));
-        $this->view->assign('search', $search);
+        $this->view->assign('timelines', $this->TimelineRepository->findSearchedTimeline($search));
     }
 
     /**

@@ -1,6 +1,6 @@
 # Extend
 
-Info will be added later.
+I'll delve into more details later on :smile:
 
 ## Table of contents
 - Extend of Fluid templates

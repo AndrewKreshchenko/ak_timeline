@@ -3,95 +3,80 @@
   factory();
 })((function () { 'use strict';
 
-  function getClosest(elem, selector) {
-    if (!elem.matches && !elem.mozMatchesSelector) {
-      return null;
-    }
-    while (elem !== document.body) {
-      elem = elem.parentElement;
-      if (elem.matches) {
-        if (elem.matches(selector)) {
-          return elem;
-        }
-      } else if (elem.mozMatchesSelector) {
-        if (elem.mozMatchesSelector(selector)) {
-          return elem;
-        }
-      }
-    }
+  function _toConsumableArray(arr) {
+    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
   }
+  function _arrayWithoutHoles(arr) {
+    if (Array.isArray(arr)) return _arrayLikeToArray(arr);
+  }
+  function _iterableToArray(iter) {
+    if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
+  }
+  function _unsupportedIterableToArray(o, minLen) {
+    if (!o) return;
+    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+    var n = Object.prototype.toString.call(o).slice(8, -1);
+    if (n === "Object" && o.constructor) n = o.constructor.name;
+    if (n === "Map" || n === "Set") return Array.from(o);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+  }
+  function _arrayLikeToArray(arr, len) {
+    if (len == null || len > arr.length) len = arr.length;
+    for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+    return arr2;
+  }
+  function _nonIterableSpread() {
+    throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+  }
+
+  // Utility functions
+  Object.prototype.joinTplNodes = function (selector) {
+    var _Array$prototype$conc;
+    var nodes = Array.from(this).map(function (elem) {
+      var tplNode = elem.content.cloneNode(true);
+      var tplElements = tplNode.querySelectorAll(selector);
+      return Array.prototype.slice.call(tplElements);
+    });
+    return (_Array$prototype$conc = Array.prototype.concat).call.apply(_Array$prototype$conc, _toConsumableArray(nodes));
+  };
+
+  // Handlers for DOM ready
   document.addEventListener('DOMContentLoaded', function (e) {
     // DOM element where the Timeline will be attached
-    var visBlock = document.querySelector('[data-js="timeline-horizontal"]');
-    if (!visBlock) {
-      console.warn('%cPoints are not exist for the Timeline yet, or error in Timeline found. Please check settings.', 'padding:15px;font-size:12px;font-weight:bold;');
-      return;
-    }
-
     // const dataBlock = visBlock.parentNode.querySelector('[data-js="timeline-data"]');
-    var container = document.querySelector('.tx-timeline[data-tl_id]');
-    var pointContainer = container.querySelector('.timeline');
-    var dataId = container.dataset.tl_id;
-    var ajaxURL = container.dataset.url;
-    var handleClickVisItem = function handleClickVisItem(e) {
-      e.preventDefault();
-      var pointId = getClosest(e.target, '.vis-point').dataset.id;
-      var templateElem = visBlock.nextElementSibling;
-      var pointNode = templateElem.content.cloneNode(true);
-      var pointBlock = pointNode.querySelector('.timeline[data-point_id="' + pointId + '"]');
-      pointContainer.innerHTML = pointBlock.innerHTML;
-    };
+    // const container = document.querySelector('.tx-timeline[data-tl_id]');
+    var points = document.querySelectorAll('.tx-timeline .timeline');
 
-    // GET data by action
+    //----------
+    // Segments
+    if (document.querySelector('[data-js="timeline-segment"]')) {
+      // Make array of points from each segment
+      var tplPoints = document.querySelectorAll('[data-js="timeline-segment"]').joinTplNodes('.timeline');
 
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4) {
-        try {
-          var data = JSON.parse(xhr.responseText);
-          console.log('Status ' + xhr.readyState);
-          if (data.points && data.points.length) {
-            // Prepare visual part
-            var dataVisual = [];
-            data.points.forEach(function (point, i) {
-              var dateFormat = dayjs(point.date.date, "YYYY-MM-DD").format('DD MMM YYYY');
-              dataVisual.push({
-                id: "tl-" + dataId + "-" + point.id,
-                type: 'point',
-                start: dateFormat,
-                content: "<strong>" + point.title + "</strong><span>" + dateFormat + "</span>"
-              });
-            });
+      // Spread points of each segments
+      // const pointNode = segment.content.cloneNode(true);
+      // const tplPoints = pointNode.querySelectorAll('.timeline');
+      var pointsLen = tplPoints.length;
 
-            // Create a DataSet (allows two way data-binding)
-            var items = new vis.DataSet(dataVisual);
+      // const segRangeStart = new Date(segment.dataset.rangeStart);
+      // const segRangeEnd = new Date(segment.dataset.rangeEnd);
 
-            // Configuration for the Timeline
-            var options = {
-              dataAttributes: ['id'],
-              height: 200,
-              groupHeightMode: 'fixed'
-            };
-
-            // Create a Timeline
-            var timeline = new vis.Timeline(visBlock, items, options);
-
-            // Open content block by clicked point
-            container.querySelectorAll('.vis-item-content').forEach(function (point) {
-              point.addEventListener('click', handleClickVisItem);
-            });
+      for (var i = 0; i < pointsLen; i++) {
+        var time = new Date(points[i].querySelector('time').getAttribute('datetime'));
+        console.log(i, time.getDate());
+        for (var j = 0; j < tplPoints.length; j++) {
+          var tplTime = new Date(tplPoints[j].dataset.date);
+          console.log(tplPoints[j].dataset.date);
+          if (tplTime >= time && i < pointsLen - 1) {
+            console.log(i + ' append after, there');
+            points[i + 1].before(tplPoints[j]);
+          } else if (tplTime < time) {
+            console.log(i + ' append before, there');
+            points[i].previousElementSibling.after(tplPoints[j]);
           }
-        } catch (e) {
-          console.error(e);
         }
       }
-    };
-
-    // Test using middleware:
-    // xhr.open('GET', 'http://localhost:8000/index.php?tlinfo=true&pid=' + dataId);
-
-    xhr.open('GET', ajaxURL);
-    xhr.send();
+    }
   });
 
 }));

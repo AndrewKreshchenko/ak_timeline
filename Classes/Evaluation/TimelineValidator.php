@@ -84,7 +84,7 @@ class TimelineValidator
         // A. D. cases (final check-in)
         // In case of error, retrieve old value from DB and save instead
         if ($farDateErrorIndex > 0 || ($timelineStartTStamp > $timelineEndTStamp && !$timelineStartDateBC && !$timelineEndDateBC)) {
-            // @TODO Do not allow null or empty
+            // Both range limits that are null or empty are not allowed by TCA
             if (is_null($value) || !strlen($value)) {
                 return $value;
             }

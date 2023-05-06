@@ -1,7 +1,4 @@
-{namespace h5v=AK\TimelineVis\ViewHelpers}
-
 <div class="tx-timeline">
-	
 	<ul>
 		<li>
 			<strong>
@@ -10,10 +7,8 @@
 					<sup>(<f:format.date format="%d %B %Y">{timeline.rangeStart}</f:format.date> - <f:format.date format="%d %B %Y">{timeline.rangeEnd}</f:format.date>)</sup>
 				</f:if>
 			</strong>
-			<f:comment>{f:if(condition:'{settings.ff.videowidth} > 0', then: settings.ff.videowidth, else: timeline.minWidth)}</f:comment>
 
 			<f:if condition="{settings.timeline.rangeStart}">
-				<f:comment>https://docs.typo3.org/other/typo3/view-helper-reference/11.5/en-us/typo3/fluid/latest/Format/Date.html</f:comment>
 				<f:if condition="{timeline.description}">
 					<div>
 						<i><f:format.html>{timeline.description}</f:format.html></i>
@@ -23,14 +18,14 @@
 		</li>
 
 		<f:if condition="{timeline.points}">
-		<!-- Points -->
-		<f:for each="{timeline.points}" as="point">
-			<ul>
-				<li>
-					<span>{point.title} <sup><f:format.date format="d.m.Y">{point.pointdate}</f:format.date></sup></span>
-				</li>
-			</ul>
-		</f:for>
+			<!-- Points -->
+			<f:for each="{timeline.points}" as="point">
+				<ul>
+					<li>
+						<span>{point.title} <sup><f:format.date format="d.m.Y">{point.pointdate}</f:format.date></sup></span>
+					</li>
+				</ul>
+			</f:for>
 		</f:if>
 	</ul>
 </div>

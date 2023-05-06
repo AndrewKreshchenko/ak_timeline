@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use \AK\TimelineVis\Timeline\FarDate\FarDate;
 use TYPO3\CMS\Core\Localization\LanguageService;
 
-use TYPO3\CMS\Core\Log\LogManager;
-
 class PointValidator
 {
     private const DAY_TSTAMP = 86400;
@@ -59,13 +57,12 @@ class PointValidator
         $farDateError = false;
 
         $locale = $this->getFileLocale();
-        $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
 
         // Case Range start is not specified
         if (strlen($timeline['range_start']) == 0) {
             // At least one limit should be defined
             if (strlen($timeline['range_end']) == 0) {
-                // FlashMessage is in Timeline validator
+                // Then error is in Timeline range. FlashMessage is in Timeline validator
                 // default value is UNIX epoch
                 return 0;
             }
@@ -107,11 +104,6 @@ class PointValidator
             $timelineStartTStamp = $timelineStart->getTimestamp();
         }
 
-        $logger->warning($value . ' - point value, TL ID ' . $timelineId
-            . ', timeline start date ' . $timeline['range_start'] . '(' . $timelineStartTStamp . ')'
-            . ', timeline end date ' . $timeline['range_end'] . '(' . $timelineEndTStamp . '), end B. C. ' . $timeline['date_end_b_c']
-        );
-
         // Case of usual D. C. range
         if (!$timelineStartDateBC) {
             if ($value < $timelineStartTStamp - self::DAY_TSTAMP || $value > $timelineEndTStamp) {
@@ -129,28 +121,23 @@ class PointValidator
         }
 
         // Considering B. C. dates
-        if ($timelineEndDateBC) {
-            $farDateStart = (new FarDate($timelineStartTStamp, $timelineStartDateBC))->getFarDateTimestamp();
-            $farDateEnd = (new FarDate($timelineEndTStamp, $timelineEndDateBC))->getFarDateTimestamp();
+        $farDateStart = (new FarDate($timelineStartTStamp, $timelineStartDateBC))->getFarDateTimestamp();
+        $farDateEnd = (new FarDate($timelineEndTStamp, $timelineEndDateBC))->getFarDateTimestamp();
 
-            $farDateVObj = new FarDate((int)$value, true);
-            $farDateV = $farDateVObj->getFarDateTimestamp();
+        $valueBC = false;
+        $valueDate = (new \DateTime())->setTimestamp((int)$value)->format('Y-m-d');
 
-            // Check with minus one day, allow value be equat to timeline end date
-            if (($farDateV < $farDateStart) || ($farDateV > $farDateEnd + self::DAY_TSTAMP)) {
-                $farDateError = true;
+        foreach ($formData['tx_timelinevis_domain_model_point'] as $item) {
+            if ((new \DateTime($item['pointdate']))->format('Y-m-d') === $valueDate) {
+                $valueBC = (bool)$item['pointdate_b_c'];
             }
-        } else {
-            $farDateLimit = (new FarDate(($timelineStartTStamp > $timelineEndTStamp ? $timelineStartTStamp : $timelineEndTStamp), false))->getFarDateTimestamp();
+        }
 
-            // Set Far date as positive number
-            $farDateVObj = new FarDate((int)$value, false);
-            $farDateV = $farDateVObj->getFarDateTimestamp();
+        $farDateVObj = new FarDate((int)$value, $valueBC);
+        $farDateV = $farDateVObj->getFarDateTimestamp();
 
-            // @TODO fit for cases only start BC date
-            if ((-$farDateV < -abs($farDateLimit)) || ($farDateV > $farDateLimit + self::DAY_TSTAMP)) {
-                $farDateError = true;
-            }
+        if ($farDateV < $farDateStart || $farDateV > $farDateEnd + self::DAY_TSTAMP) {
+            $farDateError = true;
         }
 
         if ($farDateError) {
@@ -165,14 +152,6 @@ class PointValidator
             // Save value because it may be right
             return $timelineStartTStamp;
         }
-
-        $titleMsg = [
-            $this->getLanguageService()->sL($locale . ':flashmessage.point.one_point_date') . '"',
-            $farDateVObj->logDate(),
-            '"'
-        ];
-
-        $this->flashMessage($titleMsg, 'point.warn.not_out', FlashMessage::INFO);
 
         return $value;
     }

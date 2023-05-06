@@ -29,25 +29,17 @@ class TimelineRepository extends Repository
      * Returns timelines with a specific search term in the title
      *
      * @param string Search keyword
-     * @param int Max number of Blogs to read from storage
      * @return QueryResult
      */
-    public function findSearchForm($search, $limit): QueryResult
+    public function findSearchedTimeline($search): QueryResult
     {
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
         $settings = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
-        $max = $settings['timeline']['max'];
 
         $query = $this->createQuery();
         $query->matching($query->like('title', '%' . $search . '%'));
         $query->setOrderings(['title' => QueryInterface::ORDER_ASCENDING]);
-
-        $max = intval($max);
-
-        if ($max > 0) {
-            $query->setLimit($max);
-        }
 
         return $query->execute();
     }

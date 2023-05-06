@@ -7,18 +7,7 @@
         </TCEforms>
         <type>array</type>
         <el>
-          <settings.timeline.max>
-            <TCEforms>
-              <label>LLL:EXT:ak_timeline/Resources/Private/Language/locallang_db.xlf:settings.timeline.max</label>
-              <config>
-                <type>input</type>
-                <size>2</size>
-                <eval>int</eval>
-                <default>10</default>
-              </config>
-            </TCEforms>
-          </settings.timeline.max>
-
+          <!-- Timeline views -->
           <settings.timeline.style>
             <TCEforms>
               <label>LLL:EXT:ak_timeline/Resources/Private/Language/locallang_db.xlf:settings.timeline.max</label>
@@ -57,7 +46,8 @@
 						</TCEforms>
 					</switchableControllerActions>
 
-					<settings.enablePagination>
+          <!-- Pagination settings -->
+          <settings.enablePagination>
 						<TCEforms>
 							<exclude>1</exclude>
 							<label>LLL:EXT:ak_timeline/Resources/Private/Language/locallang_db.xlf:tx_timelinevis_domain_model_timeline.enablepagination</label>
@@ -67,7 +57,6 @@
               <onChange>reload</onChange>
 						</TCEforms>
 					</settings.enablePagination>
-
           <settings.itemsPerPage>
             <TCEforms>
               <exclude>1</exclude>
@@ -83,7 +72,6 @@
               <displayCond>FIELD:sDEF.settings.enablePagination:=:1</displayCond>
             </TCEforms>
           </settings.itemsPerPage>
-
           <settings.pagesCount>
             <TCEforms>
               <exclude>1</exclude>
@@ -102,5 +90,41 @@
         </el>
       </ROOT>
     </sDEF>
+
+    <additional>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>Additional</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+          <!-- Load points data asynchronously -->
+					<settings.loadAsync>
+						<TCEforms>
+							<label>Load points asynchronously</label>
+              <description>If enabled, points will load during page scroll. So it'll work only for vertical Timeline. Useful for loading large amount of data.</description>
+              <exclude>1</exclude>
+							<config>
+								<type>check</type>
+								<default>0</default>
+							</config>
+						</TCEforms>
+					</settings.loadAsync>
+
+					<!-- Enable Asynchronous loading of child timelines data -->
+					<settings.hideDerivedPoints>
+						<TCEforms>
+							<label>Hide points of derived timelines</label>
+              <description>If enabled, then points of derived timelines will be collapsed. Each will load asynchronously when certain button is triggered.</description>
+              <exclude>1</exclude>
+							<config>
+								<type>check</type>
+								<default>0</default>
+							</config>
+						</TCEforms>
+					</settings.hideDerivedPoints>
+        </el>
+      </ROOT>
+    </additional>
   </sheets>
 </T3DataStructure>
