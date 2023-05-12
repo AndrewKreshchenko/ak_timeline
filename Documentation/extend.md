@@ -1,6 +1,6 @@
 # Extend
 
-I'll delve into more details later on :smile:
+I'll delve into more details later on. :dog:
 
 ## Table of contents
 - Extend of Fluid templates

@@ -29,7 +29,7 @@
 ```
 
 3. Update Database with backend tool (in Typo3 11: Menu "Maintaince" -> "Analyze Database Structure").
-4. Check out the plugin. Do not hesitate to ask if something doesn't work :smirk:
+4. Check out the plugin!
 
 ## Table of contents
 - [Setup](/Documentation/setup.md)

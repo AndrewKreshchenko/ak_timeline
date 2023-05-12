@@ -57,25 +57,63 @@
       // const pointNode = segment.content.cloneNode(true);
       // const tplPoints = pointNode.querySelectorAll('.timeline');
       var pointsLen = tplPoints.length;
-
-      // const segRangeStart = new Date(segment.dataset.rangeStart);
-      // const segRangeEnd = new Date(segment.dataset.rangeEnd);
-
-      for (var i = 0; i < pointsLen; i++) {
-        var time = new Date(points[i].querySelector('time').getAttribute('datetime'));
-        console.log(i, time.getDate());
-        for (var j = 0; j < tplPoints.length; j++) {
-          var tplTime = new Date(tplPoints[j].dataset.date);
-          console.log(tplPoints[j].dataset.date);
-          if (tplTime >= time && i < pointsLen - 1) {
-            console.log(i + ' append after, there');
-            points[i + 1].before(tplPoints[j]);
-          } else if (tplTime < time) {
-            console.log(i + ' append before, there');
-            points[i].previousElementSibling.after(tplPoints[j]);
+      var timePoints = Array.from(points).map(function (point) {
+        var dateTime = point.querySelector('time').getAttribute('datetime');
+        return {
+          date: new Date(dateTime),
+          dateStr: dateTime,
+          isBC: Boolean(point.dataset.not_ad)
+        };
+      });
+      var timeTplPoints = tplPoints.map(function (point, i) {
+        return {
+          index: i,
+          date: new Date(point.dataset.date),
+          dateStr: point.dataset.date,
+          isBC: Boolean(point.dataset.not_ad)
+        };
+      });
+      timeTplPoints.sort(function (prev, next) {
+        return next.isBC ? next.date - prev.date : prev.date - next.date;
+      });
+      var pointDateStr, pointTime, iterate;
+      for (var i = 0, m = 0; i < pointsLen; i++) {
+        pointDateStr = points[i].querySelector('time').getAttribute('datetime');
+        pointTime = new Date(pointDateStr);
+        console.log(i, pointDateStr, 'm=' + m, 'n=' + n);
+        iterate = true;
+        while (iterate) {
+          if (timePoints[i].isBC) {
+            console.log('\nTime point is B. C.');
+            if (timeTplPoints[m].isBC && timeTplPoints[m].date >= pointTime) {
+              console.log('Both are BC. %cAppend', 'color:green;');
+              points[i].before(tplPoints[m]);
+              m++;
+            } else {
+              console.log('Both are BC');
+              iterate = false;
+            }
+          } else {
+            console.log('\nTime point is A. D.');
+            if (!timeTplPoints[m]) {
+              return;
+            }
+            if (timeTplPoints[m].isBC) {
+              console.log('Tpl point is BC. %cAppend', 'color:green;');
+              points[i].before(tplPoints[m]);
+              m++;
+            } else if (timeTplPoints[m].date <= pointTime) {
+              console.log('Both are AD. %cAppend', 'color:green;');
+              points[i].before(tplPoints[m]);
+              m++;
+            } else {
+              console.log('Both are AD');
+              iterate = false;
+            }
           }
         }
       }
+      console.log('end');
     }
   });
 
