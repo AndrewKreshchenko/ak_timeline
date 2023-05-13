@@ -3,7 +3,7 @@
 return [
     'ctrl' => [
         'label' => 'Timeline/Content Relation',
-        'title' => 'LLL:EXT:ak_timeline/Resources/Private/Language/locallang.xlf:timeline_relation',
+        'title' => 'LLL:EXT:ak_timeline/Resources/Private/Language/locallang_be.xlf:timeline_relation',
         'hideTable' => true,
         'sortby' => 'sorting',
         'iconfile' => 'EXT:ak_timeline/Resources/Public/Icons/timeline-content.png',

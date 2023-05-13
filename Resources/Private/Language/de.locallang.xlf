@@ -3,42 +3,9 @@
 	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2023-04-22T11:04:00Z" product-name="ak_timeline">
 		<header/>
 		<body>
-			<trans-unit id="flashmessage.timeline.invalid_range">
-				<source>Ungültiges Start- oder Enddatum des Bereichs</source>
+			<trans-unit id="show_results">
+				<source>Zeige Ergebnisse</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.timeline.details.invalid_range">
-				<source>Das Enddatum sollte nicht vor dem Startdatum liegen.</source>
-			</trans-unit>
-			<trans-unit id="flashmessage.timeline.pay_attention">
-				<source>Bitte pass auf</source>
-			</trans-unit>
-			<trans-unit id="flashmessage.timeline.details.BC_precedes_AD">
-				<source>Das B. C. Enddatum darf nicht vor dem A. D. Startdatum liegen.</source>
-			</trans-unit>
-			<trans-unit id="flashmessage.timeline.details.BC_dates_order">
-				<source>B. C. (alte) Datum werden normalerweise rückwärts zu A. D.-Daten geordnet.</source>
-			</trans-unit>
-
-			<trans-unit id="flashmessage.point.date_is_out">
-				<source>Das Punktdatum liegt außerhalb des Timeline bereich</source>
-			</trans-unit>
-			<trans-unit id="flashmessage.point.details.input_was">
-				<source>Ihre Eingabe war </source>
-			</trans-unit>
-			<trans-unit id="flashmessage.point.warn.BC_date">
-				<source>Bitte achten Sie auf B.C.-Termine.</source>
-			</trans-unit>
-			<trans-unit id="flashmessage.point.one_point_date">
-				<source>Ein Punkt hat ein Datum </source>
-			</trans-unit>
-			<trans-unit id="flashmessage.point.warn.not_out">
-				<source>Sie könnten sicherstellen, dass der Wert nicht außerhalb des Timeline-Bereichs liegt.</source>
-			</trans-unit>
-
-			<trans-unit id="timeline_relation">
-				<source>Timeline beziehung</source>
-			</trans-unit>
-
 		</body>
 	</file>
 </xliff>

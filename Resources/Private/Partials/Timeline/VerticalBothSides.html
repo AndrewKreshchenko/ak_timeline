@@ -2,10 +2,7 @@
 	xmlns:tln="http://typo3.org/ns/AK/TimelineVis/ViewHelpers"
 	data-namespace-typo3-fluid="true">
 
-<div class="tx-timeline timeline-vertical-both"
-  data-async="{settings.loadAsync ? 'true' : 'false'}"
-  data-hide-derived="{settings.hideDerivedPoints ? 'true' : 'false'}">
-
+<div class="tx-timeline timeline-vertical-both" data-hide-derived="{settings.hideDerivedPoints ? 'true' : 'false'}">
   <h2>{timeline.title}</h2>
 
   <f:if condition="{timeline.rangeStart} && {timeline.rangeEnd}">
@@ -18,6 +15,10 @@
       </f:if>
     </f:else>
   </f:if>
+
+  <f:comment>
+    @TODO make links for derived timeline page where widget exist
+  </f:comment>
 
   <div class="tx-timeline-description">
     <p><f:format.html>{timeline.description}</f:format.html></p>

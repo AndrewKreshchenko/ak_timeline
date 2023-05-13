@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+	<file source-language="en" datatype="plaintext" original="messages" date="2023-04-22T11:04:00Z" product-name="ak_timeline">
+		<header/>
+		<body>
+			<trans-unit id="tx_timelinevis_listing.name">
+				<source>Timeline</source>
+			</trans-unit>
+			<trans-unit id="tx_timelinevis_listing.description">
+				<source>Plugin for managing timelines as well as the whole timeline with possibility of deeper look through timeline parts. This timeline provides visual representation of detailed historic data and allow to revise timeline in arbirtary intervals.</source>
+			</trans-unit>
+
+			<trans-unit id="extension.title">
+				<source>Timeline content</source>
+			</trans-unit>
+			<trans-unit id="extension.new_record_title">
+				<source>Add timeline content</source>
+			</trans-unit>
+			<trans-unit id="extension.add_points">
+				<source>Add points for the timeline</source>
+			</trans-unit>
+
+			<trans-unit id="settings.timeline.style">
+				<source>Timeline view</source>
+			</trans-unit>
+			<trans-unit id="settings.widget.type">
+				<source>Widget type</source>
+			</trans-unit>
+			<trans-unit id="settings.enablepagination">
+        <source>Enable pagination?</source>
+      </trans-unit>
+			<trans-unit id="settings.enablepagination.desc">
+        <source>Useful for timeline with large amount of points.</source>
+      </trans-unit>
+			<trans-unit id="settings.itemsperpage">
+        <source>Items per page</source>
+      </trans-unit>
+			<trans-unit id="settings.pagescount">
+        <source>Maximum number of pages</source>
+      </trans-unit>
+			<trans-unit id="settings.disablederivedpoints">
+        <source>Hide points of derived timelines</source>
+      </trans-unit>
+			<trans-unit id="settings.disablederivedpoints.desc">
+        <source>If enabled, points of derived timelines will be collapsed. Each will load asynchronously when certain button is triggered.</source>
+      </trans-unit>
+
+			<trans-unit id="flashmessage.timeline.invalid_range">
+				<source>Invalid range start date or range end date</source>
+			</trans-unit>
+			<trans-unit id="flashmessage.timeline.details.invalid_range">
+				<source>End date should not precede start date.</source>
+			</trans-unit>
+			<trans-unit id="flashmessage.timeline.pay_attention">
+				<source>Please, pay attention</source>
+			</trans-unit>
+			<trans-unit id="flashmessage.timeline.details.BC_precedes_AD">
+				<source>B. C. end date must not precede start A. D. date.</source>
+			</trans-unit>
+			<trans-unit id="flashmessage.timeline.details.BC_dates_order">
+				<source>B. C. (ancient) dates are usually ordered backwards to A. D. dates.</source>
+			</trans-unit>
+
+			<trans-unit id="flashmessage.point.date_is_out">
+				<source>Point date is out of timeline range</source>
+			</trans-unit>
+			<trans-unit id="flashmessage.point.details.input_was">
+				<source>Your input was </source>
+			</trans-unit>
+			<trans-unit id="flashmessage.point.warn.BC_date">
+				<source>Please pay attention on B. C. dates.</source>
+			</trans-unit>
+			<trans-unit id="flashmessage.point.one_point_date">
+				<source>One point has date </source>
+			</trans-unit>
+			<trans-unit id="flashmessage.point.warn.not_out">
+				<source>You could make sure the value is not out of timeline range.</source>
+			</trans-unit>
+
+			<trans-unit id="timeline_relation">
+				<source>Timeline relation</source>
+			</trans-unit>
+
+			<trans-unit id="timeline.select.none">
+				<source>None</source>
+			</trans-unit>
+
+			<trans-unit id="timeline.style.verticalright1">
+				<source>Vertical, with right side line</source>
+			</trans-unit>
+			<trans-unit id="timeline.style.verticalbothsides">
+				<source>Vertical, both sides details, centered line</source>
+			</trans-unit>
+			<trans-unit id="timeline.style.horizontal">
+				<source>Horizontal</source>
+			</trans-unit>
+			<trans-unit id="timeline.style.horizontalmulti">
+				<source>Horizontal, categorized points</source>
+			</trans-unit>
+			<trans-unit id="timeline.style.pie">
+				<source>Pie</source>
+			</trans-unit>
+
+			<trans-unit id="widget.type.collapsiblepoints">
+				<source>Collapsible derived points</source>
+			</trans-unit>
+			<trans-unit id="widget.type.formfilter">
+				<source>Form filter</source>
+			</trans-unit>
+			<trans-unit id="widget.type.slider">
+				<source>Slider</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

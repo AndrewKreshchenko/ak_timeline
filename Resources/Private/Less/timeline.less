@@ -15,10 +15,33 @@
 
 // General extension styles
 .tx-timeline {
+  h2 {
+    margin-bottom: 0.25rem;
+  }
+  .timeline-range {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    font-size: 90%;
+    text-align: right;
+  }
+
   &-description {
     margin-bottom: 1rem;
     padding-bottom: 1rem;
     border-bottom: 3px dashed @color-paper;
+    a {
+      color: @color-link;
+      text-decoration: none;
+    }
+  }
+}
+
+@media screen and (min-width: 767px) {
+  .tx-timeline {
+    &-description {
+      margin-bottom: 1.25rem;
+      padding-bottom: 1.25rem;
+    }
   }
 }
 

@@ -18,9 +18,18 @@ ExtensionUtility::registerPlugin(
     'EXT:ak_timeline/Resources/Public/Icons/user_plugin_listing.svg'
 );
 
+// To test extended Timeline plugins
+// see Documentation/contribute.md
+ExtensionUtility::registerPlugin(
+    'TimelineVis',
+    'TestDemand',
+    'Timeline test by demand',
+    'EXT:ak_timeline/Resources/Public/Icons/user_plugin_testdemand.svg'
+);
+
 // include FlexForm of plugin "Listing" of extension EXT:ak_timeline
 $pluginSignature = 'timelinevis_listing';
-$languageFile = 'ak_timeline/Resources/Private/Language/locallang_db.xlf';
+$languageFile = 'ak_timeline/Resources/Private/Language/locallang_be.xlf';
 
 $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
 ExtensionManagementUtility::addPiFlexFormValue(

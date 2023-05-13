@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace AK\TimelineVis\Evaluation;
 
-use \AK\TimelineVis\Domain\Model\Timeline;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use \AK\TimelineVis\Timeline\FarDate\FarDate;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use \AK\TimelineVis\Domain\Model\Timeline;
+use \AK\TimelineVis\Timeline\FarDate\FarDate;
 
 class TimelineValidator
 {
@@ -146,7 +146,7 @@ class TimelineValidator
         $lang = $GLOBALS['BE_USER']->uc['lang'] ?? '';
         $lang = $lang == 'default' ? '' : $lang . '.';
 
-        return 'LLL:EXT:ak_timeline/Resources/Private/Language/' . $lang . 'locallang.xlf';
+        return 'LLL:EXT:ak_timeline/Resources/Private/Language/' . $lang . 'locallang_be.xlf';
     }
 
     /**

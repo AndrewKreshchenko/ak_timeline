@@ -22,10 +22,6 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
-// use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-
-// NOTE remove line
-use TYPO3\CMS\Core\Log\LogManager;
 
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
@@ -96,9 +92,6 @@ class FardateViewHelper extends AbstractViewHelper implements ViewHelperInterfac
         $iscenture = $arguments['iscenture'];
         // NOTE localize
         $prefix = $arguments['isaround'] ? 'around ' : '';
-
-        // NOTE remove line
-        $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
 
         if (is_string($base)) {
             $base = trim($base);

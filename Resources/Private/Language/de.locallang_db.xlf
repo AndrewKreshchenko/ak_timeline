@@ -1,22 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2023-04-22T11:04:00Z" product-name="ak_timeline">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2023-04-22T11:04:00Z" product-name="ak_timeline">
 		<header/>
 		<body>
-			<trans-unit id="extension.title">
-				<source>Timeline inhalt</source>
-			</trans-unit>
-			<trans-unit id="extension.new_record_title">
-				<source>Zeitachse der Timeline inhalt</source>
-			</trans-unit>
-			<trans-unit id="extension.add_points">
-				<source>Add punkts for the timeline</source>
-			</trans-unit>
-
-			<trans-unit id="settings.timeline.max">
-				<source>Maximum number of timelines per page</source>
-			</trans-unit>
-
 			<trans-unit id="tx_timelinevis_domain_model_timeline">
 				<source>Timeline part</source>
 			</trans-unit>
@@ -35,17 +21,9 @@
 			<trans-unit id="tx_timelinevis_domain_model_timeline.dateend">
         <source>Date end</source>
       </trans-unit>
-			<trans-unit id="tx_timelinevis_domain_model_timeline.enablepagination">
-        <source>Enable pagination?</source>
-      </trans-unit>
+			
 			<trans-unit id="tx_timelinevis_domain_model_timeline.datebc">
         <source>Is the date B. C.?</source>
-      </trans-unit>
-			<trans-unit id="tx_timelinevis_domain_model_timeline.itemsperpage">
-        <source>Items per page</source>
-      </trans-unit>
-			<trans-unit id="tx_timelinevis_domain_model_timeline.pagescount">
-        <source>Maximum number of pages</source>
       </trans-unit>
 			<trans-unit id="tx_timelinevis_domain_model_timeline.parentid">
         <source>Parent timeline ID (if needed)</source>
@@ -61,7 +39,7 @@
 				<source>Point notes</source>
 			</trans-unit>
 			<trans-unit id="tx_timelinevis_domain_model_point.description.desc">
-				<source>Content of the </source>
+				<source>Content that belongs to the point</source>
 			</trans-unit>
 			<trans-unit id="tx_timelinevis_domain_model_point.source">
         <source>Source</source>
@@ -82,13 +60,6 @@
 			<trans-unit id="tx_timelinevis_domain_model_visualelement.status">
         <source>Visual element status</source>
       </trans-unit>
-
-			<trans-unit id="tx_timelinevis_listing.name">
-				<source>Timeline</source>
-			</trans-unit>
-			<trans-unit id="tx_timelinevis_listing.description">
-				<source>Plugin for managing timelines as well as the whole timeline with possibility of deeper look through timeline parts. This timeline provides visual representation of detailed historic data and allow to revise timeline in arbirtary intervals.</source>
-			</trans-unit>
 		</body>
 	</file>
 </xliff>

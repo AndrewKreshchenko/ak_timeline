@@ -87,8 +87,6 @@ class Div
         // $logger->warning($value . ' - Div Timeline ID is ' . $timelineId . ', SQL query is ' . $queryImage->getSQL()); // . ', SQL query is ' . $queryImage->getSQL()
         
         $sortable = [];
-        // @TODO use LocalizationUtility:
-        // $title = LocalizationUtility::translate(['uid' => $item[1]], $tableName);
 
         foreach (($resultArray  ?? []) as $item) {
             $dateV = new \DateTime($item['pointdate']);

@@ -16,8 +16,8 @@ namespace AK\TimelineVis\Evaluation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use \AK\TimelineVis\Timeline\FarDate\FarDate;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use \AK\TimelineVis\Timeline\FarDate\FarDate;
 
 class PointValidator
 {
@@ -166,7 +166,7 @@ class PointValidator
         $lang = $GLOBALS['BE_USER']->uc['lang'] ?? '';
         $lang = $lang == 'default' ? '' : $lang . '.';
 
-        return 'LLL:EXT:' . self::EXT_KEY . '/Resources/Private/Language/' . $lang . 'locallang.xlf';
+        return 'LLL:EXT:' . self::EXT_KEY . '/Resources/Private/Language/' . $lang . 'locallang_be.xlf';
     }
 
     /**

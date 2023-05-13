@@ -12,25 +12,28 @@ namespace AK\TimelineVis\Hooks\Backend\Form\FormDataProvider;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Localization\LanguageService;
 
 class TimelineItemsProcFunc {
-  // @TODO Also provide options for user to create Timeline widget (backend module)
-
   /**
-   * Set Timeline stlye
+   * Set Timeline style
    *
    * @param array &$config configuration array
    */
   public function getTimelineStyles(array &$config, TcaSelectItems $fObj)
   {
+    $locale = $this->getFileLocale();
+    // @TODO add icons for visual representation of views
     // @TODO Provide opportunity for user to handle Timeline styles (backend module)
 
+    $languageService = $this->getLanguageService();
+
     $config['items'] = [
-      ['Vertical, right-side line', 'verticalRight1'],
-      ['Vertical, both-sides timestamps', 'verticalBothSides'],
-      ['Horizontal', 'horizontal'],
-      ['Horizontal multiple', 'horizontalMulti'],
-      ['Pie', 'pie']
+      [$languageService->sL($locale . ':timeline.style.verticalright1'), 'verticalRight1'],
+      [$languageService->sL($locale . ':timeline.style.verticalbothsides'), 'verticalBothSides'],
+      [$languageService->sL($locale . ':timeline.style.horizontal'), 'horizontal'],
+      [$languageService->sL($locale . ':timeline.style.horizontalmulti'), 'horizontalMulti'],
+      [$languageService->sL($locale . ':timeline.style.pie'), 'pie']
     ];
   }
 
@@ -64,12 +67,11 @@ class TimelineItemsProcFunc {
         )
         ->from($tableName)
         ->execute()->fetchAll();
-       
+      
+      // NOTE may be needed to translate
       $result = [
         ['None', 0]
       ];
-      // @TODO use LocalizationUtility:
-      // $title = LocalizationUtility::translate(['uid' => $item[1]], $tableName);
 
       foreach (($resultArray  ?? []) as $item) {
         $result[] = [
@@ -79,5 +81,26 @@ class TimelineItemsProcFunc {
 
       return $result;
     }
+  }
+
+  /**
+   * Get file with localization
+   *
+   * @return string
+   */
+  protected static function getFileLocale(): string
+  {
+    $lang = $GLOBALS['BE_USER']->uc['lang'] ?? '';
+    $lang = $lang == 'default' ? '' : $lang . '.';
+
+    return 'LLL:EXT:ak_timeline/Resources/Private/Language/' . $lang . 'locallang_be.xlf';
+  }
+
+  /**
+   * @return LanguageService
+   */
+  protected function getLanguageService(): LanguageService
+  {
+    return $GLOBALS['LANG'];
   }
 }

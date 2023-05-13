@@ -45,7 +45,8 @@
     // DOM element where the Timeline will be attached
     // const dataBlock = visBlock.parentNode.querySelector('[data-js="timeline-data"]');
     // const container = document.querySelector('.tx-timeline[data-tl_id]');
-    var points = document.querySelectorAll('.tx-timeline .timeline');
+    var container = document.querySelector('.tx-timeline');
+    var points = container.querySelectorAll('.timeline');
 
     //----------
     // Segments
@@ -76,12 +77,16 @@
       timeTplPoints.sort(function (prev, next) {
         return next.isBC ? next.date - prev.date : prev.date - next.date;
       });
+
+      // For each shown point of parent timeline check through the points of derived timelines 
       var pointDateStr, pointTime, iterate;
       for (var i = 0, m = 0; i < pointsLen; i++) {
         pointDateStr = points[i].querySelector('time').getAttribute('datetime');
         pointTime = new Date(pointDateStr);
-        console.log(i, pointDateStr, 'm=' + m, 'n=' + n);
+        console.log(i, pointDateStr, 'm=' + m);
         iterate = true;
+
+        // Iterate through child points since their dates prevail over a point is being tested 
         while (iterate) {
           if (timePoints[i].isBC) {
             console.log('\nTime point is B. C.');
@@ -96,6 +101,7 @@
           } else {
             console.log('\nTime point is A. D.');
             if (!timeTplPoints[m]) {
+              // Tpl points list is drain
               return;
             }
             if (timeTplPoints[m].isBC) {
@@ -113,7 +119,6 @@
           }
         }
       }
-      console.log('end');
     }
   });
 

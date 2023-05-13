@@ -37,7 +37,7 @@ call_user_func(
     );
 
     // Add PageTSConfig (chapter 6)
-    $languageFile = 'ak_timeline/Resources/Private/Language/locallang_db.xlf';
+    $languageFile = 'ak_timeline/Resources/Private/Language/locallang_be.xlf';
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
       'mod {
         wizards.newContentElement.wizardItems.plugins {

@@ -89,7 +89,7 @@ class TimelineController extends ActionController
         // Other timelines that have relation to current timeline
         $segments = null;
 
-        if ($result) {
+        if ($result && !$this->settings['disableDerivedPoints']) {
             $segments = $this->TimelineRepository->findTimelinesSegments($result->getUid());
         }
 

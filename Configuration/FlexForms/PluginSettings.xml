@@ -10,7 +10,7 @@
           <!-- Timeline views -->
           <settings.timeline.style>
             <TCEforms>
-              <label>LLL:EXT:ak_timeline/Resources/Private/Language/locallang_db.xlf:settings.timeline.max</label>
+              <label>LLL:EXT:ak_timeline/Resources/Private/Language/locallang_be.xlf:settings.timeline.style</label>
               <config>
                 <type>select</type>
                 <renderType>selectSingle</renderType>
@@ -50,7 +50,8 @@
           <settings.enablePagination>
 						<TCEforms>
 							<exclude>1</exclude>
-							<label>LLL:EXT:ak_timeline/Resources/Private/Language/locallang_db.xlf:tx_timelinevis_domain_model_timeline.enablepagination</label>
+							<label>LLL:EXT:ak_timeline/Resources/Private/Language/locallang_be.xlf:settings.enablepagination</label>
+              <description>LLL:EXT:ak_timeline/Resources/Private/Language/locallang_be.xlf:settings.enablepagination.desc</description>
 							<config>
 								<type>check</type>
 							</config>
@@ -60,7 +61,7 @@
           <settings.itemsPerPage>
             <TCEforms>
               <exclude>1</exclude>
-              <label>LLL:EXT:ak_timeline/Resources/Private/Language/locallang_db.xlf:tx_timelinevis_domain_model_timeline.itemsperpage</label>
+              <label>LLL:EXT:ak_timeline/Resources/Private/Language/locallang_be.xlf:settings.itemsperpage</label>
               <config>
                 <type>input</type>
                 <size>5</size>
@@ -75,7 +76,7 @@
           <settings.pagesCount>
             <TCEforms>
               <exclude>1</exclude>
-              <label>LLL:EXT:ak_timeline/Resources/Private/Language/locallang_db.xlf:tx_timelinevis_domain_model_timeline.pagescount</label>
+              <label>LLL:EXT:ak_timeline/Resources/Private/Language/locallang_be.xlf:settings.pagescount</label>
               <config>
                 <type>input</type>
                 <size>5</size>
@@ -98,33 +99,45 @@
 				</TCEforms>
 				<type>array</type>
 				<el>
-          <!-- Load points data asynchronously -->
-					<settings.loadAsync>
-						<TCEforms>
-							<label>Load points asynchronously</label>
-              <description>If enabled, points will load during page scroll. So it'll work only for vertical Timeline. Useful for loading large amount of data.</description>
-              <exclude>1</exclude>
-							<config>
-								<type>check</type>
-								<default>0</default>
-							</config>
-						</TCEforms>
-					</settings.loadAsync>
-
 					<!-- Enable Asynchronous loading of child timelines data -->
-					<settings.hideDerivedPoints>
+					<settings.disableDerivedPoints>
 						<TCEforms>
-							<label>Hide points of derived timelines</label>
-              <description>If enabled, then points of derived timelines will be collapsed. Each will load asynchronously when certain button is triggered.</description>
+							<label>LLL:EXT:ak_timeline/Resources/Private/Language/locallang_be.xlf:settings.disablederivedpoints</label>
+              <description>LLL:EXT:ak_timeline/Resources/Private/Language/locallang_be.xlf:settings.disablederivedpoints.desc</description>
               <exclude>1</exclude>
 							<config>
 								<type>check</type>
 								<default>0</default>
 							</config>
 						</TCEforms>
-					</settings.hideDerivedPoints>
+					</settings.disableDerivedPoints>
         </el>
       </ROOT>
     </additional>
+
+    <widget>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>Widget</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+        <el>
+          <!-- Widget type -->
+          <settings.timeline.style>
+            <TCEforms>
+              <label>LLL:EXT:ak_timeline/Resources/Private/Language/locallang_be.xlf:settings.widget.type</label>
+              <config>
+                <type>select</type>
+                <renderType>selectSingle</renderType>
+                <itemsProcFunc>AK\TimelineVis\Hooks\Backend\Form\FormDataProvider\WidgetItemsProcFunc->getWidgetType</itemsProcFunc>
+                <size>1</size>
+                <minitems>0</minitems>
+                <maxitems>1</maxitems>
+              </config>
+            </TCEforms>
+          </settings.timeline.style>
+        </el>
+      </ROOT>
+    </widget>
   </sheets>
 </T3DataStructure>

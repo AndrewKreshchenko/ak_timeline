@@ -20,7 +20,7 @@ call_user_func(
     );
 
     // Add PageTSConfig (chapter 6)
-    $languageFile = 'ak_timeline/Resources/Private/Language/locallang_db.xlf';
+    $languageFile = 'ak_timeline/Resources/Private/Language/locallang_be.xlf';
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
       'mod {
         wizards.newContentElement.wizardItems.plugins {
@@ -50,11 +50,7 @@ call_user_func(
       ['source' => 'EXT:ak_timeline/Resources/Public/Icons/user_plugin_listing.svg']
     );
 
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][\AK\TimelineVis\Evaluation\TimelineValidator::class] = '';
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][\AK\TimelineVis\Evaluation\PointValidator::class] = '';
-
-    // Draw content into content elements
-    // @TODO enhace and customize
+    // @TODO enhace
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['ak_timeline_div'] = \AK\TimelineVis\Div::class;
   }
 );
