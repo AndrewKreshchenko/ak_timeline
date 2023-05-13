@@ -14,25 +14,22 @@ call_user_func(
       'TimelineVis',
       'Listing',
       [
-        'Timeline' => 'list, show',
-        'Point' => 'show',
+        'Timeline' => 'show, dispatch',
       ],
       // non-cacheable actions
       [
-        'Timeline' => 'list, show',
-        'Point' => 'show',
-      ]
+        'Timeline' => 'show, dispatch',
     );
 
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
       'AK.TimelineVis',
-      'JsonData',
+      'TestDemand',
       [
-        'Ajax' => 'dispatch',
+        'Timeline test by demand' => 'list',
       ],
       // non-cacheable actions
       [
-        'Ajax' => 'dispatch',
+        'Timeline test by demand' => 'dispatch',
       ]
     );
 

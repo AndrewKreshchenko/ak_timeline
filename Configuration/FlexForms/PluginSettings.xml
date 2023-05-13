@@ -23,29 +23,6 @@
             </TCEforms>
           </settings.timeline.style>
 
-          <switchableControllerActions>
-						<TCEforms>
-							<label>Plugin mode</label>
-							<exclude>1</exclude>
-							<config>
-								<type>select</type>
-								<renderType>selectSingle</renderType>
-								<items type="array">
-									<numIndex index="0" type="array">
-										<numIndex index="0">Timelines list</numIndex>
-										<numIndex index="1">Timeline->list</numIndex>
-									</numIndex>
-									<numIndex index="1" type="array">
-										<numIndex index="0">Show the timeline</numIndex>
-										<numIndex index="1">Timeline->show</numIndex>
-									</numIndex>
-								</items>
-								<maxitems>1</maxitems>
-								<size>1</size>
-							</config>
-						</TCEforms>
-					</switchableControllerActions>
-
           <!-- Pagination settings -->
           <settings.enablePagination>
 						<TCEforms>

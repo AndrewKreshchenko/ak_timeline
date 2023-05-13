@@ -11,11 +11,19 @@ call_user_func(
       'TimelineVis',
       'Listing',
       [
-        \AK\TimelineVis\Controller\TimelineController::class => 'list, show, dispatch'
+        \AK\TimelineVis\Controller\TimelineController::class => 'show, dispatch'
       ],
-      // non-cacheable actions
+      // non-cacheable actions (in order to show fresh results)
       [
-        \AK\TimelineVis\Controller\TimelineController::class => 'list, show, dispatch'
+        \AK\TimelineVis\Controller\TimelineController::class => 'show, dispatch'
+      ]
+    );
+
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+      'TimelineVis',
+      'TestDemand',
+      [
+        \AK\TimelineVis\Controller\TimelineController::class => 'list',
       ]
     );
 
