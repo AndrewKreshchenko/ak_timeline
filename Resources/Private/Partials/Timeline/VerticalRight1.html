@@ -16,21 +16,24 @@
     </f:else>
   </f:if>
 
-  <f:comment>
-    @TODO make links for derived timeline page where widget exist
-  </f:comment>
-
   <div class="tx-timeline-description">
     <p><f:format.html>{timeline.description}</f:format.html></p>
   </div>
 
-  <f:if condition="{timeline.points}">
+  <!-- Widgets -->
+  <f:if condition="{widgets} && {!settings.enablePagination}">
+    <f:for each="{widgets}" as="widget">
+      <f:render partial="Widget/{f:format.case(mode: 'capital', value: '{widget}')}.html" arguments="{pointsCount: timeline.points, type: 'v'}"/>
+    </f:for>
+  </f:if>
+
+  <f:if condition="{timelinePoints}">
     <f:then>
       <f:if condition="{settings.enablePagination}">
         <f:then>
           <!-- Points (limited per page) -->
-          <f:for each="{pagination.paginator.paginatedItems}" as="point" iteration="iterator">
-            <div class="timeline">
+          <f:for each="{pagination.paginator.paginatedItems}" as="point">
+            <div class="timeline-point">
               <div class="tl-content">
                 <time datetime="{f:format.date(format: 'Y-m-d', date: point.pointdate)}"><tln:fardate format="%d %B %Y" isbc="{point.pointdateBC}">{point.pointdate}</tln:fardate></time>
                 <div class="tl-content-main">
@@ -54,7 +57,9 @@
         <f:else>
           <!-- Child timeline segments -->
           <f:for each="{segments}" as="segment">
-
+            <template data-js="timeline-segment-link">
+              
+            </template>
             <template data-js="timeline-segment"
               data-async="false"
               data-range-start="{tln:fardate(format: 'Y-m-d', date: segment.rangeStart)}"
@@ -64,9 +69,17 @@
 
               <div class="timeline-segment">
                 <f:for each="{segment.points}" as="point">
-                  <div class="timeline" data-date="{f:format.date(format: 'Y-m-d', date: point.pointdate)}" data-not_ad="{point.pointdateBC}">
+                  <div class="timeline-point" data-date="{f:format.date(format: 'Y-m-d', date: point.pointdate)}" data-not_ad="{point.pointdateBC}">
                     <div class="tl-content tl-content-level2">
                       <time datetime="{f:format.date(format: 'Y-m-d', date: point.pointdate)}"><tln:fardate format="%d %B %Y" isbc="{point.pointdateBC}">{point.pointdate}</tln:fardate></time>
+
+                      <f:link.page
+                        pageUid="{segment.pid}"
+                        target="_blank"
+                        additionalAttributes="{class: 'tl-derived-link'}">
+                        <f:translate key="LLL:EXT:ak_timeline/Resources/Private/Language/locallang.xlf:timeline_source"/>
+                      </f:link.page>
+
                       <div class="tl-content-main">
                         <h3>{point.title}</h3>
                         <p><f:format.html>{point.description}</f:format.html></p>
@@ -87,7 +100,7 @@
 
           <!-- Points -->
           <f:for each="{timelinePoints}" as="point">
-            <div class="timeline" data-not_ad="{point.pointdateBC}">
+            <div class="timeline-point" data-not_ad="{point.pointdateBC}">
               <div class="tl-content">
                 <time datetime="{f:format.date(format: 'Y-m-d', date: point.pointdate)}"><tln:fardate format="%d %B %Y" isbc="{point.pointdateBC}">{point.pointdate}</tln:fardate></time>
                 <div class="tl-content-main">

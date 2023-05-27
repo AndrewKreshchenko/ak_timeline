@@ -3,8 +3,14 @@
 	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2023-04-22T11:04:00Z" product-name="ak_timeline">
 		<header/>
 		<body>
-			<trans-unit id="show_results">
+			<trans-unit id="show_results" xml:space="preserve">
 				<source>Zeige Ergebnisse</source>
+			</trans-unit>
+			<trans-unit id="toggle_element" xml:space="preserve">
+				<source>Element umschalten</source>
+			</trans-unit>
+			<trans-unit id="timeline_source" xml:space="preserve">
+				<source>Siehe Zeitleiste auf der jeweiligen Seite</source>
 			</trans-unit>
 		</body>
 	</file>

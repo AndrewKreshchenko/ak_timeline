@@ -2,7 +2,7 @@
 	<ul>
 		<li>
 			<strong>
-				timeline_{timeline.uid} {timeline.title}
+				Timeline (ID is {timeline.uid}): {timeline.title}
 				<f:if condition="{timeline.rangeStart} && {timeline.rangeEnd}">
 					<sup>(<f:format.date format="%d %B %Y">{timeline.rangeStart}</f:format.date> - <f:format.date format="%d %B %Y">{timeline.rangeEnd}</f:format.date>)</sup>
 				</f:if>

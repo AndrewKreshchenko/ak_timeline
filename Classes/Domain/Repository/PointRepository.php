@@ -16,28 +16,47 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 use AK\TimelineVis\Domain\Model\Point;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Log\LogManager;
+// use TYPO3\CMS\Core\Log\LogManager;
 
 /**
  * Repository class: Point
  */
 class PointRepository extends Repository
 {
+    // /**
+    //  * Returns point
+    //  *
+    //  * param int uid - ID as value to get the timeline by a key
+    //  * @return Point|null
+    //  */
+    // public function findPoint(string $type = 'pid', int $id = 0): ?Point
+    // {
+    //     $query = $this->createQuery();
+    //     $query->matching(
+    //         $query->equals($type, $id)
+    //     );
+
+    //     return $query->execute();
+    // }
+
     /**
      * Returns point
      *
-     * @param string type - key to get by from database
-     * @param int id - ID as value to get the timeline by a key
-     * @return Point|null
+     * @param int uid - ID as value to get the timeline by a key
+     * @return QueryResult|null
      */
-    public function findPoint(string $type = 'pid', int $id = 0): ?Point
+    public function findLastCreatedPoint(int $uid): ?QueryResult
     {
         $query = $this->createQuery();
+        $query->setOrderings(['crdate' => QueryInterface::ORDER_DESCENDING]);
+        $query->getQuerySettings()->setRespectStoragePage(true);
+        $query->setLimit(1);
+
         $query->matching(
-            $query->equals($type, $id)
+            $query->equals('timeline', $uid)
         );
 
-        return $query->execute()->getFirst();
+        return $query->execute();
     }
 
     /**
@@ -87,12 +106,12 @@ class PointRepository extends Repository
         $querySettings->setRespectStoragePage(false);
         $query->setQuerySettings($querySettings);
 
-        $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+        // $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
 
-        $logger->warning('findPointsByTimelineUid ' . $uid);
+        // $logger->warning('findPointsByTimelineUid ' . $uid);
 
         if (strlen($ordering) > 0) {
-            $logger->warning('findPointsByTimelineUid ordering ' . $ordering);
+            // $logger->warning('findPointsByTimelineUid ordering ' . $ordering);
             $query->setOrderings(['order' => QueryInterface::ORDER_ASCENDING]);
         }
 

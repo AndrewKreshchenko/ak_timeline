@@ -1,32 +1,21 @@
 [![TYPO3 11](https://img.shields.io/badge/TYPO3-11-orange.svg)](https://get.typo3.org/version/11)
-[![TYPO3 10](https://img.shields.io/badge/TYPO3-10-orange.svg)](https://get.typo3.org/version/10)
+
+> **Warning**
+> The package is still alpha, is on development phase.
 
 # TimelineVis TYPO3 Extension
 
 ## Prerequisites
 
 * PHP v. 7-8 (currently tested on v. 7).
-* Works on Typo3 v.11 by default. For lower Typo3 versions, please consider `*.log` files or `*.md` documentation that exist near the same actual files (see [installation point 1](#installation)).
+* Works on Typo3 v.11 for now. For lower Typo3 versions (mostly v10) please consider `*.log` files or `*.md` documentation that exist near the same actual files (see [installation point 1](#installation)).
 * 64-bit operation system, but I'm inclined to think you have. :smile: Mostly for dates computation and operations with large timestamps due to PHP [limits](https://www.php.net/manual/en/language.types.integer.php#language.types.integer.overflow).
-* Stating from Typo3 11 use peer dependency [numbered_pagination](https://github.com/georgringer/numbered_pagination) because widget is not works from Typo3 v.11 anymore.
 
 ## Installation
 
 1. Upload the package in `app/public/typo3conf/ext/` directory.
 
-2. Update `composer.json` in the `app/` (or `public/`). Add configuration for alpha version in `package.json`:
-```json
-"require": {
-	"ak/ak-timelinevis": "@dev"
-},
-"repositories": [
-	{
-		"type": "composer",
-		"url": "https://composer.typo3.org/"
-	},
-	{ "type": "path", "url": "packages/*" }
-]
-```
+2. Update `composer.json` in the `app/` (or `public/`). As the code as a early version, I'd recommend install it manually by changing `composer.json` and then run `composer update`.
 
 3. Update Database with backend tool (in Typo3 11: Menu "Maintaince" -> "Analyze Database Structure").
 4. Check out the plugin!

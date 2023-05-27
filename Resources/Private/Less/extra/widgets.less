@@ -1,0 +1,95 @@
+// Timeline widgets
+
+@import "../utils/variables/colors.less";
+@import "../utils/variables/dimensions.less";
+
+// .opacity-keyframe(@from,@to){
+//   from {color: @from;}
+//   to {color: @to;}
+// }
+
+// .keyframes(@name; @arguments) {
+// 	@-moz-keyframes @name { @arguments(); }
+// 	@-webkit-keyframes @name { @arguments(); }
+// 	@keyframes @name { @arguments(); }
+// }
+
+// .animation(@arguments) {
+// 	-webkit-animation: @arguments;
+// 	-moz-animation: @arguments;
+// 	animation: @arguments;
+// }
+
+// /* example */
+// .class1 {
+	
+	
+
+// 	.animation(fade-in 0.2s ease-out)
+
+// }
+
+// .keyframes(fade-in;
+//   {
+// 		0% {
+//       height: 0;
+//     }
+// 		100% {
+//       height: 100%;
+//     }
+	// });
+
+.widget-btn {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-bottom: 0.5rem;
+  padding: 5px 0.75rem 7px;
+  border: none;
+  background-color: @color-default;
+  color: white;
+  &:focus {
+    outline: none;
+  }
+}
+
+// Accordion widget
+.widget-accordion {
+  margin-top: -5px;
+  padding-top: 0.5rem;
+  border-top: 1px dashed @color-grey;
+  border-bottom: 1px dashed @color-grey;
+  background: @color-paper;
+  background: linear-gradient(to bottom, @color-paper, @color-default);
+  &-collapse {
+    display: none;
+  }
+}
+.is-collapsed {
+  display: block;
+}
+
+// Scrollspy widget
+.widget-scrollspy {
+  position: absolute;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  nav {
+    flex-direction: column;
+  }
+
+  // Sub-module class name in HTML
+  // http://smacss.com/book/type-module
+  &-left {
+    right: auto;
+    left: 0;
+  }
+}
+
+@media screen and (min-width: 575px) {
+  .widget-btn {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+}

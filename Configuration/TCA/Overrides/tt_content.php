@@ -9,7 +9,7 @@
 namespace AK\TimelineVis;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use AK\TimelineVis\Div;
+use AK\TimelineVis\InfoUpdate;
 
 ExtensionUtility::registerPlugin(
     'TimelineVis',
@@ -53,7 +53,6 @@ $GLOBALS['TCA']['tt_content']['columns']['tx_' . 'timelinevis' . '_timelines'] =
         'maxitems' => '1',
         'appearance' => [
             'newRecordLinkTitle' => 'LLL:EXT:' . $languageFile . ':extension.new_record_title',
-            // @TODO try to not display relation button, or remove createNewRelationLinkTitle field
             'createNewRelationLinkTitle' => ' ',
             'levelLinksPosition' => 'bottom',
             'collapseAll' => false, // working RTE in TYPO3 > 7.4?!?!
@@ -105,7 +104,7 @@ $GLOBALS['TCA']['tt_content']['columns']['tx_' . 'timelinevis' . '_point'] = [
     ],
 ];
 
-$storageId = Div::getGeneralStorageFolder();
+$storageId = InfoUpdate::getGeneralStorageFolder();
 if ($storageId) {
     unset($GLOBALS['TCA']['tt_content']['columns']['tx_timelinevis_timelines']['config']['foreign_selector']);
     unset($GLOBALS['TCA']['tt_content']['columns']['tx_timelinevis_timelines']['config']['foreign_unique']);

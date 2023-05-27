@@ -16,8 +16,6 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use AK\TimelineVis\Domain\Model\Timeline;
 
-use TYPO3\CMS\Core\Log\LogManager;
-
 // @TODO remove unused functions
 
 /**
@@ -83,7 +81,7 @@ class TimelineRepository extends Repository
     }
 
     /**
-     * Returns the last Blogs created
+     * Returns the last Timeline created
      *
      * @return QueryResult
      */
@@ -91,7 +89,7 @@ class TimelineRepository extends Repository
     {
         $query = $this->createQuery();
         $query->setOrderings(['crdate' => QueryInterface::ORDER_DESCENDING]);
-        $query->getQuerySettings()->setRespectStoragePage(FALSE);
+        $query->getQuerySettings()->setRespectStoragePage(true);
         $query->setLimit(1);
         return $query->execute();
     }
@@ -109,37 +107,5 @@ class TimelineRepository extends Repository
             ->setRespectStoragePage(false)
             ->setRespectSysLanguage(false);
         return $query;
-    }
-
-    /**
-     * Find Video and respect hidden
-     * 
-     * NOTE https://docs.typo3.org/m/typo3/book-extbasefluid/10.4/en-us/6-Persistence/3-implement-individual-database-queries.html
-     *
-     * @param $uid
-     * @return object
-     */
-    public function findByUidHidden($uid)
-    {
-        $query = $this->createQuery();
-        return $query->matching($query->equals('uid', intval($uid)))
-            ->execute()
-            ->getFirst();
-    }
-
-    /**
-     * @param array $uids
-     * @return array
-     */
-    public function findByUids(array $uids = [])
-    {
-        $objects = [];
-        foreach ($uids as $u) {
-            $object = $this->findByUid((int)$u);
-            if ($object !== null) {
-                $objects[] = $object;
-            }
-        }
-        return $objects;
     }
 }

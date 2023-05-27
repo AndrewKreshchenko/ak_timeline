@@ -1,3 +1,4 @@
+// TODO utilise in TS module
 function getClosest(elem, selector) {
   if (!elem.matches && !elem.mozMatchesSelector) {
     return null;

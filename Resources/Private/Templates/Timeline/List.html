@@ -1,25 +1,12 @@
 <html
-  xmlns:timelinevis="http://typo3.org/ns/AK/TimelineVis/ViewHelpers"
-  data-namespace-typo3-fluid="true">
+    xmlns:timelinevis="http://typo3.org/ns/AK/TimelineVis/ViewHelpers"
+    data-namespace-typo3-fluid="true">
 
 <f:layout name="default" />
 <f:section name="content">
 
-<f:comment>
-    <!-- NOTE remove unused/commented code-->
-    <h1><f:translate key="timeline.headline.list" /></h1>
-
-    <f:form action="list" additionalAttributes="{role: 'form'}">
-        <div class="input-group mb-3">
-            <f:form.textfield name="search" value="{search}" class="form-control" />
-            <div class="input-group-append">
-                <f:form.submit value="{f:translate(key: 'label.search')}" class="btn btn-outline-secondary" />
-            </div>
-        </div>
-    </f:form>
-</f:comment>
-
 <div class="container">
+    <f:comment>@TODO with own classes/styles</f:comment>
     <div class="card p-3 p-lg-4 w-100" style="background-color: aliceblue;">
         <h4>List of timelines</h4>
         <p>Maximum number of timelines per view: {settings.timeline.max}</p>
@@ -30,15 +17,23 @@
             </f:for>
         </div>
     </div>
-</div>
 
-<f:comment>
-    <p><small><f:translate key="timeline.list.max-timelines-shown" arguments="{1: settings.timeline.max}" /></small></p>
-    <f:link.action action="addForm" class="btn btn-primary">
-        <i class="fas fa-plus-circle"></i>
-        <f:translate key="timeline.list.button.add-timelines" />
-    </f:link.action>
-</f:comment>
+    <div style="background-color: aliceblue;">
+        <h4>Last record created</h4>
+        <i><f:format.html>{lastTimeline.description}</f:format.html></i>
+
+        <f:if condition="{lastTimeline.points}">
+            <!-- Points -->
+            <ul>
+                <f:for each="{lastTimeline.points}" as="point">
+                    <li>
+                        <span>{point.title} <sup><f:format.date format="d.m.Y">{point.pointdate}</f:format.date></sup></span>
+                    </li>
+                </f:for>
+            </ul>
+        </f:if>
+    </div>
+</div>
 
 </f:section>
 

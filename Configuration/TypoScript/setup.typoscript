@@ -77,3 +77,9 @@ config.tx_extbase {
     TYPO3\CMS\Extbase\Domain\Model\FileReference.className = AK\TimelineVis\Domain\Model\FileReference
   }
 }
+
+[globalVar = GP:L = 1]
+  config.language = de
+[else]
+  config.language = default
+[end]

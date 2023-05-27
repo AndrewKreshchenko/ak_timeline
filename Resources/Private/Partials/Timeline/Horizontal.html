@@ -4,7 +4,7 @@
 
 <div class="tx-timeline timeline-horizontal"
   data-tl_id="{timeline.uid}"
-  data-url="{f:uri.action(action: 'dispatch', controller: 'Timeline', pluginName: 'Listing', pageType:'{settings.ajax.page}', arguments:{page: settings.ajax.page, id: timeline.uid})}">
+  data-url="{f:uri.action(action: 'dispatch', controller: 'Timeline', pluginName: 'Listing', pageType:'{settings.ajax.page}', arguments:{id: timeline.uid})}">
 
   <h2>{timeline.title}</h2>
 
@@ -14,6 +14,13 @@
   <div class="tx-timeline-description">
     <p><f:format.html>{timeline.description}</f:format.html></p>
   </div>
+
+  <!-- Widgets -->
+  <f:if condition="{widgets} && {!settings.enablePagination}">
+    <f:for each="{widgets}" as="widget">
+      <f:render partial="Widget/{f:format.case(mode: 'capital', value: '{widget}')}.html" arguments="{pointsCount: timeline.points, type: 'h'}"/>
+    </f:for>
+  </f:if>
 
   <f:if condition="{timeline.points}">
     <f:then>
@@ -44,7 +51,7 @@
           <template data-js="timeline-data">
             <f:for each="{timeline.points}" as="point">
               <!-- Point -->
-              <div class="timeline" data-point_id="tl-{timeline.uid}-{point.uid}">
+              <div class="timeline-point" data-point_id="tl-{timeline.uid}-{point.uid}">
                 <div class="tl-content">
                   <time datetime="{f:format.date(format: 'Y-m-d', date: point.pointdate)}"><f:format.date format="%d %B %Y">{point.pointdate}</f:format.date></time>
                   <div class="tl-content-main">

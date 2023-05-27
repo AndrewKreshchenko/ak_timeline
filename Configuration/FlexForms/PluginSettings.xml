@@ -100,19 +100,18 @@
 				<type>array</type>
         <el>
           <!-- Widget type -->
-          <settings.timeline.style>
+          <settings.widget.type>
             <TCEforms>
               <label>LLL:EXT:ak_timeline/Resources/Private/Language/locallang_be.xlf:settings.widget.type</label>
               <config>
                 <type>select</type>
-                <renderType>selectSingle</renderType>
+                <renderType>selectMultipleSideBySide</renderType>
                 <itemsProcFunc>AK\TimelineVis\Hooks\Backend\Form\FormDataProvider\WidgetItemsProcFunc->getWidgetType</itemsProcFunc>
-                <size>1</size>
-                <minitems>0</minitems>
-                <maxitems>1</maxitems>
+                <size>3</size>
+                <multiple>true</multiple>
               </config>
             </TCEforms>
-          </settings.timeline.style>
+          </settings.widget.type>
         </el>
       </ROOT>
     </widget>

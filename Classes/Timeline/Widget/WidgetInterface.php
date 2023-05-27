@@ -10,7 +10,7 @@
  * https://martinfowler.com/articles/injection.html
  */
 
-namespace AK\TimelineVis\Timeline;
+namespace AK\TimelineVis\Timeline\Widget;
 
 interface WidgetInterface
 {

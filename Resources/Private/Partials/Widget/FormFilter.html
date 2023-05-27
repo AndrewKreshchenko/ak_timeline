@@ -1,0 +1,28 @@
+<!-- Form filter (to filter timeline data) -->
+<!-- NOTE provide action to use with pagination -->
+
+<form action="javascript:void(0);" method="get" class="tx-timeline-widget widget-form-filter" data-js="widget-form-filter" data-tl_widget="true" data-tl_type="{type}">
+  <fieldset>
+    <label for="tl_widget-search-exp">Filter by input</label>
+    <input type="search" id="tl_widget-search-exp" name="searchexp" value="" />
+  </fieldset>
+  
+  <fieldset>
+    <label for="tl_widget-limit-number">Limit results number</label>
+    <input type="range" id="tl_widget-limit-number" name="limitnumber" min="0" max="{points->f:count()}" value="{points->f:count()}">
+  </fieldset>
+  
+  <fieldset>
+    <legend>Filter by date range</legend>
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date -->
+    <div class="widget-form-filter-group">
+      <label for="tl_widget-date-start">Start date:</label>
+      <input type="date" id="tl_widget-date-start" name="datestart" value="">
+    </div>
+    <div class="widget-form-filter-group">
+      <label for="tl_widget-date-end">End date:</label>
+      <input type="date" id="tl_widget-date-end" name="dateend" value="">
+    </div>
+  </fieldset>
+  <button class="widget-btn" type="submit"><f:translate key="LLL:EXT:ak_timeline/Resources/Private/Language/locallang.xlf:show_results"/></button>
+</form>

@@ -209,7 +209,7 @@ class Timeline extends AbstractEntity
     {
         return GeneralUtility::makeInstance(ObjectManager::class)
             ->get(PointRepository::class)
-            ->findPointsByTimelineUid($timelineId, 'order');
+            ->findPointsByTimelineUid($timelineId, 'order')->toArray();
     }
 
     /**

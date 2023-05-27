@@ -107,8 +107,8 @@
 			<trans-unit id="widget.type.formfilter">
 				<source>Form filter</source>
 			</trans-unit>
-			<trans-unit id="widget.type.slider">
-				<source>Slider</source>
+			<trans-unit id="widget.type.scrollspy">
+				<source>Scrollspy</source>
 			</trans-unit>
 		</body>
 	</file>

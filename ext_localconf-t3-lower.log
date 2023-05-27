@@ -54,13 +54,6 @@ call_user_func(
       }'
     );
 
-    // jsondata {
-    //   tt_content_defValues {
-    //     CType = list
-    //     list_type = timelinevis_jsondata
-    //   }
-    // }
-
     // Register extension icon (chapter 6)
     $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
       \TYPO3\CMS\Core\Imaging\IconRegistry::class
@@ -68,14 +61,9 @@ call_user_func(
     $iconRegistry->registerIcon(
       'timelinevis-plugin-listing',
       \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-      ['source' => 'EXT:ak_timeline/Resources/Public/Icons/timeline-ce.png']
+      ['source' => 'EXT:ak_timeline/Resources/Public/Icons/user_plugin_listing.svg']
     );
 
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][\AK\TimelineVis\Evaluation\TimelineValidator::class] = '';
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][\AK\TimelineVis\Evaluation\PointValidator::class] = '';
-
-    // Draw content into content elements
-    // @TODO enhace and customize
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['ak_timeline_div'] = \AK\TimelineVis\Normalize::class;
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['ak_timeline_proc'] = \AK\TimelineVis\InfoUpdate::class;
   }
 );

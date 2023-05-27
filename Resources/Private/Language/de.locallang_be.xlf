@@ -3,6 +3,7 @@
 	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2023-04-22T11:04:00Z" product-name="ak_timeline">
 		<header/>
 		<body>
+			<!-- @TODO have to translate other items -->
 			<trans-unit id="tx_timelinevis_listing.name">
 				<source>Timeline</source>
 			</trans-unit>
@@ -107,8 +108,8 @@
 			<trans-unit id="widget.type.formfilter">
 				<source>Formularfilter</source>
 			</trans-unit>
-			<trans-unit id="widget.type.slider">
-				<source>Schieberegler</source>
+			<trans-unit id="widget.type.scrollspy">
+				<source>Scrollspy</source>
 			</trans-unit>
 		</body>
 	</file>

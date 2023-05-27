@@ -12,13 +12,18 @@
             <f:asset.script identifier="tl-horizontal-vis-setup" src="EXT:ak_timeline/Resources/Public/JavaScript/setup.js" />
         </f:else>
     </f:if>
-    <f:asset.css identifier="timeline-theme" href="EXT:ak_timeline/Resources/Public/Css/layout/timeline-{f:format.case(mode: 'lower', value: '{settings.timeline.style}')}.css" />
+    <f:asset.css identifier="timeline-theme" href="EXT:ak_timeline/Resources/Public/Css/timeline-{f:format.case(mode: 'lower', value: '{settings.timeline.style}')}.css" />
+
+    <f:if condition="{widgets} && {!settings.enablePagination}">
+        <f:asset.script identifier="tl-widget" src="EXT:ak_timeline/Resources/Public/JavaScript/widget.umd.js" />
+    </f:if>
 
     <f:comment>
         <f:cObject typoscriptObjectPath="lib.dynamicContent" data="{content}" />
         <f:cObject typoscriptObjectPath="tt_content.list" data="{contentObjectData}" table="tt_content"/>
     </f:comment>
 
+    <!-- @TODO change from Bootstrap to custom styles, as user may not use it -->
     <div class="container">
         <div class="row">
             <div class="col-12">

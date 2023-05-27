@@ -1,0 +1,27 @@
+-------
+Example of TypeScript mixin (https://www.typescriptlang.org/docs/handbook/mixins.html)
+for arbitrary class of your custom widget.
+
+In this case please consider to define a class at first:
+const CustomWidget = tl.CustomWidget(tl.Widget);
+Make sure CustomWidget class is implemented with TypeScript.
+Then use this one to initialize script.
+-------
+
+type Constructor = new (...args: any[]) => {};
+
+export function VerticalTimeline<TBase extends Constructor>(Base: TBase) {
+  return class VerticalTimeline extends Base {
+    someProp: string | null;
+
+    constructor(...args: any[]) {
+      super(...args);
+      this.someProp = null;
+    }
+
+    init(widgetKey: string, block: HTMLElement | null, initOrder: number, someProp: string) {
+      this.someProp = someProp;
+      console.log(`Widget initialized with ${this.someProp}.`);
+    }
+  };
+}

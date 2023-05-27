@@ -58,7 +58,7 @@ class PointValidator
 
         $locale = $this->getFileLocale();
 
-        // Case Range start is not specified
+        // Case Range start date is not specified
         if (strlen($timeline['range_start']) == 0) {
             // At least one limit should be defined
             if (strlen($timeline['range_end']) == 0) {

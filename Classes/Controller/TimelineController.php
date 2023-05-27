@@ -18,8 +18,8 @@ use \AK\TimelineVis\Domain\Repository\PointRepository;
 use \TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use \GeorgRinger\NumberedPagination\NumberedPagination;
 
-// use TYPO3\CMS\Core\Utility\GeneralUtility;
-// use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Log\LogManager;
 
 /**
  * Timeline controller class
@@ -62,6 +62,7 @@ class TimelineController extends ActionController
 
     /**
      * List Timelines
+     * Used in TestDemand plugin
      *
      * @param string $search
      */
@@ -74,10 +75,11 @@ class TimelineController extends ActionController
         }
 
         $this->view->assign('timelines', $this->TimelineRepository->findSearchedTimeline($search));
+        $this->view->assign('lastTimeline', $this->TimelineRepository->findLastRecordCreated());
     }
 
     /**
-     * Show a single Timeline (detail view)
+     * Show a single Timeline
      * 
      * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation int $currentPage
      */
@@ -97,32 +99,34 @@ class TimelineController extends ActionController
             $this->paginate((int)$result->getUid(), $currentPage > 1 ? $currentPage : 1);
         }
 
-        $this->view->assign('timeline', $result);
-        $this->view->assign('segments', $segments);
-
         // Make odered points list depending on style
         if ($result && !is_int(strpos($this->settings['timeline']['style'], 'horiz'))) {
             $resultPoints = $this->orderPoints($result, (int)$result->getUid());
 
             $this->view->assign('timelinePoints', $resultPoints);
         }
+
+        // Set respective widget visible if exists
+        if (strlen(($this->settings['widget']['type'])) > 0) {
+            $widgets = explode(',', $this->settings['widget']['type']);
+            $this->view->assign('widgets', $widgets);
+        }
+
+        $this->view->assign('timeline', $result);
+        $this->view->assign('segments', $segments);
     }
 
     /**
      * Dispatch request
      * 
-     * // return \Psr\Http\Message\ResponseInterface
      */
     public function dispatchAction()
     {
         $result = array();
+        $timelineId = (int)$this->request->getArgument('id');
 
-        if ($this->request->hasArgument('page')) {
-            $pageId = $this->request->getArgument('page');
-            $result['pageId'] = $pageId;
-            $id = $this->request->getArgument('id');
-
-            $data = $this->PointRepository->getPointData($id);
+        if (is_int($timelineId)) {
+            $data = $this->PointRepository->getPointData($timelineId);
             $result['points'] = $data;
         }
 
@@ -135,17 +139,20 @@ class TimelineController extends ActionController
 
     /**
      * Helper method. get points
-     * @param Timeline|null
-     * @param int timeline ID
-     * // return 
+     * 
+     * @param Timeline|null $timeline
+     * @param int $timelineId - timeline ID
+     * @return array|null
     */
     protected function orderPoints(Timeline $timeline, int $timelineId)
     {
-        if (!is_numeric($timelineId)) {
+        if (!is_int($timelineId)) {
             return null;
         }
 
-        return $timeline->getSortedPoints($timelineId);
+        $points = $timeline->getSortedPoints($timelineId);
+
+        return $points;
     }
 
     /**

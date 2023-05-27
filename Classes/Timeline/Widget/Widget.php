@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @TODO There is gonna be an implementation
  */
 
-namespace AK\TimelineVis\Timeline;
+namespace AK\TimelineVis\Timeline\Widget;
 
 use \AK\TimelineVis\Timeline\WidgetInterface;
 

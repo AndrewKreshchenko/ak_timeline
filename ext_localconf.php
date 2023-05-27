@@ -58,7 +58,6 @@ call_user_func(
       ['source' => 'EXT:ak_timeline/Resources/Public/Icons/user_plugin_listing.svg']
     );
 
-    // @TODO enhace
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['ak_timeline_div'] = \AK\TimelineVis\Div::class;
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['ak_timeline_proc'] = \AK\TimelineVis\InfoUpdate::class;
   }
 );

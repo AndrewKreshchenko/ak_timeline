@@ -26,10 +26,9 @@ class WidgetItemsProcFunc {
     $languageService = $this->getLanguageService();
 
     $config['items'] = [
-      [$languageService->sL($locale . ':timeline.select.none'), ''],
       [$languageService->sL($locale . ':widget.type.collapsiblepoints'), 'collapsiblePoints'],
       [$languageService->sL($locale . ':widget.type.formfilter'), 'formFilter'],
-      [$languageService->sL($locale . ':widget.type.slider'), 'slider'],
+      [$languageService->sL($locale . ':widget.type.scrollspy'), 'scrollspy'], // or "slider" (in Purecss lib.)
     ];
   }
 
