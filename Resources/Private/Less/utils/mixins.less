@@ -1,0 +1,68 @@
+// Mixins
+// .border(@width, @line-style, @color, @pos: bottom) {
+//   @debug @pos;
+//   & when (@pos = bottom) {
+//     border-bottom: @width @line-style @color;
+//   }
+//   & when (@pos = horizontal) {
+//     border-top: @width @line-style @color;
+//     border-bottom: @width @line-style @color;
+//   }
+//   & when (@pos = all) {
+//     border: @width @line-style @color;
+//   }
+// }
+
+.border(@width, @line-style, @color) {
+  border: @width @line-style @color;
+}
+
+.border(horizontal, @width, @line-style, @color) {
+  border-top: @width @line-style @color;
+  border-bottom: @width @line-style @color;
+}
+
+.border(bottom, @width, @line-style, @color) {
+  border-top: @width @line-style @color;
+  border-bottom: @width @line-style @color;
+}
+
+// .border-bottom(@width, @line-style, @color, @pos) when (@my-option = true) {
+//   color: white;
+// }
+
+// .opacity-keyframe(@from,@to){
+//   from {color: @from;}
+//   to {color: @to;}
+// }
+
+// .keyframes(@name; @arguments) {
+// 	@-moz-keyframes @name { @arguments(); }
+// 	@-webkit-keyframes @name { @arguments(); }
+// 	@keyframes @name { @arguments(); }
+// }
+
+// .animation(@arguments) {
+// 	-webkit-animation: @arguments;
+// 	-moz-animation: @arguments;
+// 	animation: @arguments;
+// }
+
+// /* example */
+// .class1 {
+	
+	
+
+// 	.animation(fade-in 0.2s ease-out)
+
+// }
+
+// .keyframes(fade-in;
+//   {
+// 		0% {
+//       height: 0;
+//     }
+// 		100% {
+//       height: 100%;
+//     }
+	// });

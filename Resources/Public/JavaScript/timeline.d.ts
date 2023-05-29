@@ -19,3 +19,8 @@ export declare class VerticalTimeline extends Timeline {
     constructor(type: TLVariantType, container: HTMLElement, points: NodeListOf<HTMLElement>);
     spreadDerivedSegments(tplElems: any): void;
 }
+export declare class HorizontalTimeline extends Timeline {
+    visTimeline: ObjectConstructor;
+    constructor(type: TLVariantType, container: HTMLElement, visTimeline: ObjectConstructor);
+    init(): void;
+}

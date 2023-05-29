@@ -69,7 +69,13 @@ document.addEventListener('DOMContentLoaded', function (e) {
           };
 
           // Create a Timeline
-          var timeline = new vis.Timeline(visBlock, items, options);
+          // var timeline = new vis.Timeline(visBlock, items, options);
+
+          var widgetForm = new tlw.WidgetFormFilter(document.querySelector('[data-js="widget-form-filter"]'), 1, {
+            timelineType: 'h',
+            container: container,
+            timelineVis: new vis.Timeline(visBlock, items, options)
+          });
 
           // Open content block by clicked point
           container.querySelectorAll('.vis-item-content').forEach(function (point) {

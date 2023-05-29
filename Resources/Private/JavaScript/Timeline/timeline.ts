@@ -1,6 +1,7 @@
 'use strict';
 
 import { TLVariantType, TLDateType, TplPointsType, TimelineI } from './types';
+import { getClosest } from './utils/helpers';
 import './utils/base';
 
 export class Timeline implements TimelineI {
@@ -10,8 +11,6 @@ export class Timeline implements TimelineI {
   dateEnd?: TLDateType;
   _pointsLen?: number;
 
-  // Normal signature with defaults\
-  // NOTE make dateStart as tuple Date() and flag B. C.
   constructor(type: TLVariantType = 'n', container: HTMLElement, dateStart?: TLDateType, dateEnd?: TLDateType) {
     this.type = type;
     this.container = container;
@@ -51,7 +50,7 @@ export class Timeline implements TimelineI {
   }
 
   logException(index: number) {
-    const logStyle = 'padding:3px 6px;color:#fd710d,background-color:#ffe8cc;font-family:monospace;font-size:13px;';
+    const logStyle = 'padding:3px 6px;font-family:monospace;font-size:13px;color:#fd710d;background-color:#ffe8cc;';
 
     switch(index) {
       case 0:
@@ -74,12 +73,9 @@ export class Timeline implements TimelineI {
  * Vertical timeline
  */
 
-// type Constructor<T = {}> = new (...args: any[]) => T;
-
 export class VerticalTimeline extends Timeline {
   points: NodeListOf<HTMLElement>;
 
-  // constructor(...args: (keyof TimelineI)[]) {
   constructor(type: TLVariantType = 'n', container: HTMLElement, points: NodeListOf<HTMLElement>) {
     super(type, container);
     this.points = points;
@@ -160,15 +156,53 @@ export class VerticalTimeline extends Timeline {
   }
 }
 
-// function Warrior<TBase extends Constructor>(Base: TBase) {
-//   return class extends Base {
-//     say: string = 'Attaaack';
-//     attack() { console.log("attacking...") }
-//   }
-// }
+// ------------
+// Timeline variants (composition)
 
-// function Wings<TBase extends Constructor>(Base: TBase) {
-//   return class extends Base {
-//     fly() { console.log('flying...') }
-//   }
-// }
+/**
+ * Horizontal timeline
+ * 
+ * This Timeline may take vis.js library under the hood:
+ * 'visTimeline' - vis.Timeline object
+ * 
+ * @TODO develop extended vis.js Timeline with A. D. and B. C. ranges
+ * (https://github.com/visjs/vis-timeline#contribute)
+ */
+
+export class HorizontalTimeline extends Timeline {
+  visTimeline: ObjectConstructor;
+  // visItems: ObjectConstructor;
+
+  constructor(type: TLVariantType = 'n', container: HTMLElement, visTimeline: ObjectConstructor) {
+    super(type, container);
+    this.visTimeline = visTimeline;
+
+    this.init();
+  }
+
+  init() {
+    // @TODO optimize markup or provide other options to constructor
+    const handleClickVisItem = (e: Event): void => {
+      if (!(e.target instanceof HTMLElement)) {
+        return;
+      }
+    
+      e.preventDefault();
+    
+      const pointId = getClosest(e.target, '.vis-point').dataset.id;
+      const templateElem = this.container.querySelector('[data-js="timeline-data"]');
+    
+      if (templateElem instanceof HTMLTemplateElement) {
+        const pointNode = templateElem.content.cloneNode(true);
+        const pointBlock = (pointNode as HTMLElement).querySelector('.timeline[data-point_id="' + pointId + '"]');
+    
+        this.container.querySelector('.timeline').innerHTML = pointBlock.innerHTML;
+      }
+    }
+
+    // Open content block by clicked point
+    this.container.querySelectorAll('.vis-item-content').forEach((point) => {
+      point.addEventListener('click', handleClickVisItem);
+    });
+  }
+}

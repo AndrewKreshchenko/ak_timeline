@@ -33,11 +33,16 @@ document.addEventListener('DOMContentLoaded', function(e) {
             tlWidgets.accordion = new tlw.WidgetCollapsible(widgetElem, 0, '.widget-accordion');
             break;
           case 'widget-form-filter':
-            tlWidgets.formFilter = new tlw.WidgetFormFilter(widgetElem, 1, {
-              timelineType: timelineType,
-              container: container,
-              pointsLen: points.length
-            });
+            if (timelineType === 'v') {
+              tlWidgets.formFilter = new tlw.WidgetFormFilter(widgetElem, 1, {
+                timelineType: timelineType,
+                container: container,
+                pointsLen: points.length
+              });
+            }
+            // else if (timelineType === 'h') {
+            //   tlWidgets.formFilter = 'init after vis.Timeline';
+            // }
             break;
           case 'widget-scrollspy':
             tlWidgets.scrollspy = new tlw.WidgetScrollspy(widgetElem, 1);
@@ -59,9 +64,92 @@ document.addEventListener('DOMContentLoaded', function(e) {
       } else {
         timeline.spreadDerivedSegments(container.querySelectorAll('[data-js="timeline-segment"]'));
       }
+
+      if (tlWidgets.formFilter) {
+        tlWidgets.formFilter.init();
+      }
+    }
+  }
+
+  if (timelineType === 'h' && container.dataset.url) {
+    // DOM element where the Timeline will be attached
+    const visBlock = document.querySelector('[data-js="timeline-horizontal"]');
+
+    if (!visBlock) {
+      console.warn('%cPoints are not exist for the Timeline yet, or error in Timeline found. Please check settings.', 'padding:15px;font-size:12px;font-weight:bold;');
+      return;
     }
 
-    tlWidgets.formFilter.init();
+    const pointContainer = container.querySelector('.timeline');
+
+    const handleClickVisItem = (e) => {
+      e.preventDefault();
+
+      const pointId = getClosest(e.target, '.vis-point').dataset.id;
+      const templateElem = visBlock.nextElementSibling;
+      const pointNode = templateElem.content.cloneNode(true);
+      const pointBlock = pointNode.querySelector('.timeline[data-point_id="' + pointId + '"]');
+
+      pointContainer.innerHTML = pointBlock.innerHTML;
+    }
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) {
+        try {
+          var data = JSON.parse(xhr.responseText)
+
+          console.log('Status ' + xhr.readyState);
+
+          if (data.points && data.points.length) {
+            // Prepare visual part
+            const dataVisual = [];
+
+            data.points.forEach((point, i) => {
+              const dateFormat = dayjs(point.date.date, "YYYY-MM-DD").format('DD MMM YYYY');
+
+              dataVisual.push({
+                id: `tl-${container.dataset.tl_id}-${point.id}`,
+                type: 'point',
+                start: dateFormat,
+                content: `<strong>${point.title}</strong><span>${dateFormat}</span>`,
+              });
+            });
+
+            // Create a DataSet (allows two way data-binding)
+            const items = new vis.DataSet(dataVisual);
+
+            // Configuration for the Timeline
+            const options = {
+              dataAttributes: ['id'],
+              height: 200,
+              groupHeightMode: 'fixed'
+            };
+
+            // Create a Timeline
+            timeline = new tl.HorizontalTimeline(timelineType, container, new vis.Timeline(visBlock, items, options));
+
+            const tlwFormFilter = document.querySelector('[data-js="widget-form-filter"]');
+
+            if (tlwFormFilter) {
+              new tlw.WidgetFormFilter(tlwFormFilter, 1, {
+                timelineType: 'h',
+                container: container,
+                pointsLen: dataVisual.length,
+                // pass vis.js Timeline instance to use vis.Timeline API
+                timelineVis: timeline.visTimeline
+              }).init();
+            }
+          }
+        } catch(e) {
+          console.error(e);
+        }
+      }
+    };
+
+    xhr.open('GET', container.dataset.url);
+    xhr.send();
   }
 
 });

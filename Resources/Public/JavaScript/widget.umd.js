@@ -29,6 +29,22 @@
         }
         return itemNode.querySelectorAll(tplSelector);
     }
+    function getClosest(elem, selector) {
+        if (!elem.matches) {
+            return null;
+        }
+        if (elem.matches(selector)) {
+            return elem;
+        }
+        while (elem !== document.body) {
+            elem = elem.parentElement;
+            if (elem.matches) {
+                if (elem.matches(selector)) {
+                    return elem;
+                }
+            }
+        }
+    }
 
     class Widget {
         block;
@@ -36,8 +52,8 @@
         _name;
         options;
         static logStyle = [
-            'padding:3px 6px;color:#099299,background-color:#ccebed;font-family:monospace;font-size:15px;',
-            'padding:3px 0;color:#099299,font-family:monospace;font-size:13px;'
+            'padding:3px 6px;font-family:monospace;font-size:15px;color:#099299;background-color:#ccebed;',
+            'padding:3px 0;font-family:monospace;font-size:13px;color:#099299;',
         ];
         constructor(block, initOrder, options) {
             this.block = block;
@@ -50,11 +66,11 @@
             return this._name;
         };
         info() {
-            console.info(`%cWidget ${this.getName()} is initialized.`, Widget.logStyle[0]);
+            console.info('%cWidget ' + this.getName() + ' is initialized.', Widget.logStyle[0]);
         }
         logException(message) {
             const logStyle = 'padding:3px 6px;color:#fd710d,background-color:#ffe8cc;font-family:monospace;font-size:13px;';
-            console.warn('%c' + message, logStyle);
+            console.warn(message, logStyle);
         }
     }
     class WidgetCollapsible extends Widget {
@@ -179,7 +195,9 @@
             this.options = {
                 timelineType: options.timelineType,
                 container: options.container,
-                totalPoints: options.pointsLen ? options.pointsLen : this.block.querySelectorAll('.timeline-point').length,
+                position: options.position,
+                timelineVis: options.timelineVis,
+                totalPoints: this.getTotalPoints(options)
             };
             this.setName('WidgetFormFilter');
             this.info();
@@ -190,20 +208,56 @@
         getError() {
             return this._error;
         }
+        getTotalPoints(options) {
+            if (!options) {
+                return;
+            }
+            if (typeof options.pointsLen === 'number') {
+                return options.pointsLen;
+            }
+            if (options.timelineType === 'v') {
+                return this.block.querySelectorAll('.timeline-point').length;
+            }
+            else if (options.timelineType === 'h' && typeof options.timelineVis === 'object') {
+                return options.timelineVis.getSelection().length;
+            }
+        }
         info() {
             super.info();
             if (this.options.timelineType === 'v') {
-                console.info('(for vertical timeline)', Widget.logStyle[1]);
+                console.info('%c(for vertical timeline)', Widget.logStyle[1]);
             }
             else if (this.options.timelineType === 'h') {
-                console.info('(for horizontal timeline)', Widget.logStyle[1]);
+                console.info('%c(for horizontal timeline)', Widget.logStyle[1]);
+                if (typeof this.options.timelineVis !== 'object') {
+                    this.logException(`%c'timelineVis' option should point to vis.js library in Horizontal timeline to run ${this.getName()}.`);
+                    this.setError();
+                }
             }
             else {
-                this.logException(`Timeline type should be speciified to initialize ${this.getName()}.`);
+                this.logException(`%cTimeline type should be speciified to initialize ${this.getName()}.`);
+                this.setError();
+            }
+            if (!this.options.totalPoints) {
+                this.logException(`%cLack of options provided for ${this.getName()} to get total points. You may take a look:\n'pointsLen' - for vertical timeline,\n'timelineVis' - for horizontal timeline.\n`);
                 this.setError();
             }
         }
         init() {
+            if (this.getError()) {
+                this.logException(`%cTimeline ${this.getName()} with this set of options could not initialize.`);
+                return;
+            }
+            const toggleFormHandler = (e) => {
+                e.preventDefault();
+                const parent = getClosest(e.target, 'button');
+                if (parent.classList.contains('active')) {
+                    parent.classList.remove('active');
+                }
+                else {
+                    parent.classList.add('active');
+                }
+            };
             const formSubmitHandler = (e) => {
                 e.preventDefault();
                 const rules = {
@@ -224,15 +278,20 @@
                     }
                 };
                 const formData = Object.fromEntries(new FormData(this.block));
-                if (formData.searchexp.length && typeof formData.searchexp === 'string') {
-                    rules.expression = formData.searchexp;
+                if (this.options.timelineType === 'v') {
+                    if (typeof formData.searchexp === 'string' && formData.searchexp.length) {
+                        rules.expression = formData.searchexp;
+                    }
+                    if (formData.limitnumber) {
+                        rules.itemsLimit = Number(formData.limitnumber);
+                    }
+                    if (typeof formData.datestart === 'string' && formData.datestart.length
+                        && typeof formData.dateend === 'string' && formData.dateend.length) {
+                        rules.range = [new Date(formData.datestart), new Date(formData.dateend)];
+                    }
                 }
-                if (formData.limitnumber) {
-                    rules.itemsLimit = Number(formData.limitnumber);
-                }
-                if (typeof formData.datestart === 'string' && formData.datestart.length
-                    && typeof formData.dateend === 'string' && formData.dateend.length) {
-                    rules.range = [new Date(formData.datestart), new Date(formData.dateend)];
+                else if (this.options.timelineType === 'h') {
+                    console.log('w.h');
                 }
                 if (this.options.timelineType === 'h') {
                     console.log('h');
@@ -255,10 +314,13 @@
                     });
                 }
             };
-
+            if (this.options.position === 'top') {
+                this.block.classList.add('widget-form-filter-top');
+            }
             const rangeField = document.getElementById('tl_widget-limit-number');
             rangeField.setAttribute('max', this.options.totalPoints);
             rangeField.setAttribute('value', this.options.totalPoints);
+            this.block.previousElementSibling.addEventListener('click', toggleFormHandler);
             this.block.addEventListener('submit', formSubmitHandler);
         }
     }

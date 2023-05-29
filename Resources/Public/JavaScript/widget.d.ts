@@ -22,8 +22,8 @@ export declare class WidgetFormFilter extends Widget implements WidgetI {
     constructor(block: HTMLFormElement, initOrder: number, options?: any);
     setError(): void;
     getError(): boolean;
+    getTotalPoints(options?: any): any;
     info(): void;
-    formSubmitHandler(e: Event): void;
     init(): void;
 }
 export declare class WidgetScrollspy extends Widget implements WidgetI {

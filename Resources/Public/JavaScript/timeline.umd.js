@@ -9,16 +9,32 @@
     (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.tl = {}));
 })(this, (function (exports) { 'use strict';
 
-    Object.defineProperty(Object.prototype, 'joinTplNodes', {
-        value: function (selector) {
-            const nodes = Array.from(this).map((elem) => {
-                const tplNode = elem.content.cloneNode(true);
-                const tplElements = tplNode.querySelectorAll(selector);
-                return Array.prototype.slice.call(tplElements);
-            });
-            return nodes.flat();
+    function getClosest(elem, selector) {
+        if (!elem.matches) {
+            return null;
         }
-    });
+        while (elem !== document.body) {
+            elem = elem.parentElement;
+            if (elem.matches) {
+                if (elem.matches(selector)) {
+                    return elem;
+                }
+            }
+        }
+    }
+
+    if (typeof Object.prototype.joinTplNodes !== 'function') {
+        Object.defineProperty(Object.prototype, 'joinTplNodes', {
+            value: function (selector) {
+                const nodes = Array.from(this).map((elem) => {
+                    const tplNode = elem.content.cloneNode(true);
+                    const tplElements = tplNode.querySelectorAll(selector);
+                    return Array.prototype.slice.call(tplElements);
+                });
+                return nodes.flat();
+            }
+        });
+    }
 
     class Timeline {
         type;
@@ -138,7 +154,28 @@
             }
         }
     }
+    class HorizontalTimeline extends Timeline {
+        visTimeline;
+        constructor(type = 'n', container, visTimeline) {
+            super(type, container);
+            this.visTimeline = visTimeline;
+        }
+        handleClickVisItem = (e, block, container) => {
+            if (!(e.target instanceof HTMLElement)) {
+                return;
+            }
+            e.preventDefault();
+            const pointId = getClosest(e.target, '.vis-point').dataset.id;
+            const templateElem = block.nextElementSibling;
+            if (templateElem instanceof HTMLTemplateElement) {
+                const pointNode = templateElem.content.cloneNode(true);
+                const pointBlock = pointNode.querySelector('.timeline[data-point_id="' + pointId + '"]');
+                container.innerHTML = pointBlock.innerHTML;
+            }
+        };
+    }
 
+    exports.HorizontalTimeline = HorizontalTimeline;
     exports.Timeline = Timeline;
     exports.VerticalTimeline = VerticalTimeline;
 

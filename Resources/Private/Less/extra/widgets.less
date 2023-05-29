@@ -1,43 +1,9 @@
 // Timeline widgets
 
+// Imports
 @import "../utils/variables/colors.less";
 @import "../utils/variables/dimensions.less";
-
-// .opacity-keyframe(@from,@to){
-//   from {color: @from;}
-//   to {color: @to;}
-// }
-
-// .keyframes(@name; @arguments) {
-// 	@-moz-keyframes @name { @arguments(); }
-// 	@-webkit-keyframes @name { @arguments(); }
-// 	@keyframes @name { @arguments(); }
-// }
-
-// .animation(@arguments) {
-// 	-webkit-animation: @arguments;
-// 	-moz-animation: @arguments;
-// 	animation: @arguments;
-// }
-
-// /* example */
-// .class1 {
-	
-	
-
-// 	.animation(fade-in 0.2s ease-out)
-
-// }
-
-// .keyframes(fade-in;
-//   {
-// 		0% {
-//       height: 0;
-//     }
-// 		100% {
-//       height: 100%;
-//     }
-	// });
+@import "../utils/mixins.less";
 
 .widget-btn {
   -webkit-appearance: none;
@@ -56,16 +22,83 @@
 .widget-accordion {
   margin-top: -5px;
   padding-top: 0.5rem;
-  border-top: 1px dashed @color-grey;
-  border-bottom: 1px dashed @color-grey;
+  .border(horizontal, 1px, dashed, @color-grey);
   background: @color-paper;
   background: linear-gradient(to bottom, @color-paper, @color-default);
   &-collapse {
-    display: none;
+    height: 0;
+    visibility: hidden;
+    overflow: hidden;
   }
 }
 .is-collapsed {
-  display: block;
+  // height will be set with JS
+  height: 100%;
+  visibility: visible;
+}
+
+@color-light-grey: #f2f2f2;
+@widget-form-width: 272px;
+@widget-btn-width: 28px;
+
+// FormFilter widget
+.widget-form-filter {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  width: @widget-btn-width;
+  overflow: hidden;
+  transition: right 500ms, width 500ms;
+
+  .widget-btn-toggler {
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 0;
+    margin-left: 2px;
+    padding: 6px;
+    width: @widget-btn-width;
+    height: 42px;
+    .border(2px, solid, lighten(@color-grey, 20%));
+    background-color: @color-light-grey;
+    z-index: 1;
+    line {
+      stroke-width: 2px;
+      stroke: lighten(@color-grey, 20%);
+    }
+  }
+
+  &-top {
+    bottom: auto;
+    top: 0;
+  }
+
+  form {
+    position: relative;
+    margin-left: @widget-btn-width;
+    padding: 12px 15px;
+    background-color: @color-light-grey;
+    .border(2px, solid, lighten(@color-grey, 20%));
+    width: @widget-form-width;
+  }
+  fieldset {
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    .border(bottom, 1px, solid, @color-light-grey);
+  }
+  &-inline {
+    display: inline-block;
+    vertical-align: top;
+    &:nth-child(n + 2) {
+      margin-left: 0.5rem;
+    }
+  }
+}
+.widget-form-filter.active {
+  width: 300px;
+  .widget-btn-toggler svg {
+    transform: rotate(-180deg);
+  }
 }
 
 // Scrollspy widget
@@ -87,9 +120,28 @@
   }
 }
 
+@widget-form-width: 430px;
+
 @media screen and (min-width: 575px) {
   .widget-btn {
     padding-left: 1.25rem;
     padding-right: 1.25rem;
+    &-toggler {
+      bottom: auto;
+    }
+  }
+
+  .widget-form-filter {
+    right: @widget-btn-width;
+    left: auto;
+  
+    form {
+      margin-left: @widget-btn-width;
+      padding: 15px 20px;
+      width: @widget-form-width + @widget-btn-width;
+    }
+  }
+  .widget-form-filter.active {
+    width: @widget-form-width;
   }
 }

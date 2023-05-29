@@ -2,16 +2,13 @@
 
 <f:section name="content">
     <f:if condition="{settings.timeline.style} == 'horizontal'">
-        <f:then>
-            <f:asset.css identifier="tl-horizontal" href="EXT:ak_timeline/Resources/Public/Css/vis-timeline-graph2d.min.css" />
-            <f:asset.script identifier="dayjs" src="EXT:ak_timeline/Resources/Public/JavaScript/dayjs.min.js" />
-            <f:asset.script identifier="tl-horizontal-vis" src="EXT:ak_timeline/Resources/Public/JavaScript/vis-timeline-graph2d.min.js" />
-            <f:asset.script identifier="tl-horizontal-vis-setup" src="EXT:ak_timeline/Resources/Public/JavaScript/horiz-setup.js" />
-        </f:then>
-        <f:else>
-            <f:asset.script identifier="tl-horizontal-vis-setup" src="EXT:ak_timeline/Resources/Public/JavaScript/setup.js" />
-        </f:else>
+        <f:asset.css identifier="tl-horizontal" href="EXT:ak_timeline/Resources/Public/Css/vis-timeline-graph2d.min.css" />
+        <f:asset.script identifier="dayjs" src="EXT:ak_timeline/Resources/Public/JavaScript/dayjs.min.js" />
+        <f:asset.script identifier="tl-horizontal-vis" src="EXT:ak_timeline/Resources/Public/JavaScript/vis-timeline-graph2d.min.js" />
+        <f:asset.script identifier="tl-horizontal-vis-setup" src="EXT:ak_timeline/Resources/Public/JavaScript/horiz-setup.js" />
     </f:if>
+
+    <f:asset.script identifier="tl-horizontal-vis-setup" src="EXT:ak_timeline/Resources/Public/JavaScript/setup.js" />
     <f:asset.css identifier="timeline-theme" href="EXT:ak_timeline/Resources/Public/Css/timeline-{f:format.case(mode: 'lower', value: '{settings.timeline.style}')}.css" />
 
     <f:if condition="{widgets} && {!settings.enablePagination}">

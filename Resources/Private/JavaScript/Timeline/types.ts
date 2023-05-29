@@ -23,6 +23,11 @@ export type TplPointsType = {
   dateStr: string,
 }
 
+export type RouteType = {
+  dataId: number,
+  ajaxURL: string
+}
+
 export type RangeTuple = [TLDateType, TLDateType];
 
 export interface TimelineI {

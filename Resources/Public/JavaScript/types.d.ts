@@ -8,6 +8,10 @@ export type TplPointsType = {
     dateTL: TLDateType;
     dateStr: string;
 };
+export type RouteType = {
+    dataId: number;
+    ajaxURL: string;
+};
 export type RangeTuple = [TLDateType, TLDateType];
 export interface TimelineI {
     type: TLVariantType;
