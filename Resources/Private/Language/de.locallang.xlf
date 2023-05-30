@@ -7,10 +7,32 @@
 				<source>Zeige Ergebnisse</source>
 			</trans-unit>
 			<trans-unit id="toggle_element" xml:space="preserve">
-				<source>Element umschalten</source>
+				<source>Siehe der abgeleiteten Zeitleiste anzeigen</source>
 			</trans-unit>
 			<trans-unit id="timeline_source" xml:space="preserve">
 				<source>Siehe Zeitleiste auf der jeweiligen Seite</source>
+			</trans-unit>
+
+			<trans-unit id="form_filter_toggler" xml:space="preserve">
+				<source>Formularfilter-Umschalter</source>
+			</trans-unit>
+			<trans-unit id="filter_by_input" xml:space="preserve">
+				<source>Nach Eingabe filtern</source>
+			</trans-unit>
+			<trans-unit id="limit_results_count" xml:space="preserve">
+				<source>Ergebnisanzahl begrenzen</source>
+			</trans-unit>
+			<trans-unit id="filter_by_range" xml:space="preserve">
+				<source>Nach Datumsbereich filtern</source>
+			</trans-unit>
+			<trans-unit id="form_filter_start_date" xml:space="preserve">
+				<source>Startdatum:</source>
+			</trans-unit>
+			<trans-unit id="form_filter_end_date" xml:space="preserve">
+				<source>Endtermin:</source>
+			</trans-unit>
+			<trans-unit id="form_filter_not_ad" xml:space="preserve">
+				<source>Ist das Datum v. Chr.?</source>
 			</trans-unit>
 		</body>
 	</file>

@@ -77,15 +77,7 @@
         console.warn('%cPoints are not exist for the Timeline yet, or error in Timeline found. Please check settings.', 'padding:15px;font-size:12px;font-weight:bold;');
         return;
       }
-      var pointContainer = container.querySelector('.timeline');
-      var handleClickVisItem = function handleClickVisItem(e) {
-        e.preventDefault();
-        var pointId = getClosest(e.target, '.vis-point').dataset.id;
-        var templateElem = visBlock.nextElementSibling;
-        var pointNode = templateElem.content.cloneNode(true);
-        var pointBlock = pointNode.querySelector('.timeline[data-point_id="' + pointId + '"]');
-        pointContainer.innerHTML = pointBlock.innerHTML;
-      };
+      container.querySelector('.timeline');
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
@@ -96,11 +88,17 @@
               // Prepare visual part
               var dataVisual = [];
               data.points.forEach(function (point, i) {
-                var dateFormat = dayjs(point.date.date, "YYYY-MM-DD").format('DD MMM YYYY');
+                var date = dayjs(point.date.date, "YYYY-MM-DD");
+                var dateFormat = date.format('DD MMM YYYY');
                 dataVisual.push({
                   id: "tl-" + container.dataset.tl_id + "-" + point.id,
                   type: 'point',
                   start: dateFormat,
+                  title: point.title,
+                  dateTL: {
+                    date: date.$d,
+                    isBC: point.date.isBC
+                  },
                   content: "<strong>" + point.title + "</strong><span>" + dateFormat + "</span>"
                 });
               });
@@ -124,14 +122,10 @@
                   container: container,
                   pointsLen: dataVisual.length,
                   // pass vis.js Timeline instance to use vis.Timeline API
-                  timelineVis: timeline.visTimeline
+                  timelineVis: timeline.visTimeline,
+                  dataset: dataVisual
                 }).init();
               }
-
-              // Open content block by clicked point
-              // container.querySelectorAll('.vis-item-content').forEach(function (point) {
-              //   point.addEventListener('click', handleClickVisItem);
-              // });
             }
           } catch (e) {
             console.error(e);
@@ -144,3 +138,4 @@
   });
 
 }));
+//# sourceMappingURL=setup.js.map

@@ -2,7 +2,7 @@
 <div class="tx-timeline-widget widget-form-filter">
   <button type="button"
     class="widget-btn widget-btn-toggler"
-    aria-label="Form filter toggler">
+    aria-label="{f:translate(key: 'LLL:EXT:ak_timeline/Resources/Private/Language/locallang.xlf:form_filter_toggler')}">
     <svg width="15" height="30" viewBox="0 0 15 30">
       <line x1="13" y1="2" x2="2" y2="15"></line>
       <line x1="2" y1="15" x2="13" y2="28"></line>
@@ -11,36 +11,36 @@
 
   <form action="javascript:void(0);" method="get" id="tl_widget-form-filter" data-js="widget-form-filter" data-tl_widget="true" data-tl_type="{type}">
     <fieldset>
-      <label for="tl_widget-search-exp">Filter by input</label>
+      <label for="tl_widget-search-exp"><f:translate key="LLL:EXT:ak_timeline/Resources/Private/Language/locallang.xlf:filter_by_input"/></label>
       <input type="search" id="tl_widget-search-exp" name="searchexp" value="" />
     </fieldset>
     
     <fieldset>
-      <label for="tl_widget-limit-number">Limit results number</label>
+      <label for="tl_widget-limit-number"><f:translate key="LLL:EXT:ak_timeline/Resources/Private/Language/locallang.xlf:limit_results_count"/></label>
       <input type="range" id="tl_widget-limit-number" name="limitnumber" min="0" max="{points->f:count()}" value="{points->f:count()}">
     </fieldset>
     
     <fieldset>
-      <legend>Filter by date range</legend>
+      <legend><f:translate key="LLL:EXT:ak_timeline/Resources/Private/Language/locallang.xlf:filter_by_range"/></legend>
       <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date -->
       <div class="widget-form-filter-group">
         <div class="widget-form-filter-inline">
-          <label for="tl_widget-date-start">Start date:</label>
+          <label for="tl_widget-date-start"><f:translate key="LLL:EXT:ak_timeline/Resources/Private/Language/locallang.xlf:form_filter_start_date"/></label>
           <input type="date" id="tl_widget-date-start" name="datestart" value="">
         </div>
         <div class="widget-form-filter-inline">
           <input type="checkbox" id="tl_widget-date-start-not_ad" name="datestart_not_ad" value="">
-          <label for="tl_widget-date-start-not_ad">Is date B. C.?</label>
+          <label for="tl_widget-date-start-not_ad"><f:translate key="LLL:EXT:ak_timeline/Resources/Private/Language/locallang.xlf:form_filter_not_ad"/></label>
         </div>
       </div>
       <div class="widget-form-filter-group">
         <div class="widget-form-filter-inline">
-          <label for="tl_widget-date-end">End date:</label>
+          <label for="tl_widget-date-end"><f:translate key="LLL:EXT:ak_timeline/Resources/Private/Language/locallang.xlf:form_filter_end_date"/></label>
           <input type="date" id="tl_widget-date-end" name="dateend" value="">
         </div>
         <div class="widget-form-filter-inline">
           <input type="checkbox" id="tl_widget-date-end-not_ad" name="dateend_not_ad" value="">
-          <label for="tl_widget-date-end-not_ad">Is date B. C.?</label>
+          <label for="tl_widget-date-end-not_ad"><f:translate key="LLL:EXT:ak_timeline/Resources/Private/Language/locallang.xlf:form_filter_not_ad"/></label>
         </div>
       </div>
     </fieldset>

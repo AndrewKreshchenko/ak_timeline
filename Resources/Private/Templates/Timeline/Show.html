@@ -8,8 +8,8 @@
         <f:asset.script identifier="tl-horizontal-vis-setup" src="EXT:ak_timeline/Resources/Public/JavaScript/horiz-setup.js" />
     </f:if>
 
-    <f:asset.script identifier="tl-horizontal-vis-setup" src="EXT:ak_timeline/Resources/Public/JavaScript/setup.js" />
     <f:asset.css identifier="timeline-theme" href="EXT:ak_timeline/Resources/Public/Css/timeline-{f:format.case(mode: 'lower', value: '{settings.timeline.style}')}.css" />
+    <f:asset.script identifier="tl-horizontal-vis-setup" src="EXT:ak_timeline/Resources/Public/JavaScript/setup.js" />
 
     <f:if condition="{widgets} && {!settings.enablePagination}">
         <f:asset.script identifier="tl-widget" src="EXT:ak_timeline/Resources/Public/JavaScript/widget.umd.js" />

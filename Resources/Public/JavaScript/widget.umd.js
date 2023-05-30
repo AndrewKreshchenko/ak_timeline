@@ -69,7 +69,7 @@
             console.info('%cWidget ' + this.getName() + ' is initialized.', Widget.logStyle[0]);
         }
         logException(message) {
-            const logStyle = 'padding:3px 6px;color:#fd710d,background-color:#ffe8cc;font-family:monospace;font-size:13px;';
+            const logStyle = 'padding:3px 6px;color:#fd710d;background-color:#ffe5db;font-family:monospace;font-size:14px;';
             console.warn(message, logStyle);
         }
     }
@@ -77,7 +77,8 @@
         constructor(block, initOrder, options) {
             super(block, initOrder);
             this.options = {
-                selector: options.selector || `[data-js="${this.block}"]`
+                selector: options.selector || `[data-js="${this.block}"]`,
+                collapseTime: options.collapseTime || 400,
             };
             this.setName('WidgetCollapsible');
             this.info();
@@ -120,18 +121,39 @@
                     }
                 }
             };
-            const attachCollapseListener = () => {
+            const attachCollapseListener = (timing) => {
                 Array.from(container.querySelectorAll('.widget-accordion button')).forEach((elem) => {
                     elem.onclick = function (e) {
                         e.preventDefault();
                         const collapseElem = elem.parentElement.nextElementSibling;
                         if (collapseElem.classList.contains('is-collapsed')) {
-                            collapseElem.classList.remove('is-collapsed');
-                            elem.setAttribute('aria-expanded', 'false');
+                            if (typeof collapseElem.animate === 'function') {
+                                collapseElem.animate([
+                                    { height: collapseElem.offsetHeight + 'px' },
+                                    { height: 0 },
+                                ], {
+                                    duration: timing,
+                                });
+                            }
+                            setTimeout(() => {
+                                elem.setAttribute('aria-expanded', 'false');
+                                collapseElem.classList.remove('is-collapsed');
+                                collapseElem.style.height = '0';
+                            }, timing);
                         }
                         else {
-                            collapseElem.classList.add('is-collapsed');
+                            collapseElem.style.height = 'auto';
+                            const collapseElemHeight = collapseElem.offsetHeight;
                             elem.setAttribute('aria-expanded', 'true');
+                            collapseElem.classList.add('is-collapsed');
+                            if (typeof collapseElem.animate === 'function') {
+                                collapseElem.animate([
+                                    { height: 0 },
+                                    { height: collapseElemHeight + 'px' },
+                                ], {
+                                    duration: timing,
+                                });
+                            }
                         }
                     };
                 });
@@ -170,7 +192,7 @@
                     else {
                         if (!timeTplPoints[m]) {
                             insert(i, timePoints[i].dateStr);
-                            attachCollapseListener();
+                            attachCollapseListener(this.options.collapseTime);
                             return;
                         }
                         if (timeTplPoints[m].dateTL.isBC || timeTplPoints[m].dateTL.date <= timePoints[i].dateTL.date) {
@@ -185,7 +207,7 @@
                 }
             }
             insert(tplPointsLen - 1, 'last');
-            attachCollapseListener();
+            attachCollapseListener(this.options.collapseTime);
         }
     }
     class WidgetFormFilter extends Widget {
@@ -197,6 +219,7 @@
                 container: options.container,
                 position: options.position,
                 timelineVis: options.timelineVis,
+                dataset: options.dataset,
                 totalPoints: this.getTotalPoints(options)
             };
             this.setName('WidgetFormFilter');
@@ -229,8 +252,8 @@
             }
             else if (this.options.timelineType === 'h') {
                 console.info('%c(for horizontal timeline)', Widget.logStyle[1]);
-                if (typeof this.options.timelineVis !== 'object') {
-                    this.logException(`%c'timelineVis' option should point to vis.js library in Horizontal timeline to run ${this.getName()}.`);
+                if (typeof this.options.timelineVis !== 'object' || typeof this.options.dataset !== 'object') {
+                    this.logException(`%cFor ${this.getName()} and horizontal timeline 'timelineVis' and 'datasetVis' options should point to vis.js library in Horizontal timeline to run ${this.getName()}.`);
                     this.setError();
                 }
             }
@@ -250,7 +273,7 @@
             }
             const toggleFormHandler = (e) => {
                 e.preventDefault();
-                const parent = getClosest(e.target, 'button');
+                const parent = getClosest(e.target, 'button').parentElement;
                 if (parent.classList.contains('active')) {
                     parent.classList.remove('active');
                 }
@@ -264,39 +287,59 @@
                     itemsLimit: 0,
                     range: [],
                     expression: '',
-                    checkByExp: (point) => {
-                        const title = point.querySelector('.tl-content-main h3').innerText;
-                        return title.toLowerCase().indexOf(rules.expression.toLowerCase()) === -1;
-                    },
-                    checkByItemsLimit: (index) => index > rules.itemsLimit - 1,
-                    checkByRange: (point) => {
-                        if (Boolean(point.dataset.not_ad)) {
-                            return true;
-                        }
-                        const pointDate = new Date(point.querySelector('time').getAttribute('datetime'));
-                        return pointDate < rules.range[0] || pointDate > rules.range[1];
-                    }
+                    checkByExp: null,
+                    checkByItemsLimit: (index) => index > (rules.itemsLimit ? rules.itemsLimit - 1 : 0),
+                    checkByRange: null
                 };
                 const formData = Object.fromEntries(new FormData(this.block));
-                if (this.options.timelineType === 'v') {
-                    if (typeof formData.searchexp === 'string' && formData.searchexp.length) {
-                        rules.expression = formData.searchexp;
-                    }
-                    if (formData.limitnumber) {
-                        rules.itemsLimit = Number(formData.limitnumber);
-                    }
-                    if (typeof formData.datestart === 'string' && formData.datestart.length
-                        && typeof formData.dateend === 'string' && formData.dateend.length) {
-                        rules.range = [new Date(formData.datestart), new Date(formData.dateend)];
-                    }
+                if (typeof formData.searchexp === 'string' && formData.searchexp.length) {
+                    rules.expression = formData.searchexp;
                 }
-                else if (this.options.timelineType === 'h') {
-                    console.log('w.h');
+                if (formData.limitnumber) {
+                    rules.itemsLimit = Number(formData.limitnumber);
+                }
+                if (typeof formData.datestart === 'string' && formData.datestart.length
+                    && typeof formData.dateend === 'string' && formData.dateend.length) {
+                    rules.range = [new Date(formData.datestart), new Date(formData.dateend)];
                 }
                 if (this.options.timelineType === 'h') {
-                    console.log('h');
+                    rules.checkByExp = (item) => item.toLowerCase().indexOf(rules.expression.toLowerCase()) === -1;
+                    rules.checkByRange = (item) => {
+                        if (item.isBC === true) {
+                            return true;
+                        }
+                        return item.date < rules.range[0] || item.date > rules.range[1];
+                    };
+                    if (this.options.datasetState) {
+                        this.options.datasetState.length = 0;
+                    }
+                    else {
+                        this.options.datasetState = [];
+                    }
+                    let hide = false;
+                    this.options.dataset.forEach((item, index) => {
+                        hide = (rules.expression.length && rules.checkByExp(item.title))
+                            || rules.checkByItemsLimit(index)
+                            || (rules.range.length && rules.checkByRange(item.dateTL));
+                        if (!hide) {
+                            this.options.datasetState.push(this.options.dataset[index]);
+                        }
+                    });
+                    this.options.timelineVis.setItems(this.options.datasetState);
+                    this.options.timelineVis.redraw();
                 }
                 else if (this.options.timelineType === 'v' && this.options.container) {
+                    rules.checkByExp = (item) => {
+                        const title = item.querySelector('.tl-content-main h3').innerText;
+                        return title.toLowerCase().indexOf(rules.expression.toLowerCase()) === -1;
+                    };
+                    rules.checkByRange = (item) => {
+                        if (Boolean(item.dataset.not_ad)) {
+                            return true;
+                        }
+                        const pointDate = new Date(item.querySelector('time').getAttribute('datetime'));
+                        return pointDate < rules.range[0] || pointDate > rules.range[1];
+                    };
                     let hide = false;
                     const points = this.options.container.querySelectorAll(':scope > .timeline-point');
                     Array.from(points).forEach((elem, index) => {
@@ -346,4 +389,4 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
-
+//# sourceMappingURL=widget.umd.js.map

@@ -156,8 +156,9 @@ export class VerticalTimeline extends Timeline {
   }
 }
 
+
 // ------------
-// Timeline variants (composition)
+// Timeline variants
 
 /**
  * Horizontal timeline

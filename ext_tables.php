@@ -20,22 +20,5 @@ call_user_func(
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages(
             'tx_timelinevis_timeline_content'
         );
-
-        // Register backend module (chapter 16)
-        // NOTE tmp. does't work
-        // \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        //     'TimelineVis',
-        //     'tools',
-        //     'TimelinevisAdmin',
-        //     'bottom',
-        //     [
-        //         'Dashboard' => 'index',
-        //     ],
-        //     [
-        //         'access' => 'systemMaintainer',
-        //         'icon' => 'EXT:timelinevis/Resources/Public/Icons/module-timelinevis.png',
-        //         'labels' => 'LLL:EXT:timelinevis/Resources/Private/Language/locallang_mod.xlf',
-        //     ]
-        // );
     }
 );

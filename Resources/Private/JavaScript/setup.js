@@ -107,12 +107,18 @@ document.addEventListener('DOMContentLoaded', function(e) {
             const dataVisual = [];
 
             data.points.forEach((point, i) => {
-              const dateFormat = dayjs(point.date.date, "YYYY-MM-DD").format('DD MMM YYYY');
+              const date = dayjs(point.date.date, "YYYY-MM-DD");
+              const dateFormat = date.format('DD MMM YYYY');
 
               dataVisual.push({
                 id: `tl-${container.dataset.tl_id}-${point.id}`,
                 type: 'point',
                 start: dateFormat,
+                title: point.title,
+                dateTL: {
+                  date: date.$d,
+                  isBC: point.date.isBC
+                },
                 content: `<strong>${point.title}</strong><span>${dateFormat}</span>`,
               });
             });
@@ -138,7 +144,8 @@ document.addEventListener('DOMContentLoaded', function(e) {
                 container: container,
                 pointsLen: dataVisual.length,
                 // pass vis.js Timeline instance to use vis.Timeline API
-                timelineVis: timeline.visTimeline
+                timelineVis: timeline.visTimeline,
+                dataset: dataVisual,
               }).init();
             }
           }

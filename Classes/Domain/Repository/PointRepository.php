@@ -14,31 +14,13 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser;
 use AK\TimelineVis\Domain\Model\Point;
-
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-// use TYPO3\CMS\Core\Log\LogManager;
 
 /**
  * Repository class: Point
  */
 class PointRepository extends Repository
 {
-    // /**
-    //  * Returns point
-    //  *
-    //  * param int uid - ID as value to get the timeline by a key
-    //  * @return Point|null
-    //  */
-    // public function findPoint(string $type = 'pid', int $id = 0): ?Point
-    // {
-    //     $query = $this->createQuery();
-    //     $query->matching(
-    //         $query->equals($type, $id)
-    //     );
-
-    //     return $query->execute();
-    // }
-
     /**
      * Returns point
      *
@@ -106,23 +88,12 @@ class PointRepository extends Repository
         $querySettings->setRespectStoragePage(false);
         $query->setQuerySettings($querySettings);
 
-        // $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-
-        // $logger->warning('findPointsByTimelineUid ' . $uid);
-
         if (strlen($ordering) > 0) {
-            // $logger->warning('findPointsByTimelineUid ordering ' . $ordering);
             $query->setOrderings(['order' => QueryInterface::ORDER_ASCENDING]);
         }
 
         $query->matching(
             $query->equals('timeline', $uid),
-            // $query->logicalAnd(
-            //     [
-            //         $query->equals('timeline', $uid),
-            //         $query->greaterThan('pid', 0),
-            //     ]
-            // )
         );
 
         return $query->execute();

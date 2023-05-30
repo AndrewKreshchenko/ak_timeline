@@ -7,7 +7,6 @@
 
 .widget-btn {
   -webkit-appearance: none;
-  appearance: none;
   margin-bottom: 0.5rem;
   padding: 5px 0.75rem 7px;
   border: none;
@@ -16,19 +15,44 @@
   &:focus {
     outline: none;
   }
+  &-toggler {
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 0;
+    margin-left: 2px;
+    padding: 2px 6px;
+    width: @widget-btn-width;
+    height: 42px;
+    .border(2px, solid, lighten(@color-grey, 20%));
+    border-right: none;
+    background-color: @color-light-grey;
+    z-index: 1;
+    line {
+      stroke-width: 2px;
+      stroke: lighten(@color-grey, 20%);
+    }
+  }
 }
 
 // Accordion widget
 .widget-accordion {
   margin-top: -5px;
-  padding-top: 0.5rem;
-  .border(horizontal, 1px, dashed, @color-grey);
-  background: @color-paper;
-  background: linear-gradient(to bottom, @color-paper, @color-default);
+
+  &-panel {
+    margin-bottom: 0.25rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    // .border(horizontal, 1px, dashed, @color-grey);
+    background: @color-paper;
+    background: linear-gradient(to bottom, @color-paper 0%, white 40%, white 60%, @color-paper 100%);
+  }
   &-collapse {
     height: 0;
     visibility: hidden;
     overflow: hidden;
+  }
+  .widget-btn {
+    margin-top: 0.5rem;
   }
 }
 .is-collapsed {
@@ -51,23 +75,6 @@
   overflow: hidden;
   transition: right 500ms, width 500ms;
 
-  .widget-btn-toggler {
-    position: absolute;
-    bottom: 0;
-    margin-bottom: 0;
-    margin-left: 2px;
-    padding: 6px;
-    width: @widget-btn-width;
-    height: 42px;
-    .border(2px, solid, lighten(@color-grey, 20%));
-    background-color: @color-light-grey;
-    z-index: 1;
-    line {
-      stroke-width: 2px;
-      stroke: lighten(@color-grey, 20%);
-    }
-  }
-
   &-top {
     bottom: auto;
     top: 0;
@@ -84,7 +91,80 @@
   fieldset {
     margin-bottom: 0.75rem;
     padding-bottom: 0.75rem;
-    .border(bottom, 1px, solid, @color-light-grey);
+    .border(bottom, 1px, solid, @color-default);
+  }
+  input[type="text"], input[type="search"], input[type="date"] {
+    -webkit-appearance: none;
+    margin-left: 0.25rem;
+    border-radius: 0;
+    .border(1px, solid, @color-default);
+  }
+  input[type="text"]:focus, input[type="search"]:focus, input[type="date"]:focus {
+    outline: none;
+  }
+  input[type="checkbox"] {
+    width: 26px;
+    height: 26px;
+    + label {
+      margin-left: 0.25rem;
+    }
+  }
+  input[type="range"] {
+    -webkit-appearance: none;
+    margin-left: 0.25rem;
+    background: @color-grey;
+    border-radius: 20px;
+    margin-top: -3px;
+    transform: translateY(-2px);
+  }
+  input[type=range]::-webkit-slider-runnable-track {
+    margin-top: -4px;
+    width: 200px;
+    height: 6px;
+    background: @color-grey;
+    border: none;
+  }
+  input[type=range]::-moz-range-track {
+    margin-top: -4px;
+    height: 6px;
+    background: @color-grey;
+    border: none;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: @color-default;
+    margin-top: -5px;
+  }
+  input[type=range]::-moz-range-thumb {
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: @color-default;
+    margin-top: -5px;
+  }
+  input[type=range]:focus {
+    outline: none;
+  }
+  input[type=range]:focus::-webkit-slider-runnable-track {
+    background: @color-grey;
+  }
+  
+  // hide outline behind the border
+  input[type=range]:-moz-focusring {
+    outline: 1px solid white;
+    outline-offset: -1px;
+  }
+  input[type=range]:focus::-moz-range-track {
+    background: @color-grey;
+  }
+
+  &-group {
+    margin-bottom: 0.5rem;
   }
   &-inline {
     display: inline-block;
@@ -92,6 +172,10 @@
     &:nth-child(n + 2) {
       margin-left: 0.5rem;
     }
+  }
+
+  .widget-btn[type="submit"] {
+    margin-bottom: 0;
   }
 }
 .widget-form-filter.active {
@@ -127,6 +211,7 @@
     padding-left: 1.25rem;
     padding-right: 1.25rem;
     &-toggler {
+      padding: 2px 6px;
       bottom: auto;
     }
   }
@@ -138,10 +223,10 @@
     form {
       margin-left: @widget-btn-width;
       padding: 15px 20px;
-      width: @widget-form-width + @widget-btn-width;
+      width: 470px; // @widget-form-width + @widget-btn-width
     }
   }
   .widget-form-filter.active {
-    width: @widget-form-width;
+    width: 500px;
   }
 }

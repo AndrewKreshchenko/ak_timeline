@@ -1,5 +1,6 @@
 'use strict';
 
+import { TLDateType } from './types';
 import { WidgetI, TplPointsType } from './types';
 import './utils/base';
 import { getTemplateElem, getClosest } from './utils/helpers';
@@ -38,7 +39,7 @@ export class Widget implements WidgetI {
   }
 
   logException(message: string) {
-    const logStyle = 'padding:3px 6px;color:#fd710d,background-color:#ffe8cc;font-family:monospace;font-size:13px;';
+    const logStyle = 'padding:3px 6px;color:#fd710d;background-color:#ffe5db;font-family:monospace;font-size:14px;';
 
     console.warn(message, logStyle);
   }
@@ -55,7 +56,8 @@ export class WidgetCollapsible extends Widget implements WidgetI {
     super(block, initOrder);
 
     this.options = {
-      selector: options.selector || `[data-js="${this.block}"]`
+      selector: options.selector || `[data-js="${this.block}"]`,
+      collapseTime: options.collapseTime || 400,
     }
 
     this.setName('WidgetCollapsible');
@@ -111,7 +113,7 @@ export class WidgetCollapsible extends Widget implements WidgetI {
       }
     }
 
-    const attachCollapseListener = () => {
+    const attachCollapseListener = (timing: number) => {
       Array.from(container.querySelectorAll('.widget-accordion button')).forEach((elem: HTMLElement) => {
         elem.onclick = function(e) {
           e.preventDefault();
@@ -119,11 +121,42 @@ export class WidgetCollapsible extends Widget implements WidgetI {
           const collapseElem = elem.parentElement.nextElementSibling;
 
           if (collapseElem.classList.contains('is-collapsed')) {
-            collapseElem.classList.remove('is-collapsed');
-            elem.setAttribute('aria-expanded', 'false');
+            if (typeof (collapseElem as HTMLElement).animate === 'function') {
+              collapseElem.animate(
+                [
+                  { height: (collapseElem as HTMLElement).offsetHeight + 'px' },
+                  { height: 0 },
+                ],
+                {
+                  duration: timing,
+                }
+              );
+            }
+            setTimeout(() => {
+              elem.setAttribute('aria-expanded', 'false');
+              collapseElem.classList.remove('is-collapsed');
+              (collapseElem as HTMLElement).style.height = '0';
+            }, timing);
           } else {
-            collapseElem.classList.add('is-collapsed');
+            (collapseElem as HTMLElement).style.height = 'auto';
+
+            const collapseElemHeight = (collapseElem as HTMLElement).offsetHeight;
+
             elem.setAttribute('aria-expanded', 'true');
+            collapseElem.classList.add('is-collapsed');
+
+            // @TODO implement polyfill in helpers.js
+            if (typeof (collapseElem as HTMLElement).animate === 'function') {
+              collapseElem.animate(
+                [
+                  { height: 0 },
+                  { height: collapseElemHeight + 'px' },
+                ],
+                {
+                  duration: timing,
+                }
+              );
+            }
           }
         }
       });
@@ -169,7 +202,7 @@ export class WidgetCollapsible extends Widget implements WidgetI {
         } else {
           if (!timeTplPoints[m]) {
             insert(i, timePoints[i].dateStr);
-            attachCollapseListener();
+            attachCollapseListener(this.options.collapseTime);
             return;
           }
 
@@ -185,7 +218,7 @@ export class WidgetCollapsible extends Widget implements WidgetI {
     }
 
     insert(tplPointsLen - 1, 'last');
-    attachCollapseListener();
+    attachCollapseListener(this.options.collapseTime);
   }
 
   // spread(tplElems: any) {
@@ -198,6 +231,9 @@ export class WidgetCollapsible extends Widget implements WidgetI {
 
 /**
  * @class WidgetFormFilter
+ * 
+ * @TODO provide types for options
+ * @TODO describe there options available
  * 
  * Widget provide filter methods of data (points).
  * Works for both vertical and horizontal Timeline types.
@@ -214,6 +250,7 @@ export class WidgetFormFilter extends Widget implements WidgetI {
       container: options.container,
       position: options.position,
       timelineVis: options.timelineVis,
+      dataset: options.dataset,
       totalPoints: this.getTotalPoints(options) // options.pointsLen ? options.pointsLen : this.block.querySelectorAll('.timeline-point').length,
     }
 
@@ -252,8 +289,8 @@ export class WidgetFormFilter extends Widget implements WidgetI {
       console.info('%c(for vertical timeline)', Widget.logStyle[1]);
     } else if (this.options.timelineType === 'h') {
       console.info('%c(for horizontal timeline)', Widget.logStyle[1]);
-      if (typeof this.options.timelineVis !== 'object') {
-        this.logException(`%c'timelineVis' option should point to vis.js library in Horizontal timeline to run ${this.getName()}.`);
+      if (typeof this.options.timelineVis !== 'object' || typeof this.options.dataset !== 'object') {
+        this.logException(`%cFor ${this.getName()} and horizontal timeline 'timelineVis' and 'datasetVis' options should point to vis.js library in Horizontal timeline to run ${this.getName()}.`);
         this.setError();
       }
     } else {
@@ -293,67 +330,86 @@ export class WidgetFormFilter extends Widget implements WidgetI {
         itemsLimit: number,
         range: Date[],
         expression: string,
-        checkByExp: (point: HTMLElement) => Boolean,
+        checkByExp: (item: HTMLElement|string) => Boolean | null,
         checkByItemsLimit: (index: number) => Boolean,
-        checkByRange: (point: HTMLElement) => Boolean
+        checkByRange: (item: HTMLElement|TLDateType) => Boolean
       } = {
         itemsLimit: 0,
         range: [],
         expression: '',
-        checkByExp: (point: HTMLElement) => {
-          const title = (point.querySelector('.tl-content-main h3') as HTMLElement).innerText;
-  
-          return title.toLowerCase().indexOf(rules.expression.toLowerCase()) === -1;
-        },
-        checkByItemsLimit: (index: number) => index > rules.itemsLimit - 1,
-        checkByRange: (point: HTMLElement) => {
-          if (Boolean(point.dataset.not_ad)) {
-            // TODO Provide check also by B. C. values
-            return true;
-          }
-  
-          const pointDate = new Date(point.querySelector('time').getAttribute('datetime'));
-  
-          return pointDate < rules.range[0] || pointDate > rules.range[1];
-        }
+        checkByExp: null,
+        checkByItemsLimit: (index: number) => index > (rules.itemsLimit ? rules.itemsLimit - 1 : 0),
+        checkByRange: null
       };
   
       // Get fields
       const formData = Object.fromEntries(new FormData((this.block as HTMLFormElement)));
 
-      if (this.options.timelineType === 'v') {
-        if (typeof formData.searchexp === 'string' && formData.searchexp.length) {
-          rules.expression = formData.searchexp;
-        }
-    
-        if (formData.limitnumber) {
-          rules.itemsLimit = Number(formData.limitnumber);
-        }
-    
-        if (typeof formData.datestart === 'string' && formData.datestart.length
-          && typeof formData.dateend === 'string' && formData.dateend.length) {
-          rules.range = [new Date(formData.datestart), new Date(formData.dateend)];
-        }
-      } else if (this.options.timelineType === 'h') {
-        console.log('w.h');
-        // if (typeof formData.searchexp === 'string' && formData.searchexp.length) {
-        //   rules.expression = formData.searchexp;
-        // }
-    
-        // if (formData.limitnumber) {
-        //   rules.itemsLimit = Number(formData.limitnumber);
-        // }
-    
-        // if (typeof formData.datestart === 'string' && formData.datestart.length
-        //   && typeof formData.dateend === 'string' && formData.dateend.length) {
-        //   rules.range = [new Date(formData.datestart), new Date(formData.dateend)];
-        // }
+      if (typeof formData.searchexp === 'string' && formData.searchexp.length) {
+        rules.expression = formData.searchexp;
+      }
+  
+      if (formData.limitnumber) {
+        rules.itemsLimit = Number(formData.limitnumber);
+      }
+  
+      if (typeof formData.datestart === 'string' && formData.datestart.length
+        && typeof formData.dateend === 'string' && formData.dateend.length) {
+        rules.range = [new Date(formData.datestart), new Date(formData.dateend)];
       }
   
       // Filter points
       if (this.options.timelineType === 'h') {
-        console.log('h');
+        rules.checkByExp = (item: string) =>
+          item.toLowerCase().indexOf(rules.expression.toLowerCase()) === -1;
+
+        rules.checkByRange = (item: TLDateType) => {
+          if (item.isBC === true) {
+            // TODO Provide check also by B. C. values
+            return true;
+          }
+
+          return item.date < rules.range[0] || item.date > rules.range[1];
+        }
+
+        // console.log('h', rules, this.options.dataset);
+        if (this.options.datasetState) {
+          this.options.datasetState.length = 0;
+        } else {
+          this.options.datasetState = [];
+        }
+
+        let hide: Boolean = false;
+  
+        this.options.dataset.forEach((item: any, index: number) => {
+          hide = (rules.expression.length && rules.checkByExp(item.title))
+            || rules.checkByItemsLimit(index)
+            || (rules.range.length && rules.checkByRange(item.dateTL));
+  
+          if (!hide) {
+            this.options.datasetState.push(this.options.dataset[index]);
+          }
+        });
+
+        this.options.timelineVis.setItems(this.options.datasetState);
+        this.options.timelineVis.redraw();
       } else if (this.options.timelineType === 'v' && this.options.container) {
+        rules.checkByExp = (item: HTMLElement) => {
+          const title = (item.querySelector('.tl-content-main h3') as HTMLElement).innerText;
+  
+          return title.toLowerCase().indexOf(rules.expression.toLowerCase()) === -1;
+        }
+        rules.checkByRange = (item: HTMLElement) => {
+          if (Boolean(item.dataset.not_ad)) {
+            // TODO Provide check also by B. C. values
+            return true;
+          }
+  
+          const pointDate = new Date(item.querySelector('time').getAttribute('datetime'));
+  
+          return pointDate < rules.range[0] || pointDate > rules.range[1];
+        }
+
         let hide: Boolean = false;
         const points = this.options.container.querySelectorAll(':scope > .timeline-point');
   
@@ -394,6 +450,7 @@ export class WidgetFormFilter extends Widget implements WidgetI {
  * Active links change depeding on scroll/swipe position
  */
 
+// NOTE use getVisibleItems() for horiz. timeline
 export class WidgetScrollspy extends Widget implements WidgetI {
   constructor(block: HTMLTemplateElement, initOrder: number, options?: any) {
     super(block, initOrder);

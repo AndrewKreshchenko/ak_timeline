@@ -7,10 +7,32 @@
 				<source>Show Results</source>
 			</trans-unit>
 			<trans-unit id="toggle_element" xml:space="preserve">
-				<source>Toggle element</source>
+				<source>Show points of derived Timeline</source>
 			</trans-unit>
 			<trans-unit id="timeline_source" xml:space="preserve">
 				<source>See Timeline on respective page</source>
+			</trans-unit>
+
+			<trans-unit id="form_filter_toggler" xml:space="preserve">
+				<source>Form filter toggler</source>
+			</trans-unit>
+			<trans-unit id="filter_by_input" xml:space="preserve">
+				<source>Filter by entered text</source>
+			</trans-unit>
+			<trans-unit id="limit_results_count" xml:space="preserve">
+				<source>Limit results number</source>
+			</trans-unit>
+			<trans-unit id="filter_by_range" xml:space="preserve">
+				<source>Filter by date range</source>
+			</trans-unit>
+			<trans-unit id="form_filter_start_date" xml:space="preserve">
+				<source>Start date:</source>
+			</trans-unit>
+			<trans-unit id="form_filter_end_date" xml:space="preserve">
+				<source>End date:</source>
+			</trans-unit>
+			<trans-unit id="form_filter_not_ad" xml:space="preserve">
+				<source>Is date B. C.?</source>
 			</trans-unit>
 		</body>
 	</file>

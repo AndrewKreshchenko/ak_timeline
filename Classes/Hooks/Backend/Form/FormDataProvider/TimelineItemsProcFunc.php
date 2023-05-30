@@ -29,11 +29,31 @@ class TimelineItemsProcFunc {
     $languageService = $this->getLanguageService();
 
     $config['items'] = [
-      [$languageService->sL($locale . ':timeline.style.verticalright1'), 'verticalRight1'],
-      [$languageService->sL($locale . ':timeline.style.verticalbothsides'), 'verticalBothSides'],
-      [$languageService->sL($locale . ':timeline.style.horizontal'), 'horizontal'],
-      [$languageService->sL($locale . ':timeline.style.horizontalmulti'), 'horizontalMulti'],
-      [$languageService->sL($locale . ':timeline.style.pie'), 'pie']
+      [
+        $languageService->sL($locale . ':timeline.style.verticalright1'),
+        'verticalRight1',
+        // 'EXT:ak_timeline/Resources/Public/Icons/ak_timeline-point.png'
+      ],
+      [
+        $languageService->sL($locale . ':timeline.style.verticalbothsides'),
+        'verticalBothSides',
+      ],
+      [
+        $languageService->sL($locale . ':timeline.style.horizontal'),
+        'horizontal'
+      ],
+      [
+        $languageService->sL($locale . ':timeline.style.horizontalmulti'),
+        'horizontalMulti'
+      ],
+      [
+        'Cascade Kaskade',
+        'cascade'
+      ],
+      [
+        $languageService->sL($locale . ':timeline.style.pie'),
+        'pie'
+      ]
     ];
   }
 

@@ -72,7 +72,7 @@
 
               <div class="timeline-segment">
                 <f:for each="{segment.points}" as="point">
-                  <div class="timeline" data-date="{f:format.date(format: 'Y-m-d', date: point.pointdate)}" data-not_ad="{point.pointdateBC}">
+                  <div class="timeline-point" data-date="{f:format.date(format: 'Y-m-d', date: point.pointdate)}" data-not_ad="{point.pointdateBC}">
                     <div class="tl-content tl-content-level2">
                       <time datetime="{f:format.date(format: 'Y-m-d', date: point.pointdate)}"><tln:fardate format="%d %B %Y" isbc="{point.pointdateBC}">{point.pointdate}</tln:fardate></time>
 
@@ -103,7 +103,7 @@
 
           <!-- Points -->
           <f:for each="{timelinePoints}" as="point">
-            <div class="timeline">
+            <div class="timeline-point">
               <div class="tl-content">
                 <time datetime="{f:format.date(format: 'Y-m-d', date: point.pointdate)}"><tln:fardate format="%d %B %Y" isbc="{point.pointdateBC}">{point.pointdate}</tln:fardate></time>
                 <div class="tl-content-main">

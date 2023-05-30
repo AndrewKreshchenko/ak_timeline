@@ -56,6 +56,7 @@ CREATE TABLE tx_timelinevis_domain_model_point (
 	source varchar(255) DEFAULT '' NOT NULL,
 	pointdate DATE,
 	pointdate_b_c tinyint(4) DEFAULT '0' NOT NULL,
+	images int(11) unsigned DEFAULT '0',
 	description text,
 	order smallint(6) DEFAULT '0' NOT NULL,
 
