@@ -106,7 +106,20 @@
               <config>
                 <type>select</type>
                 <renderType>selectMultipleSideBySide</renderType>
-                <itemsProcFunc>AK\TimelineVis\Hooks\Backend\Form\FormDataProvider\WidgetItemsProcFunc->getWidgetType</itemsProcFunc>
+                <items>
+                  <numIndex index="0" type="array">
+										<numIndex index="0">LLL:EXT:ak_timeline/Resources/Private/Language/locallang_be.xlf:widget.type.collapsiblepoints</numIndex>
+										<numIndex index="1">collapsiblePoints</numIndex>
+									</numIndex>
+									<numIndex index="1">
+										<numIndex index="0">LLL:EXT:ak_timeline/Resources/Private/Language/locallang_be.xlf:widget.type.formfilter</numIndex>
+										<numIndex index="1">formfilter</numIndex>
+									</numIndex>
+                  <numIndex index="2">
+										<numIndex index="0">LLL:EXT:ak_timeline/Resources/Private/Language/locallang_be.xlf:widget.type.scrollspy</numIndex>
+										<numIndex index="1">scrollSpy</numIndex>
+									</numIndex>
+                </items>
                 <size>3</size>
                 <multiple>true</multiple>
               </config>

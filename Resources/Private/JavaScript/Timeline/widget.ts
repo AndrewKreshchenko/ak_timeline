@@ -391,6 +391,7 @@ export class WidgetFormFilter extends Widget implements WidgetI {
           }
         });
 
+        // @TODO Check instance of this.options.timelineVis
         this.options.timelineVis.setItems(this.options.datasetState);
         this.options.timelineVis.redraw();
       } else if (this.options.timelineType === 'v' && this.options.container) {

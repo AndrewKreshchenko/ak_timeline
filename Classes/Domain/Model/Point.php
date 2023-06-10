@@ -40,6 +40,11 @@ class Point extends AbstractEntity
     protected $source = '';
 
     /**
+     * @var \TYPO3\CMS\Extbase\Domain\Model\FileReference
+     */
+    protected $images;
+
+    /**
      * pointdate
      *
      * @var \DateTime
@@ -95,6 +100,16 @@ class Point extends AbstractEntity
     public function getSource()
     {
         return $this->source;
+    }
+
+    public function getImages(): ?FileReference
+    {
+        $images = $this->images;
+        if (!empty($images) && $images !== 0) {
+            return $images;
+        } else {
+            return null;
+        }
     }
 
     /**
