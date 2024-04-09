@@ -9,6 +9,10 @@
             "role": "Developer"
         }
     ],
+    "support": {
+        "email": "mail2andyk@gmail.com",
+        "irc": "irc://irc.freenode.org/composer"
+    },
     "version": "1.0.0",
     "require": {
         "typo3/cms-core": "^10.4 || ^11.5"

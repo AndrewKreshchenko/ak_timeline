@@ -26,7 +26,7 @@ Please make sure to read the [Contributing Guide](/Documentation/contribute.md) 
 
 Thanks goes to these wonderful people
 
-<a href="https://github.com/AndrewKreshchenko/ak_timeline/graphs/contributors">
+<a href="https://github.com/chrissonntag" title="Christian Sonntag">
   <img width="90" src="https://avatars.githubusercontent.com/u/39337016?v=4" />
 </a>
 
