@@ -10,6 +10,7 @@ namespace AK\TimelineVis\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Annotation\Validate;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use AK\TimelineVis\Domain\Model\Point;
 
 /**
@@ -40,7 +41,7 @@ class Point extends AbstractEntity
     protected $source = '';
 
     /**
-     * @var \TYPO3\CMS\Extbase\Domain\Model\FileReference
+     * @var FileReference
      */
     protected $images;
 

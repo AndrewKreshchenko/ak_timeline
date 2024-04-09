@@ -4,13 +4,14 @@ import { TLDateType } from './types';
 import { WidgetI, TplPointsType } from './types';
 import './utils/base';
 import { getTemplateElem, getClosest } from './utils/helpers';
+import { getBCDate } from './utils/format'; 
 
 /**
  * @class Widget
  * 
  * Base Widget
  */
-export class Widget implements WidgetI {
+class Widget implements WidgetI {
   block: HTMLElement | HTMLTemplateElement;
   initOrder: number;
   _name: string;
@@ -341,34 +342,32 @@ export class WidgetFormFilter extends Widget implements WidgetI {
         checkByItemsLimit: (index: number) => index > (rules.itemsLimit ? rules.itemsLimit - 1 : 0),
         checkByRange: null
       };
-  
+
       // Get fields
       const formData = Object.fromEntries(new FormData((this.block as HTMLFormElement)));
 
       if (typeof formData.searchexp === 'string' && formData.searchexp.length) {
         rules.expression = formData.searchexp;
       }
-  
+
       if (formData.limitnumber) {
         rules.itemsLimit = Number(formData.limitnumber);
       }
-  
+
       if (typeof formData.datestart === 'string' && formData.datestart.length
         && typeof formData.dateend === 'string' && formData.dateend.length) {
-        rules.range = [new Date(formData.datestart), new Date(formData.dateend)];
+        const ruleDateStart = getBCDate(formData.datestart, Boolean(typeof formData.datestart_not_ad === 'string')),
+          ruleDateEnd = getBCDate(formData.dateend, Boolean(typeof formData.datesend_not_ad === 'string'));
+
+        rules.range = [ruleDateStart, ruleDateEnd];
       }
-  
+
       // Filter points
       if (this.options.timelineType === 'h') {
         rules.checkByExp = (item: string) =>
           item.toLowerCase().indexOf(rules.expression.toLowerCase()) === -1;
 
         rules.checkByRange = (item: TLDateType) => {
-          if (item.isBC === true) {
-            // TODO Provide check also by B. C. values
-            return true;
-          }
-
           return item.date < rules.range[0] || item.date > rules.range[1];
         }
 
@@ -380,7 +379,7 @@ export class WidgetFormFilter extends Widget implements WidgetI {
         }
 
         let hide: Boolean = false;
-  
+
         this.options.dataset.forEach((item: any, index: number) => {
           hide = (rules.expression.length && rules.checkByExp(item.title))
             || rules.checkByItemsLimit(index)
@@ -405,21 +404,21 @@ export class WidgetFormFilter extends Widget implements WidgetI {
             // TODO Provide check also by B. C. values
             return true;
           }
-  
+
           const pointDate = new Date(item.querySelector('time').getAttribute('datetime'));
-  
+
           return pointDate < rules.range[0] || pointDate > rules.range[1];
         }
 
         let hide: Boolean = false;
         const points = this.options.container.querySelectorAll(':scope > .timeline-point');
-  
+
         Array.from(points).forEach((elem: HTMLElement, index: number) => {
           if (elem.classList.contains('timeline-point')) {
             hide = (rules.expression.length && rules.checkByExp(elem))
               || (rules.itemsLimit && rules.checkByItemsLimit(index))
               || (rules.range.length && rules.checkByRange(elem));
-  
+
             if (hide) {
               elem.style.display = 'none';
             } else if (elem.getAttribute('style')) {

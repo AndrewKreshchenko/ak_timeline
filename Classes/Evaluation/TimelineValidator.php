@@ -18,8 +18,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use \AK\TimelineVis\Domain\Model\Timeline;
 use \AK\TimelineVis\Timeline\FarDate\FarDate;
+
+// use TYPO3\CMS\Core\Log\LogManager;
 
 class TimelineValidator
 {
@@ -49,6 +50,9 @@ class TimelineValidator
         $timelineId = key($formData['tx_timelinevis_domain_model_timeline']);
         $timeline = $formData['tx_timelinevis_domain_model_timeline'][$timelineId];
 
+        // $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+        // $logger->warning('test B. C. ' . $timelineId);
+
         if (strlen($timeline['range_start']) == 0) {
             return $value;
         } else if (strlen($timeline['range_start']) > 0 && strlen($timeline['range_end']) == 0) {
@@ -77,8 +81,12 @@ class TimelineValidator
             if (($farDateV < $farDateStart) || ($farDateV > $farDateEnd + self::DAY_TSTAMP)) {
                 $farDateErrorIndex = 2;
             }
+
+            $logger->warning('timelineStartDateBC');
         } else if ($timelineEndDateBC) {
             $farDateErrorIndex = 1;
+
+            $logger->warning('timelineEndDateBC');
         }
 
         // A. D. cases (final check-in)

@@ -35,7 +35,6 @@
 
   <f:if condition="{timelinePoints}">
     <f:then>
-      <f:debug>{timelinePoints}</f:debug>
       <f:if condition="{settings.enablePagination}">
         <f:then>
           <!-- Points (limited per page) -->
@@ -51,6 +50,11 @@
                   </f:if>
                 </div>
               </div>
+              <f:if condition="{point.images}">
+                <div style="width: 50%;">
+                  <f:image image="{point.images}" width="50%" />
+                </div>
+              </f:if>
               <div class="tl-offcut">
                 <div class="tl-offcut-spot"></div>
                 <div class="tl-offcut-line"></div>

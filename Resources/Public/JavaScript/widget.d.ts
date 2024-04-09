@@ -1,6 +1,6 @@
 import { WidgetI } from './types';
 import './utils/base';
-export declare class Widget implements WidgetI {
+declare class Widget implements WidgetI {
     block: HTMLElement | HTMLTemplateElement;
     initOrder: number;
     _name: string;
@@ -30,3 +30,4 @@ export declare class WidgetScrollspy extends Widget implements WidgetI {
     constructor(block: HTMLTemplateElement, initOrder: number, options?: any);
     info(): void;
 }
+export {};

@@ -4,7 +4,7 @@ import { TLVariantType, TLDateType, TplPointsType, TimelineI } from './types';
 import { getClosest } from './utils/helpers';
 import './utils/base';
 
-export class Timeline implements TimelineI {
+class Timeline implements TimelineI {
   readonly type: TLVariantType;
   container: HTMLElement;
   dateStart?: TLDateType;

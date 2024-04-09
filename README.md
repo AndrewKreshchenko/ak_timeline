@@ -7,9 +7,9 @@
 
 ## Prerequisites
 
-* PHP v. 7-8 (currently tested on v. 7).
+* PHP v. 7+
 * Works on Typo3 v.11 for now. For lower Typo3 versions (mostly v10) please consider `*.log` files or `*.md` documentation that exist near the same actual files (see [installation point 1](#installation)).
-* 64-bit operation system, but I'm inclined to think you have. :smile: Mostly for dates computation and operations with large timestamps due to PHP [limits](https://www.php.net/manual/en/language.types.integer.php#language.types.integer.overflow).
+* 64-bit operation system. Mostly for dates computation and operations with large timestamps due to PHP [limits](https://www.php.net/manual/en/language.types.integer.php#language.types.integer.overflow).
 
 ## Installation
 
@@ -19,6 +19,20 @@
 
 3. Update Database with backend tool (in Typo3 11: Menu "Maintaince" -> "Analyze Database Structure").
 4. Check out the plugin!
+
+## Contribution
+
+Please make sure to read the [Contributing Guide](/Documentation/contribute.md) before making a pull request.
+
+Thanks goes to these wonderful people
+
+<a href="https://github.com/AndrewKreshchenko/ak_timeline/graphs/contributors">
+  <img width="90" src="https://avatars.githubusercontent.com/u/39337016?v=4" />
+</a>
+
+## License
+
+TimelineVis is licensed under a [GPL-2.0 license](./LICENSE).
 
 ## Table of contents
 - [Setup](/Documentation/setup.md)

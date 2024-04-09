@@ -112,31 +112,6 @@ return [
                 $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
             ),
         ],
-        // 'images' => [
-        //     'exclude' => true,
-        //     'label' => 'Image',
-        //     'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
-        //         'images',
-        //         [
-        //             'behaviour' => [
-        //                 'allowLanguageSynchronization' => true,
-        //             ],
-        //             'appearance' => [
-        //                 'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference',
-        //                 'showPossibleLocalizationRecords' => true,
-        //                 'showRemovedLocalizationRecords' => true,
-        //                 'showAllLocalizationLink' => true,
-        //                 'showSynchronizationLink' => true
-        //             ],
-        //             'foreign_match_fields' => [
-        //                 'fieldname' => 'images',
-        //                 'tablenames' => 'sys_category',
-        //                 'table_local' => 'sys_file',
-        //             ],
-        //         ],
-        //         $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
-        //     )
-        // ],
         'pointdate' => [
             'exclude' => true,
             'label' => 'LLL:EXT:' . $languageFile . ':tx_timelinevis_domain_model_point.pointdate',

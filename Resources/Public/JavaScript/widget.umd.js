@@ -46,6 +46,17 @@
         }
     }
 
+    function getBCDate(date, isBC) {
+        if (isBC) {
+            const dateSlices = [Number(date.slice(0, 4)), date.slice(4) + 'T00:00:00'];
+            const diff = new Date((1970 - dateSlices[0]) + dateSlices[1]);
+            return new Date(diff.valueOf() - 62167226524000);
+        }
+        else {
+            return new Date(date);
+        }
+    }
+
     class Widget {
         block;
         initOrder;
@@ -300,16 +311,15 @@
                 }
                 if (typeof formData.datestart === 'string' && formData.datestart.length
                     && typeof formData.dateend === 'string' && formData.dateend.length) {
-                    rules.range = [new Date(formData.datestart), new Date(formData.dateend)];
+                    const ruleDateStart = getBCDate(formData.datestart, Boolean(typeof formData.datestart_not_ad === 'string')), ruleDateEnd = getBCDate(formData.dateend, Boolean(typeof formData.datesend_not_ad === 'string'));
+                    rules.range = [ruleDateStart, ruleDateEnd];
                 }
                 if (this.options.timelineType === 'h') {
                     rules.checkByExp = (item) => item.toLowerCase().indexOf(rules.expression.toLowerCase()) === -1;
                     rules.checkByRange = (item) => {
-                        if (item.isBC === true) {
-                            return true;
-                        }
                         return item.date < rules.range[0] || item.date > rules.range[1];
                     };
+                    console.log('h', rules, this.options.dataset);
                     if (this.options.datasetState) {
                         this.options.datasetState.length = 0;
                     }
@@ -381,7 +391,6 @@
         }
     }
 
-    exports.Widget = Widget;
     exports.WidgetCollapsible = WidgetCollapsible;
     exports.WidgetFormFilter = WidgetFormFilter;
     exports.WidgetScrollspy = WidgetScrollspy;

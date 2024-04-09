@@ -1,6 +1,6 @@
 import { TLVariantType, TLDateType, TimelineI } from './types';
 import './utils/base';
-export declare class Timeline implements TimelineI {
+declare class Timeline implements TimelineI {
     readonly type: TLVariantType;
     container: HTMLElement;
     dateStart?: TLDateType;
@@ -24,3 +24,4 @@ export declare class HorizontalTimeline extends Timeline {
     constructor(type: TLVariantType, container: HTMLElement, visTimeline: ObjectConstructor);
     init(): void;
 }
+export {};

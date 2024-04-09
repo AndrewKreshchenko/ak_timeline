@@ -35,7 +35,6 @@ final class FarDate implements FarDateInterface
     $this->timestamp = $timestamp;
     $this->isBC = $isBC;
 
-    // if (!is_null($this->timestamp)) {
     $this->constructFarDate();
   }
 

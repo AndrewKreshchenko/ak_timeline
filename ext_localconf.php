@@ -58,6 +58,9 @@ call_user_func(
       ['source' => 'EXT:ak_timeline/Resources/Public/Icons/user_plugin_listing.svg']
     );
 
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][\AK\TimelineVis\Evaluation\TimelineValidator::class] = '';
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][\AK\TimelineVis\Evaluation\PointValidator::class] = '';
+
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass']['ak_timeline_proc'] = \AK\TimelineVis\InfoUpdate::class;
   }
 );
